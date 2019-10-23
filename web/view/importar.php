@@ -7,13 +7,10 @@
     <?php 
          require("../plantilla/menu.php");
      ?>
-    <script type="text/javascript" src="../Scripts/DataTable/datatables.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../Scripts/DataTable/datatables.min.css" />
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassLago.js'></script>
-    <script src='../scripts/Aplicacion/jsLago.js'></script>
+    <script src='../scripts/Aplicacion/jsImportar.js'></script>
 
     <style>
         #tdResultado tr {
@@ -43,7 +40,7 @@
 
                         <div class="form-group">
                             <label for="txtDescripcionLago">Descripción</label>
-                            <textarea type="text" class="form-control limpiar" id="txtDescripcionLago" maxlength="100"
+                            <textarea type="text" class="form-control limpiar" id="txtImportar" rows="10"
                                 required></textarea>
                         </div>
                         <div class="form-group">
@@ -64,13 +61,19 @@
 
                 <div class="list-group">
                     <a id="btnLago" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Persona
+                        <img width="24px" src="../svg/group_users.png" /> Persona
                     </a>
                     <a id="btnLago" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Usuario
+                        <img width="24px" src="../svg/man-user.png" /> Usuario
                     </a>
                     <a id="btnLago" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> lago
+                        <img width="24px" src="../svg/lake.png" /> lago
+                    </a>
+                    <a id="btnLago" class="list-group-item list-group-item-action">
+                        <img width="24px" src="../svg/sensor.png" /> Sensor
+                    </a>
+                    <a id="btnLago" class="list-group-item list-group-item-action">
+                        <img width="24px" src="../svg/variable-graphic.png" /> sondeo
                     </a>
                 </div>
 
