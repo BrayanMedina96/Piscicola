@@ -221,7 +221,7 @@ $(function(){
             }
         ]
 
-        tabla("Tabla", result, columna);
+        tabla("Tabla", result, columna,{});
 
     })
 

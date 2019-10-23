@@ -28,6 +28,7 @@ $(function(){
         $("#btnEnviar").text("Crear cuenta");
         $("#txtPassword").attr("required","required");
         $(".was-validated").removeClass("was-validated");
+        $("#ajustar").html("");
         cargarTipoDocumento();
         
     })
@@ -40,6 +41,7 @@ $(function(){
         $(".registrar").attr("hidden","hidden");
         $("#txtPassword").removeAttr("required");
         $("#btnEnviar").text("Inicia sesión");
+        $("#ajustar").html("<br> <br> <br> <br>");
         $(".was-validated").removeClass("was-validated");
 
 

@@ -5,7 +5,7 @@ document.write('<script src="../jsConfig.js"></script>');
 function consultarAjax(tipo,parametro)
 {
     var dat="";
-    if(tipo=="POST" || tipo=="PUT")
+    if(tipo=="POST" || tipo=="PUT" || tipo=="DELETE")
     {
         dat=parametro;
     }

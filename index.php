@@ -1,6 +1,6 @@
 <?php
 
-header("Location:../Piscicultura/web/view/login.html");
+header("Location:../Piscicultura/web/view/login.php");
 die();
 
 ?>

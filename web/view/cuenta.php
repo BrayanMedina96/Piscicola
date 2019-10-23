@@ -3,10 +3,10 @@
 <head>
   <meta charset="utf-8">
   <title>Cuenta</title>
-  <link href="../content/bootstrap.min.css" rel="stylesheet" />
-  <link href="../content/bootstrap.css" rel="stylesheet" />
-  <script src="../scripts/jquery-3.3.1.min.js"></script>
-  <script src="../scripts/bootstrap.min.js"></script>
+  <?php 
+          require("../plantilla/menu.php");
+  ?>
+
   <script src="../Scripts/datepicker.min.js" type="text/javascript"></script>
   <link href="../Content/datepicker.min.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="../Scripts/DataTable/datatables.min.js"></script>
@@ -19,13 +19,19 @@
   <script src='../scripts/Aplicacion/jsPersona.js'></script>
   <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
   <script src='../scripts/Aplicacion/jsCuenta.js'></script>
+
+  <style>
+    
+    #tdResultado tr{
+        cursor: pointer;
+    }
+   
+   </style>
 </head>
 
 <body class="bg-light">
 
-  <?php 
-          require("../plantilla/menu.php");
-  ?>
+  
 
   <div class="container">
 
@@ -36,9 +42,6 @@
     <div class="row">
 
       <div class="col-md-4 order-md-2 mb-4">
-
-
-
 
         <ul class="">
           <li id="btnInfoPersonal" class="list-group-item list-group-item-action panelinformacionpersonal">

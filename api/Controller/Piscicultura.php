@@ -7,6 +7,11 @@ require "Model/Persona.php";
 require "Model/Usuario.php";
 require "Model/TipoDocumento.php";
 require "Model/PersonaUsuario.php";
+require "Model/Lago.php";
+require "Model/Marca.php";
+require "Model/Sensor.php";
+require "Model/Especie.php";
+require "Model/LagoSensor.php";
 
 class Piscicultura
 {

@@ -5,18 +5,6 @@
 class TipoDocumento 
 {
     
-    private  $personaID;
-    private  $perosnaNombre;
-    private  $personaApellido;
-    private  $personaTelefono;
-    private  $personaTelefonoOpcional;
-    private  $personaCorreo;
-    private  $tipoDocumentoID;
-    private  $personaNumeroDocumento;
-    private  $personaFechaCreacion;
-    private  $personaFechaActualizacion;
-    private  $atributo;
-
     public function __construct()
     {
         
