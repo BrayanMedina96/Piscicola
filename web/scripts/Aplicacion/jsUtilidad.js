@@ -50,7 +50,7 @@ function modal(titulo,mensaje,largo)
 
 
 
-function tabla(elemento,datos,columna)
+function tabla(elemento,datos,columna,funcion)
 {
     
     $("#"+elemento).dataTable().fnDestroy();
@@ -64,11 +64,14 @@ function tabla(elemento,datos,columna)
             {
                // "targets": [ 0 ],
                 "visible": false,
-                "searching": false
-            }
+               
+            },
+            funcion
+            
        ],
          "paging":   false,
          "info":     false,
+         "searching": false
                     
     });
 
@@ -76,5 +79,12 @@ function tabla(elemento,datos,columna)
     $('#'+elemento).attr("class","table table-bordered table-striped");
 
     $("#"+elemento).attr("style","visible");
+
+}
+
+function  limpiar (elemento) {
+    
+  $(elemento).val(" ");
+  $(".was-validated").removeClass("was-validated");
 
 }

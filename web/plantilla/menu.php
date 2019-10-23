@@ -1,9 +1,16 @@
+<link rel="icon" href="../svg/fish.png">
+
+<link href="../content/bootstrap.min.css" rel="stylesheet" />
+<link href="../content/bootstrap.css" rel="stylesheet" />
+<script src="../scripts/jquery-3.3.1.min.js"></script>
+<script src="../scripts/bootstrap.min.js"></script>
+
 <form action="../plantilla/menu.php" method="get">
 
   <?php
        include "../utilidad/base64.php";
        include "../utilidad/menu.php";
-?>
+   ?>
 
   <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
 
@@ -16,26 +23,24 @@
       <ul class="navbar-nav mr-auto">
 
         <li id="home" class="nav-item active">
-          <a  class="nav-link go" go="../view/home.php">PIS.NET</a>
+          <a class="nav-link go" go="../view/home.php">PISC.NET</a>
         </li>
         <li class="nav-item active">
           <a class="nav-link go" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
         </li>
-        <li class="nav-item">
-          <button class="nav-link" type="submit" href="#">Link</button>
-        </li>
-        <li class="nav-item">
-          <a class="nav-link disabled" href="#">Disabled</a>
-        </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="dropdown01" data-toggle="dropdown" aria-haspopup="true"
-            aria-expanded="false">Dropdown</a>
-          <div class="dropdown-menu" aria-labelledby="dropdown01">
-            <a class="dropdown-item" href="#">Action</a>
-            <a class="dropdown-item" href="#">Another action</a>
-            <a class="dropdown-item" href="#">Something else here</a>
+        <li class="nav-item dropdown active">
+          <a class="nav-link dropdown-toggle" href="#" id="ddlregistro" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false">Registro</a>
+          <div class="dropdown-menu" aria-labelledby="ddlregistro">
+            <a class="dropdown-item go" go="../view/lago.php">Lago</a>
+            <a class="dropdown-item go" go="../view/sensor.php">Sensor</a>
+            <a class="dropdown-item go" go="../view/configuracion.php" href="#">Configuración</a>
           </div>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link go" go="../view/importar.php">Importar<span class="sr-only">(current)</span></a>
+        </li>
+        
       </ul>
       <div class="form-inline my-2 my-lg-0 ">
 
@@ -81,9 +86,8 @@
   </nav>
 
   <script>
-    $(".go").click(function (e) 
-    {
-     
+    $(".go").click(function (e) {
+
       $("#txtSalir").val("");
       $("#txtUrl").val(e.currentTarget.attributes.go.nodeValue);
       $("#btnGo").click();

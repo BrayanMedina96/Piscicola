@@ -30,7 +30,23 @@ class Ruta
            'TipoDocumento_GET' => 'consultar',
            'PersonaUsuario_POST' => 'guardar',
            'PersonaUsuario_GET'=>  'consultar',
-           'Persona_GETconsultarUN' => 'consultarUN'      
+           'Persona_GETconsultarUN' => 'consultarUN',
+           'Lago_POST'=>'guardar',
+           'Lago_PUT'=>'actualizar',
+           'Lago_GET'=>'consultar',
+           'Lago_DELETE'=>'eliminar',
+           'Marca_GET'=>'consultar',
+           'Sensor_POST'=>'guardar',
+           'Sensor_GET'=>'consultar',
+           'Sensor_PUT'=>'actualizar',
+           'Sensor_DELETE'=>'eliminar',
+           'Especie_GET'=>'consultar',
+           'LagoSensor_POST'=>'guardar',
+           'LagoSensor_PUT'=>'actualizar',
+           'LagoSensor_GET'=>'consultar',
+           'LagoSensor_DELETE'=>'eliminar',
+
+
         );
 
        return $this->ruta;
