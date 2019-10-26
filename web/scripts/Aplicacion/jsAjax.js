@@ -17,11 +17,12 @@ function consultarAjax(tipo,parametro)
         contentType: "application/json; charset=utf-8",
         dataType: 'json',
         async:false,
-        success: function(response){
-            return  response.d;
+        success: function(response)
+        {
+            return  response;
         },
         failure: function (response) {
-            return response.d;
+            return response;
         }
         
     });

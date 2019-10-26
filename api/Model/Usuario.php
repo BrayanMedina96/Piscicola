@@ -5,6 +5,7 @@ class Usuario
 
     public function consultar($parametro)
     {
+        
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand  = 'SELECT usuarioid, usuarionombre, usuariocontrasenia, usuarioestado, usuariofechaexpira, personaid, perfilid, usuarioFechacreacion, usuariofechaactualizacion,
