@@ -40,6 +40,9 @@
         <li class="nav-item active">
           <a class="nav-link go" go="../view/importar.php">Importar<span class="sr-only">(current)</span></a>
         </li>
+        <li class="nav-item active">
+          <a class="nav-link go" go="../view/dashboard.php">Dashboard<span class="sr-only">(current)</span></a>
+        </li>
         
       </ul>
       <div class="form-inline my-2 my-lg-0 ">

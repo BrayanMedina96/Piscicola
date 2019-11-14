@@ -2,7 +2,7 @@
 
 <head>
     <title>Importar</title>
-    <meta charset="utf-8">
+    <meta charset="UTF-8">
 
     <?php 
          require("../plantilla/menu.php");
@@ -10,7 +10,9 @@
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
+    <script src='../scripts/Aplicacion/jsClassSonda.js'></script>
     <script src='../scripts/Aplicacion/jsImportar.js'></script>
+    
 
     <style>
         #tdResultado tr {
@@ -37,10 +39,14 @@
                         <h5>Importar</h5>
                     </div>
                     <div class="card-body">
-
+                    <div class="table-responsive">
                         <div class="form-group">
-                            <label for="txtDescripcionLago">Descripción</label>
-                            <textarea type="text" class="form-control limpiar" id="txtImportar" rows="10"
+                            <table class="table table-bordered" id="tabla"></table>
+                        </div>
+                        </div>
+                        <div class="form-group">
+                            <label for="txtDescripcionLago"></label>
+                            <textarea charset="UTF-8" type="text" class="form-control limpiar" id="txtImportar" rows="10"
                                 required></textarea>
                         </div>
                         <div class="form-group">
@@ -60,20 +66,20 @@
             <div class="col-md-3">
 
                 <div class="list-group">
-                    <a id="btnLago" class="list-group-item list-group-item-action">
+                    <a id="btnPersona" go="Persona" class="list-group-item list-group-item-action opcion">
                         <img width="24px" src="../svg/group_users.png" /> Persona
                     </a>
-                    <a id="btnLago" class="list-group-item list-group-item-action">
+                    <a id="btnUsuario" go="Usuario" class="list-group-item list-group-item-action opcion">
                         <img width="24px" src="../svg/man-user.png" /> Usuario
                     </a>
-                    <a id="btnLago" class="list-group-item list-group-item-action">
-                        <img width="24px" src="../svg/lake.png" /> lago
+                    <a id="btnLago" go="Lago" class="list-group-item list-group-item-action opcion">
+                        <img width="24px" src="../svg/lake.png" /> Lago
                     </a>
-                    <a id="btnLago" class="list-group-item list-group-item-action">
+                    <a id="btnSensor" go="Sensor" class="list-group-item list-group-item-action opcion">
                         <img width="24px" src="../svg/sensor.png" /> Sensor
                     </a>
-                    <a id="btnLago" class="list-group-item list-group-item-action">
-                        <img width="24px" src="../svg/variable-graphic.png" /> sondeo
+                    <a id="btnSondeo" go="Sondeo" class="list-group-item list-group-item-action opcion">
+                        <img width="24px" src="../svg/variable-graphic.png" /> Sondeo
                     </a>
                 </div>
 
@@ -132,7 +138,7 @@
         </div>
     </div>
 
-    <input type="text" id="txtLagoID" value="" hidden />
+    <input type="text" id="txtTipo" value="" hidden />
 </body>
 
 </html>

@@ -45,6 +45,12 @@ class Ruta
            'LagoSensor_PUT'=>'actualizar',
            'LagoSensor_GET'=>'consultar',
            'LagoSensor_DELETE'=>'eliminar',
+           'Sonda_POSTimportar'=>'importar',
+           'Dashboard_GETvariable'=>'variable',
+           'Dashboard_POST'=>'guardar',
+           'Dashboard_GET'=>'consultar',
+           'Dashboard_GETconsultarSonda'=>'consultarSonda',
+           'Dashboard_DELETE'=>'eliminar'
 
 
         );
