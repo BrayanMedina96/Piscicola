@@ -13,6 +13,7 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
     <script src='../scripts/Aplicacion/jsClassLago.js'></script>
+    <script src='../scripts/Aplicacion/jsClassMaterial.js'></script>
     <script src='../scripts/Aplicacion/jsLago.js'></script>
 
     <style>
@@ -76,6 +77,10 @@
                         <div class="form-group">
                             <label for="txtProfundidad">Profundidad <em>(cm)</em></label>
                             <input type="number" class="form-control limpiar" id="txtProfundidad">
+                        </div>
+                        <div class="form-group">
+                            <label for="ddlTipoLago">Tipo</label>
+                            <select id="ddlTipoLago" class="form-control"></select>
                         </div>
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary"

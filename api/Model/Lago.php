@@ -15,7 +15,7 @@ class Lago
         $sqlCommand = 'SELECT lagoid, lagonombre, lagodescripcion, lagogeolocalizacion, lagoarea,
         lagoaltitud, lagocantidadpeces, lagoprofundidad, lagofechacreacion,
         lagofechaactualizacion, lagofechaelimar, usuariocrea, usuarioactualiza,
-        usuarioelimina, usuarioid, importado
+        usuarioelimina, usuarioid, importado,tipolagoid
         FROM lago WHERE usuarioid=:usuarioid AND  lagofechaelimar IS  NULL;';
 
         $statement  = $conn->prepare($sqlCommand); 
@@ -46,11 +46,11 @@ class Lago
             lagonombre, lagodescripcion, lagogeolocalizacion, lagoarea,
             lagoaltitud, lagocantidadpeces, lagoprofundidad, lagofechacreacion,
             usuariocrea,
-            usuarioid)
+            usuarioid,tipolagoid)
             VALUES ( :lagonombre, :lagodescripcion, :lagogeolocalizacion, :lagoarea,
             :lagoaltitud, :lagocantidadpeces, :lagoprofundidad, NOW(),
             :usuariocrea,
-            :usuarioid);';
+            :usuarioid,:tipolagoid);';
     
             $statement  = $conn->prepare($sqlCommand);
             $statement ->bindValue(':lagonombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -60,9 +60,11 @@ class Lago
             $statement ->bindValue(':lagoaltitud',$parametro["altitud"],PDO::PARAM_STR);
             $statement ->bindValue(':lagocantidadpeces',$parametro["catidadPeces"],PDO::PARAM_STR);
             $statement ->bindValue(':lagoprofundidad',$parametro["profundidad"],PDO::PARAM_STR);
+            $statement ->bindValue(':tipolagoid',$parametro["tipolago"],PDO::PARAM_STR);
             $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
             $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-           
+            
+
             $statement ->execute();
     
             
@@ -126,7 +128,8 @@ class Lago
         lagocantidadpeces=:lagocantidadpeces,
         lagoprofundidad=:lagoprofundidad,  
         lagofechaactualizacion=NOW(),
-        usuarioactualiza=:usuarioactualiza
+        usuarioactualiza=:usuarioactualiza,
+        tipolagoid=:tipolagoid
         WHERE lagoid=:lagoid;';
 
                      
@@ -139,6 +142,7 @@ class Lago
              $statement ->bindValue(':lagoaltitud',$parametro["altitud"],PDO::PARAM_STR);
              $statement ->bindValue(':lagocantidadpeces',$parametro["catidadPeces"],PDO::PARAM_STR);
              $statement ->bindValue(':lagoprofundidad',$parametro["profundidad"],PDO::PARAM_STR);
+             $statement ->bindValue(':tipolagoid',$parametro["tipolago"],PDO::PARAM_STR);
              $statement ->bindValue(':usuarioactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
              $statement ->bindValue(':lagoid',$parametro["id"],PDO::PARAM_INT);
              

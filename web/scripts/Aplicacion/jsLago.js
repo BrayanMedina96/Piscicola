@@ -1,5 +1,7 @@
 $(function () {
 
+    material();
+
     $("#btnEnviar").click(function () {
 
 
@@ -19,9 +21,11 @@ $(function () {
         objLago.profundidad = $("#txtProfundidad").val();
         objLago.catidadPeces = $("#txtCantidadPeces").val();
         objLago.token = $("#txtVarUrl").val();
+        objLago.tipolago=$("#ddlTipoLago").val();
 
         if ($("#btnEnviar").text() == "Guardar") {
             objLago.guardar();
+            $("#btnLimpiar").click();
         } else {
 
             objLago.id = $("#txtLagoID").val();
@@ -106,9 +110,11 @@ $(function () {
         $("#txtAltitud").val(data.lagoaltitud);
         $("#txtProfundidad").val(data.lagoprofundidad);
         $("#txtCantidadPeces").val(data.lagocantidadpeces);
+        $("#ddlTipoLago").val(data.tipolagoid);
         $("#btnCerrarModal").click();
         $("#btnEnviar").text("Actualizar");
         $("#btnEnviar").attr("class", "btn btn-success");
+      
 
     });
 
@@ -139,6 +145,12 @@ $(function () {
        
     });
 
+    function material()
+    {
+        var obj=new Material();
+        obj.token = $("#txtVarUrl").val();
+        obj.cargarddl("ddlTipoLago",obj.consultar().responseJSON);
+    }
 
 })
 
