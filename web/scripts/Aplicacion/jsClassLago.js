@@ -10,6 +10,7 @@ class Lago {
     catidadPeces;
     profundidad;
     token;
+    tipolago;
 
     guardar() {
 
@@ -23,6 +24,7 @@ class Lago {
             "&catidadPeces=" + this.catidadPeces.trim() +
             "&profundidad=" + this.profundidad.trim() +
             "&token=" + this.token +
+            "&tipolago="+this.tipolago+
             "&do=";
 
         return consultarAjax('POST', parametro);
@@ -42,6 +44,7 @@ class Lago {
             "&catidadPeces=" + this.catidadPeces +
             "&profundidad=" + this.profundidad +
             "&token=" + this.token +
+            "&tipolago="+this.tipolago+
             "&do=";
 
         return consultarAjax('PUT', parametro);
