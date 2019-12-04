@@ -2,9 +2,25 @@ var myChart = null;
 
 $(function () {
 
+    $("#txtImportar").val("0");
 
+    
 
     miDashboard();
+
+    $("#txtFechaInicial").datepicker({
+        onSelect: function (fd, d, calendar) {
+            calendar.hide()
+        }
+    })
+
+    
+    $("#txtFechaFinal").datepicker({
+        onSelect: function (fd, d, calendar) {
+            calendar.hide()
+        }
+    })
+
 
 
     $("#btnCrear").click(function () {
@@ -83,6 +99,14 @@ $(function () {
 
         limpiar();
 
+    })
+
+    $("#btnBuscar").click(function () {
+        
+
+        grafica($("#txtGrafica").val());
+     
+        
     })
 
 
@@ -186,6 +210,10 @@ function grafica(params) {
 
     var obj = new Dashboard();
     obj.token = $("#txtVarUrl").val();
+    obj.fechaInicio=$("#txtFechaInicial").val();
+    obj.fechaFinal=$("#txtFechaFinal").val();
+   
+    $("#txtGrafica").val(params);
 
     preparar(obj.consultarSonda().responseJSON, $("#" + params).attr("go"), $("#" + params).attr("title"), params);
 }
@@ -203,6 +231,8 @@ function preparar(response, campo, title, elemen) {
 
     var x = n[0].split(":");
     var y = n[1].split(":")[1].split(",");
+
+    
 
     var label = [];
     var data = [];
@@ -260,6 +290,9 @@ function preparar(response, campo, title, elemen) {
 
 
     graficar(label, data, tipoGrafica, title);
+    tabl(x,y,response,title);
+    
+    $("#txtImportar").val("1");
 
 }
 
@@ -280,7 +313,10 @@ function eliminarGrafica(params) {
 
 function graficar(label, dataSet, tipoGrafica, titulo) {
 
+
+
     var ctx = document.getElementById('myChart').getContext('2d');
+
     myChart = new Chart(ctx, {
         type: tipoGrafica,
         data: {
@@ -308,9 +344,62 @@ function graficar(label, dataSet, tipoGrafica, titulo) {
     });
 
 
+    
+
 
 }
 
+function tabl(x,y,result,titulo) {
+    
+    
+
+    var columna=[ {"data":x[1] } ];
+
+    $("#tbEncabezado").html("");
+
+    $("#tbEncabezado").append("<th>"+x[1]+"</th>")
+
+    var encabezado=1;
+
+    for (let index = 0; index < y.length; index++) 
+    {
+
+        $("#tbEncabezado").append("<th>"+y[index]+"</th>")
+        columna.push({"data":y[index]});
+
+        encabezado++;
+        
+    }
+
+   
+
+    tabla("Tabla", result, columna,{});
+
+    var fila="";
+    
+    $('#Tabla #tdResultado tr').each(function () {
+
+        
+        var separador=";";
+        
+        for (let index = 0; index < encabezado; index++) {
+
+            if(index==encabezado-1)
+            {
+            
+                separador=" \n";
+            }
+
+            fila=fila+$(this).find("td").eq(index).html()+separador;
+            
+        }
+        
+        
+    });
+
+    download(fila,titulo, 'text/plain');
+
+}
 
 
 
@@ -323,8 +412,24 @@ function limpiar() {
 
 download_img = function (el) {
 
+    
+    if($("#txtImportar").val()=="0")
+    {
+        $("#pnMensaje").html("");
+        $("#pnMensaje").html(modal("Alerta", "No hay información para exportar.", "modal-sm"));
+        $("#myModal").modal();
+        return;
+    }
     var canvas = document.getElementById("myChart");
     var image = canvas.toDataURL("image/jpg");
     el.href = image;
 
-};
+}
+
+
+function download(text, name, type) {
+    var a = document.getElementById("a");
+    var file = new Blob([text], {type: type});
+    a.href = URL.createObjectURL(file);
+    a.download = name;
+  }

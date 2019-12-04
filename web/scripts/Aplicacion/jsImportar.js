@@ -19,6 +19,8 @@ $(function () {
     $(".opcion").click(function(){
 
         dibujarCampo( $("#"+this.id).attr("go") );
+    
+        $("#lblImportar").text( $("#"+this.id).attr("go")  );
 
     })
 
@@ -28,6 +30,25 @@ $(function () {
        obj.importarText=$("#txtImportar").val();
        obj.token = $("#txtVarUrl").val();
        obj.importar();
+
+    })
+
+    $("#btnPlantilla").click(function () {
+        
+        var url = "";
+
+        switch ($("#lblImportar").text()) {
+            case "Sondeo":
+                url = "https://drive.google.com/file/d/1AynZmJDdlSo8trO1R2yO6nJN-SR48oAE/view?usp=sharing";
+                break;
+
+            default:
+                url = "https://drive.google.com/drive/folders/1GMM3TqxgWgvvGe2dLH_5PzwlN4KdhVUu?usp=sharing";
+                break;
+        }
+
+        window.open(url);
+
 
     })
 

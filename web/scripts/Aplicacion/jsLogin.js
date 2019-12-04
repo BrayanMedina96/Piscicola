@@ -1,5 +1,28 @@
 $(function () {
 
+    
+   
+    
+    $("#txtPassword").keyup(function () {
+        
+        if($("#txtTitulo").text()=="Crear una cuenta")
+        {
+
+           var obj= validarPassword( document.getElementById("txtPassword") );
+            $("#pnSeguridad").attr("class",obj.color);
+            $("#pnSeguridad").attr("style","width:"+obj.porcentaje+"%");
+            $("#lblSeguridad").text(obj.porcentaje+"%");
+
+        }
+
+    })
+
+    $("#btnOjo").click(function () {
+        
+        checkPassword("btnOjo","txtPassword");
+
+    })
+
     $("#btnEnviar").click(function () {
         if ($("#btnEnviar").text() == "Crear cuenta") {
             guardar();
@@ -25,6 +48,12 @@ $(function () {
         $("#txtPassword").attr("required", "required");
         $(".was-validated").removeClass("was-validated");
         $("#ajustar").html("<br><br>");
+       
+        
+        $("#txtPassword").attr("data-toggle","tooltip");
+        $("#txtPassword").attr("title","Para crear una password seguro utilice (Mayúscula, Minúscula, Números y algún símbolos: ! # $ % & = ? * . @")
+        $('[data-toggle="tooltip"]').tooltip();
+
         cargarTipoDocumento();
 
     })
@@ -39,6 +68,7 @@ $(function () {
         $("#btnEnviar").text("Inicia sesión");
         $("#ajustar").html("<br> <br> <br> <br>");
         $(".was-validated").removeClass("was-validated");
+        
 
 
     })

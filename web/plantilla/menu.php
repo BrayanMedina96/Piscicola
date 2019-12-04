@@ -35,6 +35,7 @@
             <a class="dropdown-item go" go="../view/lago.php">Lago</a>
             <a class="dropdown-item go" go="../view/sensor.php">Sensor</a>
             <a class="dropdown-item go" go="../view/configuracion.php" href="#">Configuración</a>
+            <a class="dropdown-item go" go="../view/tipoLago.php" href="#">Tipo lago</a>
           </div>
         </li>
         <li class="nav-item active">

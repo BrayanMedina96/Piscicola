@@ -36,7 +36,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Importar</h5>
+                        <h5>Importar</h5> <label id="lblImportar"></label>
                     </div>
                     <div class="card-body">
                     <div class="table-responsive">
@@ -51,11 +51,14 @@
                         </div>
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Enviar</button>
-                            <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
-
-                            <label for="fileToUpload" class="btn btn-default">
+                            <!--<button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>-->
+                            <a  id="btnPlantilla" type="button" class="btn btn-default">
+                                 <img src="../svg/documento.png" width="30px">
+                                  Plantilla
+                            </a>
+                            <a for="fileToUpload" class="btn btn-default">
                                 <img width="30px" src="../svg/file.png" /> Cargar
-                            </label>
+                            </a>
                             <input type="file" name="fileToUpload" id="fileToUpload" hidden>
                         </div>
                     </div>
