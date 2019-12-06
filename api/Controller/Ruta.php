@@ -51,7 +51,9 @@ class Ruta
            'Dashboard_GET'=>'consultar',
            'Dashboard_GETconsultarSonda'=>'consultarSonda',
            'Dashboard_DELETE'=>'eliminar',
-           'Material_GET'=>'consultar'
+           'Material_GET'=>'consultar',
+           'Email_GET'=>'consultar',
+           'Email_POST'=>'guardar'
 
 
         );

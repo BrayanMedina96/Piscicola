@@ -306,6 +306,28 @@ class Usuario
         return $result;
     }
 
+    public function validarExistencia($usuarionombre)
+    {
+        $result=0;
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand ="SELECT COUNT(*) as numero FROM usuario WHERE usuarionombre=:usuarionombre";
+    
+        $statement  = $conn->prepare($sqlCommand);
+        $statement ->bindValue(':usuarionombre',$usuarionombre,PDO::PARAM_STR);
+        
+        $statement ->execute();
+        while ($arr = $statement ->fetch(PDO::FETCH_ASSOC) ) {
+            $result=$arr["numero"];
+        
+        }
+
+        Conexion::cerrar($conn);
+
+        return  $result;
+
+    }
+
 
 
 }

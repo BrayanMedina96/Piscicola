@@ -120,6 +120,8 @@
                <input id="txtNombreUsuario" name="txtNombreUsuario" type="hidden" value="0">
 
                <input id="txtIntento" type="hidden" value="0">
+               <input id="txtUser" type="hidden" value="0">
+
                <div id="pnMensaje"></div>
                <p class="mt-5 mb-3 text-muted text-center">© 2019</p>
 

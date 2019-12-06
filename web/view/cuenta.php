@@ -122,7 +122,7 @@
 
               <div class="mb-3 personal email">
                 <label for="txtEmail">Email <span class="text-muted">(Optional)</span></label>
-                <input type="email" class="form-control email" id="txtEmail" placeholder="you@example.com">
+                <input type="email" class="form-control email" id="txtEmail"  placeholder="you@example.com">
                 <div class="invalid-feedback">
                   Please enter a valid email address for shipping updates.
                 </div>
@@ -234,8 +234,7 @@
 
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-          <button type="button" class="btn btn-primary">Save changes</button>
+         
         </div>
       </div>
     </div>

@@ -58,10 +58,18 @@
           <li class="nav-item">
             <a class="nav-link" type="submit">
               <?php 
-              $obj=new Base64();
-              $result=$obj->decodeUsuario();
-              echo  $result["nombre"];
-        ?>
+                 
+                    $obj=new Base64();
+                    $result=$obj->decodeUsuario();
+                    if(!isset($result["nombre"])) 
+                    {
+                       header('Location:../view/login.php');
+                       die();
+                    }
+                      
+                    echo  $result["nombre"];
+                 
+              ?>
             </a>
           </li>
           <li class="nav-item">

@@ -24,6 +24,7 @@ $(function () {
     })
 
     $("#btnEnviar").click(function () {
+
         if ($("#btnEnviar").text() == "Crear cuenta") {
             guardar();
         } else {
@@ -45,6 +46,7 @@ $(function () {
         $("#btnCrearCuenta").attr("hidden", "hidden");
         $(".registrar").removeAttr("hidden");
         $("#btnEnviar").text("Crear cuenta");
+        $("#btnEnviar").attr("type","button");
         $("#txtPassword").attr("required", "required");
         $(".was-validated").removeClass("was-validated");
         $("#ajustar").html("<br><br>");
@@ -66,11 +68,22 @@ $(function () {
         $(".registrar").attr("hidden", "hidden");
         $("#txtPassword").removeAttr("required");
         $("#btnEnviar").text("Inicia sesión");
+        $("#btnEnviar").attr("type","Submit");
         $("#ajustar").html("<br> <br> <br> <br>");
         $(".was-validated").removeClass("was-validated");
         
 
+    })
 
+    $("#txtUsuario").focus(function () {
+        
+        if($("#txtTitulo").text()=="Crear una cuenta")
+        {
+            var nombre=$("#txtNombre").val().split(" ");
+            var apellido=$("#txtApelldio").val().split(" ");
+            $("#txtUsuario").val(nombre[0]+"."+apellido[0]);
+        }
+       
     })
 
     function cargarTipoDocumento() {
@@ -88,11 +101,27 @@ $(function () {
             return;
         }
 
-        const objpersona = new persona($("#txtNombre").val(), $("#txtApelldio").val(), $("#txtNumeroDocumento").val(), $("#ddlTipoDocumento").val(), $("#txtUsuario").val(), $("#txtPassword").val());
-        if (objpersona.guardar().responseJSON == "ok") {
+        const objpersona = new PersonaUsuario($("#txtNombre").val(), $("#txtApelldio").val(), $("#txtNumeroDocumento").val(), $("#ddlTipoDocumento").val(), $("#txtUsuario").val(), $("#txtPassword").val());
+        var result=objpersona.guardar();
+        
+        if (result.responseJSON["response"] == "ok") {
+
+            var msg="";
+            if(result.responseJSON["tipo"]=="user")
+            {
+                var intentoUser=parseInt( $("#txtUser").val() ) + 1;
+
+                $("#txtUser").val( intentoUser );
+                var usuario=encontrarUser( intentoUser );
+                msg=" Podria intentar con : "+usuario;
+                $("#txtUsuario").val(usuario);
+            }
+
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Mensaje", "Usuario se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.", ""));
+            $("#pnMensaje").html(modal("Mensaje", result.responseJSON["mensaje"] + msg, ""));
             $("#myModal").modal();
+            
+
         }
 
 
@@ -131,6 +160,38 @@ $(function () {
 
     }
 
+
+    function encontrarUser(params) {
+        console.log(params);
+        var usuario="";
+        switch (params) {
+            case 1:
+                usuario = $("#txtUsuario").val() + "_" + Math.floor((Math.random() * 1000) + 1);
+
+                break;
+            case 2:
+                var nombre = $("#txtNombre").val().split(" ");
+                var apellido = $("#txtApelldio").val().split(" ");
+                usuario = nombre.length > 1 ? nombre[1] : nombre[0];
+                usuario += apellido.length > 1 ? "." + apellido[1] : "." + apellido[0];
+
+                break;
+            default:
+
+                var nombre = $("#txtNombre").val().split(" ");
+                var apellido = $("#txtApelldio").val().split(" ");
+                usuario = nombre.length > 1 ? nombre[1] : nombre[0];
+                usuario += apellido.length > 1 ? "." + apellido[1] : "." + apellido[0];
+                usuario += "_" + Math.floor((Math.random() * 1000) + 1);
+
+                break;
+
+
+        }
+
+        return usuario;
+
+    }
 
 
 });
