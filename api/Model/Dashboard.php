@@ -27,6 +27,18 @@ class Dashboard
 
     public function consultarSonda($parametro)
     {
+        $fechaInicio=$parametro["fechaInicio"];
+        $fechaFinal=$parametro["fechaFinal"];
+
+        if($fechaInicio=="")
+        {
+
+            
+           $fechaInicio=$this->primerDiaMes();
+           $fechaFinal=$this->ultimoDiaMes();
+           
+        }
+
         $objBase64 = new Base64($parametro["token"]);
 
         $objUsuario = new Usuario();
@@ -34,14 +46,17 @@ class Dashboard
 
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT estadofisicoquimicoid, fecharegistro, oxigenodisuelto, ph, cultivoid, 
+        $sqlCommand = "SELECT estadofisicoquimicoid, fecharegistro, oxigenodisuelto, ph, cultivoid, 
         horaregistro, temperaturaambiente, temperaturaestanque, conductividadelectrica, 
         amonionh3, amonionh4, nitrito, alcalinidad, descripcion, pecesmuertos, 
         usuarioid
-        FROM estadofisicoquimico WHERE usuarioid=:usuarioid;';
+        FROM estadofisicoquimico WHERE usuarioid=:usuarioid AND  fecharegistro BETWEEN   :fechaInicio  AND  :fechaFinal  ;";
 
         $statement  = $conn->prepare($sqlCommand); 
         $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+        $statement ->bindValue(':fechaInicio',$fechaInicio,PDO::PARAM_STR);
+        $statement ->bindValue(':fechaFinal',$fechaFinal,PDO::PARAM_STR);
+
         $statement->execute();              
         $resultado= $statement->fetchAll();
 
@@ -176,6 +191,26 @@ class Dashboard
     }
 
     
+
+      
+      static function  ultimoDiaMes() 
+      {
+         $month = date('m');
+         $year = date('Y');
+         $day = date("d", mktime(0,0,0, $month+1, 0, $year));
+
+         return date('Y-m-d', mktime(0,0,0, $month, $day, $year));
+      }
+
+      
+      static function  primerDiaMes() 
+      {
+          $month = date('m');
+          $year = date('Y');
+
+          return date('Y-m-d', mktime(0,0,0, $month, 1, $year));
+      }
+
 
 }
 

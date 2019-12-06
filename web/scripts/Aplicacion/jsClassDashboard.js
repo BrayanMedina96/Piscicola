@@ -7,6 +7,8 @@ class Dashboard {
     id;
     filtro;
     tipografica;
+    fechaInicio;
+    fechaFinal;
 
     guardar() {
 
@@ -56,6 +58,8 @@ class Dashboard {
         var parametro = {
             entidad: this.entidad,
             token: this.token,
+            fechaInicio:this.fechaInicio,
+            fechaFinal:this.fechaFinal,
             do: "consultarSonda"
         }
 

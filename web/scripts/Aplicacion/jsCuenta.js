@@ -10,7 +10,20 @@ $(function(){
     $(".usuario").attr("hidden","hidden");
     
    
+    $("#myInput").on("keyup", function() 
+    {
+          var value = $(this).val().toLowerCase();
 
+          $("#tdResultado tr").filter(function() 
+           {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1)   
+           });
+
+           var numOfVisibleRows = $('#tdResultado tr').filter(function() {
+              return $(this).css('display') !== 'none';
+           }).length;
+           
+    });
 
     $("#txtFechaExpiracion").datepicker({
         onSelect: function (fd, d, calendar) {
@@ -171,6 +184,19 @@ $(function(){
 
     $("#btnEnviar").click(function(){
 
+       
+        if( $("#txtEmail").val()!="")
+        {
+           if( validarEmail( $("#txtEmail").val() ) )
+           {
+              $("#pnMensaje").html("");
+              $("#pnMensaje").html(modal("Alerta","La dirección del email es incorrecta.",""));
+              $("#myModal").modal();
+              return;
+           }
+            
+        }
+
         if($("#btnEnviar").text()=="Actualizar" && $("#lblTitulo").text()=="Editar mi cuenta")
         {
             actualizarPersona();
@@ -225,7 +251,7 @@ $(function(){
 
     })
 
-
+    
 
 
 })

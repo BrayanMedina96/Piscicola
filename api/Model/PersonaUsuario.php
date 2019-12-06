@@ -68,30 +68,51 @@ class PersonaUsuario
 
     public function guardar($parametro)
     {
-        $result;
+        $result= ["response"=>null,"mensaje"=>null,"tipo"=>null];
         
         $conn=Conexion::getInstance()->cnn();
 
         try 
         {
+
+            $objUsuario=new Usuario();
+
+          
+
+            if($this->validarExistencia($parametro["numeroDocumento"])>0)
+            {
+                $result["mensaje"]="Numero de documento ya se encuentra registrado.";
+                $result["response"]="ok";
+            }
+            elseif ($objUsuario->validarExistencia($parametro["usuario"])>0) {
+                $result["mensaje"]="Nombre de usuario {$parametro["usuario"]} no se encuentra disponible.";
+                $result["response"]="ok";
+                $result["tipo"]="user";
+            }
+            else{
             
-            $sqlCommand ='SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,:contrasenia )';
+                  $sqlCommand ='SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,:contrasenia )';
     
-            $statement  = $conn->prepare($sqlCommand);
-            $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
-            $statement ->bindValue(':apellido',$parametro["apellido"],PDO::PARAM_STR);
-            $statement ->bindValue(':numerodocumento',$parametro["numeroDocumento"],PDO::PARAM_STR);
-            $statement ->bindValue(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
-            $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
-            $statement ->bindValue(':contrasenia',$parametro["contrasenia"],PDO::PARAM_STR);
+                   $statement  = $conn->prepare($sqlCommand);
+                   $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
+                   $statement ->bindValue(':apellido',$parametro["apellido"],PDO::PARAM_STR);
+                   $statement ->bindValue(':numerodocumento',$parametro["numeroDocumento"],PDO::PARAM_STR);
+                   $statement ->bindValue(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
+                   $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
+                   $statement ->bindValue(':contrasenia',$parametro["contrasenia"],PDO::PARAM_STR);
             
             
-            $statement ->execute();
-            $result= $statement->fetchAll()[0]["personausuario"];
+                   $statement ->execute();
+                   //$result= $statement->fetchAll()[0]["personausuario"];
+
+                   $result["mensaje"]="Usuario se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.";
+                   $result["response"]="ok";
+
+               }
     
             
         } catch (Exception $Exception) {
-            $result=$Exception->getMessage();
+            $result=["error"=>$Exception->getMessage()];
         }
         finally{
             Conexion::cerrar($conn);
@@ -114,6 +135,29 @@ class PersonaUsuario
         
 
         return $result;
+    }
+
+    public function validarExistencia($personanumerodocumento)
+    {
+        $result=0;
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand ="SELECT COUNT(*) as numero FROM persona WHERE personanumerodocumento=:personanumerodocumento";
+    
+        $statement  = $conn->prepare($sqlCommand);
+        $statement ->bindValue(':personanumerodocumento',$personanumerodocumento,PDO::PARAM_STR);
+        
+        $statement ->execute();
+
+        while ($arr = $statement ->fetch(PDO::FETCH_ASSOC) ) {
+            $result=$arr["numero"];
+        
+         }
+
+        Conexion::cerrar($conn);
+
+        return  $result;
+
     }
     
     

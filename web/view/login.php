@@ -9,6 +9,7 @@
      <link href="../content/bootstrap.min.css" rel="stylesheet" />
      <link href="../content/bootstrap.css" rel="stylesheet" />
      <script src="../scripts/jquery-3.3.1.min.js"></script>
+     <script src="../scripts/popper.min.js"></script>
      <script src="../scripts/bootstrap.min.js"></script>
      <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
      <script src="../scripts/Aplicacion/jsLogin.js"></script>
@@ -19,21 +20,21 @@
           include "../utilidad/login.php";
         ?>
 
-        
-  <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
-       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
-            aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-       </button>
-       <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-            <ul class="navbar-nav mr-auto">
 
-                 <li id="home" class="nav-item active">
-                      <a class="nav-link go" go="../view/home.php">PISC.NET</a>
-                 </li>
-            </ul>
-       </div>
-  </nav>
+     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
+          <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
+               aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
+               <span class="navbar-toggler-icon"></span>
+          </button>
+          <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+               <ul class="navbar-nav mr-auto">
+
+                    <li id="home" class="nav-item active">
+                         <a class="nav-link go" go="../view/home.php">PISC.NET</a>
+                    </li>
+               </ul>
+          </div>
+     </nav>
 </head>
 
 <body class="bg-light" onload="deshabilitaRetroceso()">
@@ -41,16 +42,16 @@
      <form action="login.php" method="get">
           <div class="container col-sm-12">
                <div class="row">
-                
+
 
                     <div class="col-sm-4">
-                       <!--  <img src="../svg/pez.png"  class="img-fluid rounded" alt="Cinque Terre"> -->
+                         <!--  <img src="../svg/pez.png"  class="img-fluid rounded" alt="Cinque Terre"> -->
                     </div>
-                    
+
                     <div class="col-sm-4">
-                     
+
                          <div id="ajustar"><br> <br> <br> <br></div>
-                    
+
                          <div class="form-group form-inline">
                               <div class="col-sm-7" style="text-align: left;">
                                    <h6 id="txtTitulo">Inicia sesión</h6>
@@ -82,10 +83,22 @@
                                    required="">
                          </div>
 
-                         <div class="form-group">
+                         <div class="input-group mb-3">
                               <input type="password" id="txtPassword" class="form-control login"
                                    placeholder="Contraseña" required="">
+                              <div class="input-group-append">
+                                   <span class="input-group-text">
+                                      <img id="btnOjo" src="../svg/ojo-cerrado.png" go="no" style="width:24px">
+                                   </span>
+                              </div>
                          </div>
+
+                         <div class="form-group">
+                              <div class="progress">
+                                   <div id="pnSeguridad" class="progress-bar"> <lable id="lblSeguridad"></lable> </div>
+                              </div>
+                         </div>
+
 
                          <div class="form-group registrar">
                               <input type="password" id="txtPasswordConfirmar" class="form-control"
@@ -99,7 +112,7 @@
 
 
                     </div>
-                    
+
                </div>
 
                <input id="txtUsuariohd" name="txtUsuariohd" type="hidden" value="0">
@@ -107,6 +120,8 @@
                <input id="txtNombreUsuario" name="txtNombreUsuario" type="hidden" value="0">
 
                <input id="txtIntento" type="hidden" value="0">
+               <input id="txtUser" type="hidden" value="0">
+
                <div id="pnMensaje"></div>
                <p class="mt-5 mb-3 text-muted text-center">© 2019</p>
 
