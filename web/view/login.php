@@ -78,6 +78,10 @@
                               <input type="text" id="txtApelldio" class="form-control" placeholder="Apellido"
                                    required="">
                          </div>
+                         <div class="form-group registrar">
+                              <input type="text" id="txtNombreComercial" class="form-control" placeholder="Nombre Comercial"
+                                   required="">
+                         </div>
                          <div class="form-group">
                               <input type="text" id="txtUsuario" class="form-control login" placeholder="Usuario"
                                    required="">
@@ -100,7 +104,7 @@
                          </div>
 
 
-                         <div class="form-group registrar">
+                         <div id="pnPassword" class="form-group registrar">
                               <input type="password" id="txtPasswordConfirmar" class="form-control"
                                    placeholder="Confirmar contraseña" required="">
                          </div>
@@ -118,7 +122,9 @@
                <input id="txtUsuariohd" name="txtUsuariohd" type="hidden" value="0">
                <input id="txtToken" name="txtToken" type="hidden" value="0">
                <input id="txtNombreUsuario" name="txtNombreUsuario" type="hidden" value="0">
+               <input id="hdCambioPass" name="hdCambioPass" type="hidden" value="0">
 
+               
                <input id="txtIntento" type="hidden" value="0">
                <input id="txtUser" type="hidden" value="0">
 

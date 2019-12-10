@@ -2,13 +2,14 @@ class PersonaUsuario{
 
     entidad="PersonaUsuario";
 
-    constructor (nombre, apellido,numeroDocumento,tipoDocumento,usuario,contrasenia) {
+    constructor (nombre, apellido,numeroDocumento,tipoDocumento,usuario,contrasenia,nombreComercial) {
         this.nombre = nombre;
         this.apellido = apellido;
         this.numeroDocumento=numeroDocumento;
         this.tipoDocumento=tipoDocumento;
         this.usuario=usuario;
         this.contrasenia=contrasenia;
+        this.nombreComercial=nombreComercial;
 
       }
 
@@ -23,6 +24,7 @@ class PersonaUsuario{
          "&tipoDocumento="+this.tipoDocumento+
          "&usuario="+this.usuario+
          "&contrasenia="+this.contrasenia+
+         "&nombreComercial="+this.nombreComercial+
          "&do="
          ;
     

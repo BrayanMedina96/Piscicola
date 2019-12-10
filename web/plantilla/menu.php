@@ -26,29 +26,45 @@
           <a class="nav-link go" go="../view/home.php">PISC.NET</a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link go" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
+          <a id="mCuenta" class="nav-link go" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item dropdown active">
           <a class="nav-link dropdown-toggle" href="#" id="ddlregistro" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">Registro</a>
           <div class="dropdown-menu" aria-labelledby="ddlregistro">
-            <a class="dropdown-item go" go="../view/lago.php">Lago</a>
-            <a class="dropdown-item go" go="../view/sensor.php">Sensor</a>
-            <a class="dropdown-item go" go="../view/configuracion.php" href="#">Configuración</a>
-            <a class="dropdown-item go" go="../view/tipoLago.php" href="#">Tipo lago</a>
+            <a id="mLago" class="dropdown-item go" go="../view/lago.php">Lago</a>
+            <a id="mSensor" class="dropdown-item go" go="../view/sensor.php">Sensor</a>
+            <a id="mConfiguracion" class="dropdown-item go" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
+            <a id="mTipoLago" class="dropdown-item go" go="../view/tipoLago.php" href="#">Tipo lago</a>
+            <a id="mSonda" class="dropdown-item go" go="../view/sonda.php" href="#">Sonda</a>
           </div>
         </li>
         <li class="nav-item active">
-          <a class="nav-link go" go="../view/importar.php">Importar<span class="sr-only">(current)</span></a>
+          <a id="mImportar" class="nav-link go" go="../view/importar.php">Importar<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a class="nav-link go" go="../view/dashboard.php">Dashboard<span class="sr-only">(current)</span></a>
+          <a id="mDashboard" class="nav-link go" go="../view/dashboard.php">Dashboard<span class="sr-only">(current)</span></a>
         </li>
         
       </ul>
       <div class="form-inline my-2 my-lg-0 ">
 
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item"> <a class="nav-link"> [
+
+              <?php
+                     $obj=new Base64();
+                     $result=$obj->decodeUsuario();
+                    if(!isset($result["nombre"])) 
+                    {
+                        header('Location:../view/login.php');
+                        die();
+                     }
+
+                    echo  $result["nombreComercial"];
+              ?>
+
+              ] </a> </li>
           <li class="nav-item">
             <button type="button" class="btn btn-default" title="Notificaciones">
               <img src="../svg/notification.png" width="18px">
@@ -58,17 +74,7 @@
           <li class="nav-item">
             <a class="nav-link" type="submit">
               <?php 
-                 
-                    $obj=new Base64();
-                    $result=$obj->decodeUsuario();
-                    if(!isset($result["nombre"])) 
-                    {
-                       header('Location:../view/login.php');
-                       die();
-                    }
-                      
-                    echo  $result["nombre"];
-                 
+                    echo  $result["nombre"];  
               ?>
             </a>
           </li>

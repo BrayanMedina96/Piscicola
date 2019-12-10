@@ -8,6 +8,7 @@ class Usuario
     fechaExpiracion;
     perfil;
     estado;
+    cambioPassword;
 
     constructor(usuario,contrasenia,token,id,fechaExpiracion,perfil,estado)
     {
@@ -31,6 +32,7 @@ class Usuario
             "&perfil=" + this.perfil +
             "&token=" + this.token +
             "&id=" + this.id +
+            "&cambioPassword=" + this.cambioPassword +
             "&do=" +"";
 
         return consultarAjax('PUT',parametro) ;
