@@ -72,17 +72,28 @@ class Usuario
         $conn=Conexion::getInstance()->cnn();
         $token="";
         $variable="";
+        $estado=false;
+        $cambioPass=false;
 
         try 
         {
          
-            $sqlCommand  = "SELECT usuario.usuarioid, usuario.usuarionombre, usuario.usuariocontrasenia, usuario.usuarioestado, usuario.usuariofechaexpira, usuario.personaid, usuario.perfilid, usuario.usuarioFechacreacion, usuario.usuariofechaactualizacion,
-                                     CONCAT(persona.perosnanombre,' ',personaapellido) AS nombre,persona.personaid 
+            $sqlCommand  = "SELECT usuario.usuarioid, usuario.usuarionombre, usuario.usuariocontrasenia, 
+                                     usuario.usuarioestado, usuario.usuariofechaexpira, usuario.personaid, usuario.perfilid, usuario.usuarioFechacreacion, 
+                                     usuario.usuariofechaactualizacion,
+                                     CONCAT(persona.perosnanombre,' ',persona.personaapellido) AS nombre,
+                                     persona.personaid ,
+                                     usuario.usuariocambioclave,
+                                     personapadre.personanombrecomercial
                                     FROM public.usuario 
                                     INNER JOIN public.persona ON usuario.personaid=persona.personaid 
-                                    WHERE usuarionombre=:usuarionombre 
-                                    AND usuariocontrasenia=:usuariocontrasenia
-                                    AND usuarioestado=true
+
+                                    INNER JOIN public.usuario AS usuariopadre ON public.usuario.usuariopadreid=usuariopadre.usuarioid
+                                    INNER JOIN public.persona as personapadre ON usuariopadre.personaid=personapadre.personaid
+
+                                    WHERE usuario.usuarionombre=:usuarionombre 
+                                    AND usuario.usuariocontrasenia=:usuariocontrasenia
+                                   -- AND usuarioestado=true
                                     ;";
     
             $statement  = $conn->prepare($sqlCommand);
@@ -99,9 +110,17 @@ class Usuario
                 '","token":"'.$token.
                 '","usuarioid":"'.$row['usuarioid'].
                 '","personaid":"'.$row['personaid'].
+                '","estado":"'.$row['usuarioestado'].
+                '","nombreComercial":"'.$row['personanombrecomercial'].
                 '","nombre":"'.$row['nombre'].'"}';
 
+                $estado=$row['usuarioestado'];
+               
+
             }
+
+
+          $cambioPass=Usuario::cambioPassword( $parametro["usuario"] );
 
 
         } catch (\Throwable $th) {
@@ -111,7 +130,7 @@ class Usuario
             Conexion::cerrar($conn);
         }
 
-        return $arrayName = array('data' => base64_encode($variable) ); 
+        return array('data' => base64_encode($variable),'estado'=>  $estado, 'cambioPass'=>$cambioPass["estado"],'dataCambioPass'=>$cambioPass["data"] ); 
         
     }
 
@@ -188,7 +207,8 @@ class Usuario
                            usuariofechaactualizacion=NOW(),
                            usuarioidactualiza=:usuarioidactualiza,
                            usuarioestado=:usuarioestado,
-                           usuariofechaexpira=:usuariofechaexpira
+                           usuariofechaexpira=:usuariofechaexpira,
+                           usuariocambioclave=:usuariocambioclave
                       WHERE usuarioid=:usuarioid;';
 
                      
@@ -199,6 +219,7 @@ class Usuario
              $statement ->bindValue(':usuarioidactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
              $statement ->bindValue(':usuarioestado',$parametro["estado"],PDO::PARAM_BOOL);
              $statement ->bindValue(':usuariofechaexpira',$parametro["fecha"],PDO::PARAM_STR);
+             $statement ->bindValue(':usuariocambioclave',$parametro["cambioPassword"],PDO::PARAM_BOOL);
              $statement ->bindValue(':usuarioid',$parametro["id"],PDO::PARAM_INT);
              
              $statement ->execute();
@@ -210,6 +231,39 @@ class Usuario
     }
 
 
+    public function actualizarPassword($parametro)
+    {
+
+        $result=true;
+        $conn=Conexion::getInstance()->cnn();
+
+        
+        $objUsuario=new Usuario();
+        $resulUsuairio=$objUsuario->consultarUsuarioToken( $parametro["token"] );
+
+        $sqlCommand ="UPDATE public.usuario
+                      SET  
+                           usuariocontrasenia=:usuariocontrasenia,
+                           usuariofechaactualizacion=NOW(),
+                           usuarioidactualiza=:usuarioidactualiza,
+                           usuariocambioclave='FALSE'
+                      WHERE usuarioid=:usuarioid;";
+
+                     
+
+             $statement  = $conn->prepare($sqlCommand);
+
+             $statement ->bindValue(':usuariocontrasenia',$parametro["contrasenia"],PDO::PARAM_STR);
+             $statement ->bindValue(':usuarioidactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+             $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+             
+             $statement ->execute();
+            
+             Conexion::cerrar($conn);
+
+        return  $result;
+
+    }
     
 
     private static function token()
@@ -327,6 +381,48 @@ class Usuario
         return  $result;
 
     }
+
+    public static function cambioPassword($usuarionombre)
+    {
+
+        $estado=false;
+        $array=[];
+
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand ="SELECT usuario.usuarioid, usuario.usuarionombre, usuario.usuariocontrasenia
+        FROM usuario WHERE  usuario.usuarionombre=:usuarionombre  AND usuariocambioclave='TRUE'";
+    
+        $statement  = $conn->prepare($sqlCommand);
+        $statement ->bindValue(':usuarionombre',$usuarionombre,PDO::PARAM_STR);
+        
+        $statement ->execute();
+        $resultado= $statement->fetchAll();
+
+        foreach ($resultado as $row) 
+        {
+            $token = Usuario::token();
+            Usuario::guardarToken($row["usuarioid"], $row["usuarionombre"], $token);
+
+            $array = array(
+              'usuario' => $row["usuarionombre"],
+              'token' => $token,
+              'usuarioid' => $row["usuarioid"]
+            );
+
+            $estado = true;
+        }
+        
+
+
+        Conexion::cerrar($conn);
+
+       
+
+        return  ["estado"=> $estado,"data"=>$array ];
+
+    }
+    
 
 
 

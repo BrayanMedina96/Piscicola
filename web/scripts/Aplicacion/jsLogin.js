@@ -1,11 +1,11 @@
 $(function () {
 
     
-   
+    $("#hdCambioPass").val("0");
     
     $("#txtPassword").keyup(function () {
         
-        if($("#txtTitulo").text()=="Crear una cuenta")
+        if( $("#txtTitulo").text()=="Crear una cuenta" ||  $("#hdCambioPass").val()=="1")
         {
 
            var obj= validarPassword( document.getElementById("txtPassword") );
@@ -27,10 +27,13 @@ $(function () {
 
         if ($("#btnEnviar").text() == "Crear cuenta") {
             guardar();
+            return;
+        }
+        if ($("#btnEnviar").text() == "Actualizar") {
+            actulizar();
         } else {
             ingresar();
         }
-
     })
 
     $(".registrar").attr("hidden", "hidden");
@@ -94,6 +97,7 @@ $(function () {
     }
 
     function guardar() {
+
         if (!validarCampos("[required]")) {
             $("#pnMensaje").html("");
             $("#pnMensaje").html(modal("Alerta", "Debe diligenciar todos los campos.", "modal-sm"));
@@ -101,7 +105,15 @@ $(function () {
             return;
         }
 
-        const objpersona = new PersonaUsuario($("#txtNombre").val(), $("#txtApelldio").val(), $("#txtNumeroDocumento").val(), $("#ddlTipoDocumento").val(), $("#txtUsuario").val(), $("#txtPassword").val());
+        if(!compararTxt($("#txtPassword").val(),$("#txtPasswordConfirmar").val()))
+        {
+            $("#pnMensaje").html("");
+            $("#pnMensaje").html(modal("Alerta", "Las contraseñas no son iguales.", "modal-sm"));
+            $("#myModal").modal();
+            return;
+        }
+
+        const objpersona = new PersonaUsuario($("#txtNombre").val(), $("#txtApelldio").val(), $("#txtNumeroDocumento").val(), $("#ddlTipoDocumento").val(), $("#txtUsuario").val(), $("#txtPassword").val(),$("#txtNombreComercial").val());
         var result=objpersona.guardar();
         
         if (result.responseJSON["response"] == "ok") {
@@ -124,8 +136,6 @@ $(function () {
 
         }
 
-
-
     }
 
     function ingresar() {
@@ -134,7 +144,7 @@ $(function () {
 
         if (!validarCampos(".login")) {
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Alerta 1", "Ingresar usuario y/o contraseña.", "modal-sm"));
+            $("#pnMensaje").html(modal("Alerta", "Ingresar usuario y/o contraseña.", "modal-sm"));
             $("#myModal").modal();
             return;
         }
@@ -144,8 +154,30 @@ $(function () {
         var resul = obj.login();
 
 
+        if(resul.responseJSON["cambioPass"])
+        {
+            $("#pnPassword").removeAttr("hidden") ;
+            $("#hdCambioPass").val("1");
+            $("#btnEnviar").text("Actualizar");
+            $("#pnMensaje").html("");
+            $("#pnMensaje").html(modal("Alerta", "En hora buena, Cambio de contraseña.", "modal-sm"));
+            $("#myModal").modal();
+            $("#txtPassword").val("");
+            $("#txtToken").val( resul.responseJSON["dataCambioPass"]["token"] );
 
-        if (resul.responseJSON["data"].length > 0) {
+            return;
+        }
+
+
+        if (resul.responseJSON["data"].length > 0)
+        {
+            if(!resul.responseJSON["estado"])
+            {
+                    $("#pnMensaje").html("");
+                    $("#pnMensaje").html(modal("Alerta", "Usuario inactivo, Póngase en contacto con el administrador."));
+                    $("#myModal").modal();
+                    return;
+            }
 
             obj.in(Object.values(resul.responseJSON));
 
@@ -160,6 +192,23 @@ $(function () {
 
     }
 
+    function actulizar() {
+
+        if (!compararTxt($("#txtPassword").val(), $("#txtPasswordConfirmar").val())) {
+            $("#pnMensaje").html("");
+            $("#pnMensaje").html(modal("Alerta", "Las contraseñas no son iguales.", "modal-sm"));
+            $("#myModal").modal();
+            return;
+        }
+
+        var obj = new usuario();
+        obj.usuario = $("#txtUsuario").val();
+        obj.contrasenia = $("#txtPassword").val();
+        obj.token=$("#txtToken").val();
+        obj.actualizar();
+
+        ingresar();
+    }
 
     function encontrarUser(params) {
         console.log(params);
@@ -193,6 +242,7 @@ $(function () {
 
     }
 
+  
 
 });
 
@@ -206,6 +256,9 @@ function deshabilitaRetroceso() {
 
 class usuario {
 
+     entidad = "Usuario";
+     token;
+
     constructor(usuario, contrasenia) {
         this.usuario = usuario;
         this.contrasenia = contrasenia;
@@ -213,9 +266,9 @@ class usuario {
     }
 
     login() {
-            var entidad = "Usuario";
+            
             var parametro = {
-                entidad: entidad,
+                entidad: this.entidad,
                 usuario: this.usuario,
                 contrasenia: this.contrasenia,
                 do: "login"
@@ -224,7 +277,19 @@ class usuario {
             return consultarAjax('GET', parametro);
         }
 
-        in (parametro) {
+        actualizar()
+        {
+            var parametro =
+            "?entidad=" + this.entidad +
+            "&usuario=" + this.usuario +
+            "&contrasenia=" + this.contrasenia +
+            "&token=" + this.token +
+            "&do=actualizarPassword";
+
+             return consultarAjax('PUT',parametro) ;
+        }
+
+    in (parametro) {
             $("[required]").removeAttr("required");
             $("#txtUsuariohd").val(parametro[0]);
             $("#btnEnviar2").click();

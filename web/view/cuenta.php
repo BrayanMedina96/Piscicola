@@ -10,8 +10,8 @@
   <script src="../Scripts/datepicker.min.js" type="text/javascript"></script>
   <link href="../Content/datepicker.min.css" rel="stylesheet" type="text/css" />
   <script type="text/javascript" src="../Scripts/DataTable/datatables.min.js"></script>
-  <link rel="stylesheet" type="text/css" href="../Scripts/DataTable/datatables.min.css"/>
- 
+  <link rel="stylesheet" type="text/css" href="../Scripts/DataTable/datatables.min.css" />
+
   <script src="../scripts/Aplicacion/jsAjax.js"></script>
   <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
   <script src='../scripts/Aplicacion/jsPersonaUsuario.js'></script>
@@ -21,17 +21,15 @@
   <script src='../scripts/Aplicacion/jsCuenta.js'></script>
 
   <style>
-    
-    #tdResultado tr{
-        cursor: pointer;
+    #tdResultado tr {
+      cursor: pointer;
     }
-   
-   </style>
+  </style>
 </head>
 
 <body class="bg-light">
 
-  
+
 
   <div class="container">
 
@@ -59,13 +57,15 @@
           </li>
           <li class="list-group-item list-group-item-action panelnotificacioncorreo">
             <div class="custom-control custom-checkbox mb-3">
-              <input type="checkbox" class="custom-control-input" id="chekNotificacionCorreo" name="chekNotificacionCorreo">
+              <input type="checkbox" class="custom-control-input" id="chekNotificacionCorreo"
+                name="chekNotificacionCorreo">
               <label class="custom-control-label" for="chekNotificacionCorreo">Notificación por correo </label>
             </div>
           </li>
           <li class="list-group-item list-group-item-action panelnotificacionmensaje">
             <div class="custom-control custom-checkbox mb-3">
-              <input type="checkbox" class="custom-control-input" id="chekNotificacionMensaje" name="chekNotificacionMensaje">
+              <input type="checkbox" class="custom-control-input" id="chekNotificacionMensaje"
+                name="chekNotificacionMensaje">
               <label class="custom-control-label" for="chekNotificacionMensaje">Notificación por mensaje texto</label>
             </div>
 
@@ -122,7 +122,7 @@
 
               <div class="mb-3 personal email">
                 <label for="txtEmail">Email <span class="text-muted">(Optional)</span></label>
-                <input type="email" class="form-control email" id="txtEmail"  placeholder="you@example.com">
+                <input type="email" class="form-control email" id="txtEmail" placeholder="you@example.com">
                 <div class="invalid-feedback">
                   Please enter a valid email address for shipping updates.
                 </div>
@@ -154,18 +154,30 @@
 
               <div class="mb-3 usuario fechaexpiracion">
                 <label for="txtFechaExpiracion">Fecha expiración<span class="text-muted"></span></label>
-                <input type="text" class="form-control fechaexpiracion" onkeydown="myFunction(event)" id="txtFechaExpiracion" placeholder="">
+                <input type="text" class="form-control fechaexpiracion" onkeydown="myFunction(event)"
+                  id="txtFechaExpiracion" placeholder="">
               </div>
 
-              <div class="mb-3 usuario contrasenia">
-                <label for="txtContrasenia">Contraseña<span class="text-muted"></span></label>
-                <input type="password" class="form-control contrasenia" id="txtContrasenia" placeholder="">
+              <div id="pnPassword">
+                <div class="mb-3 usuario contrasenia">
+                  <label for="txtContrasenia">Contraseña<span class="text-muted"></span></label>
+                  <input type="password" class="form-control contrasenia" id="txtContrasenia" placeholder="">
+                </div>
+
+                <div class="mb-3 usuario contrasenia">
+                  <label for="address2">Confirmar contraseña<span class="text-muted"></span></label>
+                  <input type="password" class="form-control contrasenia" id="txtContraseniaConfirmar" placeholder="">
+                </div>
+
               </div>
 
-              <div class="mb-3 usuario contrasenia">
-                <label for="address2">Confirmar contraseña<span class="text-muted"></span></label>
-                <input type="password" class="form-control contrasenia" id="txtContraseniaConfirmar" placeholder="">
-              </div>
+              <div id="pnCambioPassword" class="mb-3 usuario estado d-none">
+                  <div class="custom-control custom-checkbox mb-3">
+                    <input type="checkbox" class="custom-control-input estado" id="chkCambioPassword"
+                      name="chkCambioPassword">
+                    <label class="custom-control-label" for="chkCambioPassword">Cambio de contraseña</label>
+                  </div>
+                </div>
 
               <div class="mb-3 usuario estado">
 
@@ -178,7 +190,9 @@
 
 
 
-              <button id="btnEnviar" class="btn btn-primary btn-lg btn-block" type="button">Guardar</button>
+
+              <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
+              <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
             </form>
 
           </div>
@@ -191,8 +205,8 @@
     </div>
 
     <footer class="col-md-12">
-      <input type="text" id="txtidPersona" value="" hidden/>
-      <input type="text" id="txtidUsuario" value="" hidden/>
+      <input type="text" id="txtidPersona" value="" hidden />
+      <input type="text" id="txtidUsuario" value="" hidden />
     </footer>
   </div>
 
@@ -234,7 +248,7 @@
 
         </div>
         <div class="modal-footer">
-         
+
         </div>
       </div>
     </div>

@@ -91,7 +91,7 @@ class PersonaUsuario
             }
             else{
             
-                  $sqlCommand ='SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,:contrasenia )';
+                  $sqlCommand ='SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,:contrasenia,:nombrecomercial )';
     
                    $statement  = $conn->prepare($sqlCommand);
                    $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -100,6 +100,7 @@ class PersonaUsuario
                    $statement ->bindValue(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
                    $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
                    $statement ->bindValue(':contrasenia',$parametro["contrasenia"],PDO::PARAM_STR);
+                   $statement ->bindValue(':nombrecomercial',$parametro["nombreComercial"],PDO::PARAM_STR);
             
             
                    $statement ->execute();

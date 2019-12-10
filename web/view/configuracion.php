@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Configuración</title>
+    <title>Configuración sensor en lago</title>
     <meta charset="utf-8">
 
     <?php 
@@ -36,7 +36,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Configuración</h5>
+                        <h5>Configuración sensor en lago</h5>
                     </div>
                     <div class="card-body">
                         <div class="form-group">

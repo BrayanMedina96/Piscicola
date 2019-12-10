@@ -191,3 +191,15 @@ function validarEmail(email) {
 
    return verificar;
 }
+
+
+function  compararTxt(txt1,txt2) {
+   
+   var estado=false;
+   if(txt1==txt2)
+   {
+       estado=true;
+   }
+  return estado;
+  
+}

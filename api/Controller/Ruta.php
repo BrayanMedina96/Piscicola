@@ -25,6 +25,7 @@ class Ruta
            'Usuario_POST' => 'guardar'  ,
            'Usuario_DELETE' => 'eliminar'  ,
            'Usuario_PUT' => 'actualizar'  ,
+           'Usuario_PUTactualizarPassword' => 'actualizarPassword'  ,
            'Usuario_GETseguridad' => 'seguridad',
            'Usuario_GETperfil' => 'perfil',
            'TipoDocumento_GET' => 'consultar',

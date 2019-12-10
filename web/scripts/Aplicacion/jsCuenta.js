@@ -1,6 +1,3 @@
-
- 
-
 $(function(){
 
     seguridad();
@@ -31,6 +28,11 @@ $(function(){
         }
     })
 
+    $("#btnLimpiar").click(function () {
+        
+        $("#mCuenta").click();
+
+    })
     
    function  cargarID() 
    {
@@ -125,6 +127,7 @@ $(function(){
           obj.fechaExpiracion=$("#txtFechaExpiracion").val();
           obj.estado=$("#chkEstado").prop('checked');
           obj.id=$("#txtidUsuario").val();
+          obj.cambioPassword = $("#chkCambioPassword").prop('checked');
           if(obj.actualizar())
           {
             $("#pnMensaje").html("");
@@ -149,6 +152,8 @@ $(function(){
             $("#ddlPerfil").val(result[key]["perfilid"]);
             $("#txtFechaExpiracion").val(result[key]["usuariofechaexpira"]);
             $("#chkEstado").prop("checked", result[key]["usuarioestado"] );
+            $("#txtContrasenia").val(result[key]["usuariocontrasenia"]);
+
             $("#btnEnviar").text("Actualizar");
 
         }
@@ -219,6 +224,10 @@ $(function(){
 
         consultarUsuario();
         buscarPersona();
+
+        $("#pnPassword").hide();
+
+        $("#pnCambioPassword").removeClass("d-none");
         
     
     } );
