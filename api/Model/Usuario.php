@@ -84,12 +84,13 @@ class Usuario
                                      CONCAT(persona.perosnanombre,' ',persona.personaapellido) AS nombre,
                                      persona.personaid ,
                                      usuario.usuariocambioclave,
-                                     personapadre.personanombrecomercial
+                                     personapadre.personanombrecomercial,
+                                     usuarioPadre.usuarioid AS userpadre
                                     FROM public.usuario 
                                     INNER JOIN public.persona ON usuario.personaid=persona.personaid 
 
                                     INNER JOIN public.usuario AS usuariopadre ON public.usuario.usuariopadreid=usuariopadre.usuarioid
-                                    INNER JOIN public.persona as personapadre ON usuariopadre.personaid=personapadre.personaid
+                                    INNER JOIN public.persona AS personapadre ON usuariopadre.personaid=personapadre.personaid
 
                                     WHERE usuario.usuarionombre=:usuarionombre 
                                     AND usuario.usuariocontrasenia=:usuariocontrasenia
@@ -112,6 +113,7 @@ class Usuario
                 '","personaid":"'.$row['personaid'].
                 '","estado":"'.$row['usuarioestado'].
                 '","nombreComercial":"'.$row['personanombrecomercial'].
+                '","userPadre":"'.$row['userpadre'].
                 '","nombre":"'.$row['nombre'].'"}';
 
                 $estado=$row['usuarioestado'];
@@ -311,16 +313,20 @@ class Usuario
             $objBase64 = new Base64($parametro["token"]);
 
             $objUsuario = new Usuario();
-            $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+            $decode=$objBase64 -> decodeUsuario();
 
+            $resulUsuairio = $objUsuario -> consultarUsuarioToken( $decode["token"] );
+           
+    
             $sqlCommand = 'SELECT campo,accion FROM restriccionperfil
             INNER JOIN perfil on restriccionperfil.perfilid = perfil.perfilid
             INNER JOIN usuario on perfil.perfilid = usuario.perfilid
-            WHERE usuario.usuarioid = :usuarioid;
+            WHERE usuario.usuarioid = :usuarioid   AND restriccionperfil.usuariocrea=:usuariocrea;
             ';
 
             $statement = $conn ->prepare($sqlCommand);
             $statement ->bindValue(':usuarioid', $resulUsuairio[0]['usuarioid'], PDO::PARAM_INT);
+            $statement ->bindValue(':usuariocrea',  $decode["userPadre"] , PDO::PARAM_INT);
             $statement ->execute();
             $result = $statement -> fetchAll();
 

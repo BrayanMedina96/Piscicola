@@ -1,9 +1,11 @@
 $(function(){
 
+    
     seguridad();
     cargarTipoDocumento();
     cargarID();
     buscarPersona();
+
     $(".usuario").attr("hidden","hidden");
     
    
@@ -31,6 +33,12 @@ $(function(){
     $("#btnLimpiar").click(function () {
         
         $("#mCuenta").click();
+
+    })
+
+    $("#btnOjo").click(function () {
+        
+        checkPassword("btnOjo","txtContrasenia");
 
     })
     
@@ -228,6 +236,8 @@ $(function(){
         $("#pnPassword").hide();
 
         $("#pnCambioPassword").removeClass("d-none");
+
+        $("#modalPersona").modal('hide');
         
     
     } );
@@ -238,7 +248,9 @@ $(function(){
         var result = obj.consultar().responseJSON;
         
         var columna = [
-            
+            {
+                "data": "perfilnombre"
+            },
             {
                 "data": "personanumerodocumento"
             },
@@ -260,6 +272,37 @@ $(function(){
 
     })
 
+    $("#btnMiUsuario").click(function () {
+        
+        var obj = new PersonaUsuario();
+        obj.token=$("#txtVarUrl").val();
+        obj.usuarioPadre=$("#txtUserPadre").val();
+        var result = obj.consultarMiUsuario().responseJSON;
+        
+        var columna = [
+            {
+                "data": "perfilnombre"
+            },
+            {
+                "data": "personanumerodocumento"
+            },
+            {
+                "data": "usuarionombre"
+            },
+            {
+                "data": "perosnanombre"
+            },
+            {
+                "data": "personaapellido"
+            },
+            {
+                "data": "usuarioestado"
+            }
+        ]
+
+        tabla("Tabla", result, columna,{});
+
+    })
     
 
 

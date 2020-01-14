@@ -31,6 +31,8 @@ class Ruta
            'TipoDocumento_GET' => 'consultar',
            'PersonaUsuario_POST' => 'guardar',
            'PersonaUsuario_GET'=>  'consultar',
+           'PersonaUsuario_POSTCrearUsuario'=>  'CrearUsuario',
+           'PersonaUsuario_GETconsultarMiUsuario'=>  'consultarMiUsuario',
            'Persona_GETconsultarUN' => 'consultarUN',
            'Lago_POST'=>'guardar',
            'Lago_PUT'=>'actualizar',
@@ -54,7 +56,18 @@ class Ruta
            'Dashboard_DELETE'=>'eliminar',
            'Material_GET'=>'consultar',
            'Email_GET'=>'consultar',
-           'Email_POST'=>'guardar'
+           'Email_POST'=>'guardar',
+           'Seguridad_POST'=>'guardar',
+           'Seguridad_POSTgurdarRestriccion'=>'gurdarRestriccion',
+           'Seguridad_GET'=>'consultar',
+           'Seguridad_GETgetPerfil'=>'getPerfil',
+           'Seguridad_GETgetFormulario'=>'getFormulario',
+           'Seguridad_GETgetCampo'=>'getCampo',
+           'Seguridad_GETgetAccion'=>'getAccion',
+
+           
+           'Seguridad_PUT'=>'actualizar',
+           'Seguridad_DELETE'=>'eliminar'
 
 
         );

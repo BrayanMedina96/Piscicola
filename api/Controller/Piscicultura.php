@@ -15,6 +15,7 @@ require "Model/LagoSensor.php";
 require "Model/Sonda.php";
 require "Model/Dashboard.php";
 require "Model/Material.php";
+require "Model/Seguridad.php";
 
 class Piscicultura
 {

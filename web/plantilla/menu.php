@@ -1,9 +1,13 @@
 <link rel="icon" href="../svg/fish.png">
 
+<script src="../scripts/popper.min.js"></script>
 <link href="../content/bootstrap.min.css" rel="stylesheet" />
 <link href="../content/bootstrap.css" rel="stylesheet" />
 <script src="../scripts/jquery-3.3.1.min.js"></script>
 <script src="../scripts/bootstrap.min.js"></script>
+
+<script src="../scripts/Aplicacion/jsAjax.js"></script>
+<script src="../scripts/Aplicacion/jsUsuario.js"></script>
 
 <form action="../plantilla/menu.php" method="get">
 
@@ -26,24 +30,28 @@
           <a class="nav-link go" go="../view/home.php">PISC.NET</a>
         </li>
         <li class="nav-item active">
-          <a id="mCuenta" class="nav-link go" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
+          <a id="mCuenta" class="nav-link go cuenta" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item dropdown active">
-          <a class="nav-link dropdown-toggle" href="#" id="ddlregistro" data-toggle="dropdown" aria-haspopup="true"
+          <a class="nav-link dropdown-toggle registro" href="#" id="ddlregistro" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">Registro</a>
           <div class="dropdown-menu" aria-labelledby="ddlregistro">
-            <a id="mLago" class="dropdown-item go" go="../view/lago.php">Lago</a>
-            <a id="mSensor" class="dropdown-item go" go="../view/sensor.php">Sensor</a>
-            <a id="mConfiguracion" class="dropdown-item go" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
-            <a id="mTipoLago" class="dropdown-item go" go="../view/tipoLago.php" href="#">Tipo lago</a>
-            <a id="mSonda" class="dropdown-item go" go="../view/sonda.php" href="#">Sonda</a>
+            <a id="mUsuario" class="dropdown-item go usuario" go="../view/usuario.php">Usuario</a>
+            <a id="mLago" class="dropdown-item go lago" go="../view/lago.php">Lago</a>
+            <a id="mSensor" class="dropdown-item go sensor" go="../view/sensor.php">Sensor</a>
+            <a id="mConfiguracion" class="dropdown-item go configuracion" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
+            <a id="mTipoLago" class="dropdown-item go tipolago" go="../view/tipoLago.php" href="#">Tipo lago</a>
+            <a id="mSonda" class="dropdown-item go sonda" go="../view/sonda.php" href="#">Sonda</a>
           </div>
         </li>
         <li class="nav-item active">
-          <a id="mImportar" class="nav-link go" go="../view/importar.php">Importar<span class="sr-only">(current)</span></a>
+          <a id="mImportar" class="nav-link go importar" go="../view/importar.php">Importar<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
-          <a id="mDashboard" class="nav-link go" go="../view/dashboard.php">Dashboard<span class="sr-only">(current)</span></a>
+          <a id="mDashboard" class="nav-link go dashboard" go="../view/dashboard.php">Dashboard<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
+          <a id="mSeguridad" class="nav-link go seguridad" go="../view/seguridad.php">Seguridad<span class="sr-only">(current)</span></a>
         </li>
         
       </ul>
@@ -94,6 +102,8 @@
           value="<?php echo  $result["usuarioid"]  ?>">
         <input id="txtPersonaidMenu" name="txtUsuarioMenu" type="text" hidden
           value="<?php echo  $result["personaid"]  ?>">
+        <input id="txtUserPadre" name="txtUserPadre" type="text" hidden
+          value="<?php echo  $result["userPadre"]  ?>">
 
         <button id="btnGo" type="submit" hidden></button>
 
@@ -103,7 +113,40 @@
     </div>
   </nav>
 
-  <script>
+  
+</form>
+
+
+
+<div id="load" class="modal" >
+  <div class="modal-dialog mx-auto" style="width: 200px;">
+    
+       <div class="spinner-grow text-primary" role="status">
+         <span class="sr-only">Loading...</span>
+        </div>
+        <div class="spinner-grow text-danger" role="status">
+          <span class="sr-only">Loading...</span>
+        </div>
+       <div class="spinner-grow text-warning" role="status">
+          <span class="sr-only">Loading...</span>
+       </div>
+
+  </div>
+</div>
+
+
+<script>
+
+     $('#load').modal();
+     
+    setTimeout(function () {
+      $('#load').modal('hide');
+     }, 1000);
+
+    var obj = new Usuario();
+    obj.token = $("#txtVarUrl").val();
+    obj.seguridad();
+
     $(".go").click(function (e) {
 
       $("#txtSalir").val("");
@@ -117,5 +160,3 @@
       $("#btnGo").click();
     });
   </script>
-
-</form>

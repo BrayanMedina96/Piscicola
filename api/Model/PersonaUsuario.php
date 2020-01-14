@@ -46,10 +46,48 @@ class PersonaUsuario
             persona.personatelefono, persona.personatelefonoopcional,
                 persona.personacorreo, persona.tipodocumentoid, persona.personanumerodocumento, persona.personafechacreacion,
                 persona.personafechaactualizacion, persona.personafechaeliminar, persona.usuarioidelimina,
-                persona.usuarioidactualiza, usuarionombre, usuarioid,usuarioestado
+                persona.usuarioidactualiza, usuarionombre, usuarioid,usuarioestado,perfil.perfilnombre
             FROM persona
-            INNER JOIN usuario ON persona.personaid = usuario.personaid ';
+            INNER JOIN usuario ON persona.personaid = usuario.personaid 
+            INNER JOIN perfil ON usuario.perfilid=perfil.perfilid';
+
             $statement = $conn -> prepare($sqlCommand);
+            $statement -> execute();
+            $resultado = $statement -> fetchAll();
+
+
+        } catch (\Throwable $th) {
+            //throw $th;
+        } finally {
+            Conexion::cerrar($conn);
+        }
+
+    
+
+        return $resultado;
+
+    }
+
+    public function consultarMiUsuario($parametro) {
+
+        $conn = Conexion::getInstance() -> cnn();
+        $resultado = null;
+
+        try {
+
+            $sqlCommand = 'SELECT persona.personaid, persona.perosnanombre, persona.personaapellido,
+            persona.personatelefono, persona.personatelefonoopcional,
+                persona.personacorreo, persona.tipodocumentoid, persona.personanumerodocumento, persona.personafechacreacion,
+                persona.personafechaactualizacion, persona.personafechaeliminar, persona.usuarioidelimina,
+                persona.usuarioidactualiza, usuarionombre, usuarioid,usuarioestado, usuario.usuariopadreid,perfil.perfilnombre
+            FROM persona
+            INNER JOIN usuario ON persona.personaid = usuario.personaid 
+            INNER JOIN perfil ON usuario.perfilid=perfil.perfilid
+            WHERE usuario.usuariopadreid=:usuariopadreid';
+
+
+            $statement = $conn -> prepare($sqlCommand);
+            $statement ->bindValue(':usuariopadreid',$parametro["usuarioPadre"],PDO::PARAM_INT);
             $statement -> execute();
             $resultado = $statement -> fetchAll();
 
@@ -122,6 +160,58 @@ class PersonaUsuario
       return $result;
     }
 
+    public function CrearUsuario($parametro)
+    {
+        $result= ["response"=>null,"mensaje"=>null,"tipo"=>null];
+        
+        $conn=Conexion::getInstance()->cnn();
+
+        try 
+        {
+
+            $objUsuario=new Usuario();
+
+          
+
+            if($this->validarExistenciaUsuario($parametro["numeroDocumento"],$parametro["usuarioPadre"])>0)
+            {
+                $result["mensaje"]="Numero de documento ya se encuentra registrado.";
+                $result["response"]="ok";
+            }
+            elseif ($objUsuario->validarExistencia($parametro["usuario"])>0) {
+                $result["mensaje"]="Nombre de usuario {$parametro["usuario"]} no se encuentra disponible.";
+                $result["response"]="ok";
+                $result["tipo"]="user";
+            }
+            else{
+            
+                  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ) )';
+    
+                   $statement  = $conn->prepare($sqlCommand);
+                   $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
+                   $statement ->bindValue(':apellido',$parametro["apellido"],PDO::PARAM_STR);
+                   $statement ->bindValue(':numerodocumento',$parametro["numeroDocumento"],PDO::PARAM_STR);
+                   $statement ->bindValue(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
+                   $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
+                   $statement ->bindValue(':usuarioPadre',$parametro["usuarioPadre"],PDO::PARAM_INT);
+                   
+                   $statement ->execute();
+                   $result["mensaje"]="Usuario se ha creado correctamente.";
+                   $result["response"]="ok";
+
+               }
+    
+            
+        } catch (Exception $Exception) {
+            $result=["error"=>$Exception->getMessage()];
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+        
+      return $result;
+    }
+
     public function eliminar($parametro)
     {
         $result="OK";
@@ -158,6 +248,33 @@ class PersonaUsuario
         Conexion::cerrar($conn);
 
         return  $result;
+
+    }
+
+
+    public function validarExistenciaUsuario($personanumerodocumento, $usuariopadreid) 
+    {
+        $result=0;
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand="SELECT COUNT(*) as numero FROM persona
+                     INNER JOIN usuario ON usuario.personaid=persona.personaid 
+                     WHERE personanumerodocumento=:personanumerodocumento 
+                     AND usuario.usuariopadreid=:usuariopadreid ";
+
+        $statement=$conn->prepare($sqlCommand);
+        $statement ->bindValue(':personanumerodocumento', $personanumerodocumento, PDO::PARAM_STR);
+        $statement ->bindValue(':usuariopadreid', $usuariopadreid, PDO::PARAM_STR);
+        $statement ->execute();
+
+        while ($arr=$statement ->fetch(PDO::FETCH_ASSOC)) {
+            $result=$arr["numero"];
+
+        }
+
+        Conexion::cerrar($conn);
+
+        return $result;
 
     }
     
