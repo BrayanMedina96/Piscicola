@@ -12,10 +12,8 @@
   <script type="text/javascript" src="../Scripts/DataTable/datatables.min.js"></script>
   <link rel="stylesheet" type="text/css" href="../Scripts/DataTable/datatables.min.css" />
 
-  <script src="../scripts/Aplicacion/jsAjax.js"></script>
   <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
   <script src='../scripts/Aplicacion/jsPersonaUsuario.js'></script>
-  <script src="../scripts/Aplicacion/jsUsuario.js"></script>
   <script src='../scripts/Aplicacion/jsPersona.js'></script>
   <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
   <script src='../scripts/Aplicacion/jsCuenta.js'></script>
@@ -54,6 +52,11 @@
             data-target="#modalPersona">
             <img width="18px" src="../svg/man-user.png" />
             Usuarios
+          </li>
+          <li id="btnMiUsuario" class="list-group-item list-group-item-action panelmiusuario" data-toggle="modal"
+            data-target="#modalPersona">
+            <img width="18px" src="../svg/group_users.png" />
+            Mis Usuarios
           </li>
           <li class="list-group-item list-group-item-action panelnotificacioncorreo">
             <div class="custom-control custom-checkbox mb-3">
@@ -159,10 +162,16 @@
               </div>
 
               <div id="pnPassword">
-                <div class="mb-3 usuario contrasenia">
-                  <label for="txtContrasenia">Contraseña<span class="text-muted"></span></label>
+              <label for="txtContrasenia">Contraseña<span class="text-muted"></span></label>
+                <div class="input-group mb-3 usuario contrasenia">
                   <input type="password" class="form-control contrasenia" id="txtContrasenia" placeholder="">
+                  <div class="input-group-append">
+                    <span class="input-group-text">
+                      <img id="btnOjo" src="../svg/ojo-cerrado.png" go="no" style="width:24px">
+                    </span>
+                  </div>
                 </div>
+
 
                 <div class="mb-3 usuario contrasenia">
                   <label for="address2">Confirmar contraseña<span class="text-muted"></span></label>
@@ -226,6 +235,7 @@
           <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
             <thead>
               <tr>
+                <th>Perfil</th>
                 <th>Documento</th>
                 <th>Usuario</th>
                 <th>Nombre</th>
@@ -236,6 +246,7 @@
             <tbody id="tdResultado"></tbody>
             <tfoot>
               <tr>
+                <th></th>
                 <th></th>
                 <th style="text-align:left"></th>
                 <th></th>

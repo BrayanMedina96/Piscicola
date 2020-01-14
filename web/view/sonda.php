@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Tipo lago</title>
+    <title>Sonda</title>
     <meta charset="utf-8">
 
     <?php 

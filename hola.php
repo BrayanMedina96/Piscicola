@@ -5,7 +5,7 @@
 
 
 
-
+<!--
     <div marginheight=0 marginwidth=0
         style=background:#fafafa;color:#222222;font-family:'Helvetica','Arial',sans-serif;font-size:14px;font-weight:normal;line-height:19px;margin:0;min-width:100%;padding:0;text-align:left;width:100%!important
         bgcolor=#fafafa>
@@ -370,7 +370,7 @@
 </body>
 
 </html>
-
+-->
 
 
 <?php
@@ -387,7 +387,7 @@ $headers = "From: webmaster@example.com" . "\r\n" .
 
 mail($to,$subject,$txt,$headers);
 */
-/*
+
 listarArchivos("C:\laragon\www\Scrum\svg");
 
 function listarArchivos( $path ){
@@ -415,5 +415,5 @@ echo "<BR>";
 }
 
 listarArchivos( './' );
-*/
+
 ?>

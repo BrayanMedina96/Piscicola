@@ -29,11 +29,21 @@ $(function () {
             guardar();
             return;
         }
+
+        if ($("#btnEnviar").text() == "Crear usuario") {
+            crearUsuario();
+            return;
+        }
+
+
         if ($("#btnEnviar").text() == "Actualizar") {
             actulizar();
         } else {
             ingresar();
         }
+
+       
+
     })
 
     $(".registrar").attr("hidden", "hidden");
@@ -89,12 +99,7 @@ $(function () {
        
     })
 
-    function cargarTipoDocumento() {
-        const obj = new tipodocumento();
-        var result = obj.tipoDocumento().responseJSON;
-        obj.cargarTipoDocumento("ddlTipoDocumento", result);
-
-    }
+    
 
     function guardar() {
 
@@ -245,6 +250,13 @@ $(function () {
   
 
 });
+
+function cargarTipoDocumento() {
+    const obj = new tipodocumento();
+    var result = obj.tipoDocumento().responseJSON;
+    obj.cargarTipoDocumento("ddlTipoDocumento", result);
+
+}
 
 function deshabilitaRetroceso() {
     window.location.hash = "no-back-button";
