@@ -3,6 +3,8 @@
 class Material
 {
 
+    public $usuario;
+
     public function consultar($parametro)
     {
         $objBase64 = new Base64($parametro["token"]);
@@ -12,11 +14,11 @@ class Material
 
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT tipolagoid, tipolagonombre, tipolagodescripcion, tipolagomaterial
-                       FROM tipolago;';
+        $sqlCommand = 'SELECT tipolagoid, tipolagonombre, tipolagodescripcion, tipolagomaterial,*
+        FROM tipolago WHERE (usuariopadre IS NULL) OR (usuariopadre=:usuariopadre) ;';
 
         $statement  = $conn->prepare($sqlCommand); 
-       // $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+        $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
         $statement->execute();              
         $resultado= $statement->fetchAll();
 

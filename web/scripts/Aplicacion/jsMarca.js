@@ -1,10 +1,14 @@
 class Marca{
 
+    entidad="Marca";
+    token;
+    
     consultar()
     {
      
        var parametro={
-          entidad:"Marca",
+          entidad:this.entidad,
+          token:this.token,
           do:""
        }
       

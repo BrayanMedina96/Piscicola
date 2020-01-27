@@ -2,7 +2,7 @@
 
 class Marca 
 {
-    
+    public $usuario;
   
     public function __construct()
     {

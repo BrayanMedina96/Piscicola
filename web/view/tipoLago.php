@@ -36,13 +36,19 @@
                     <div class="card-body">
 
                         <div class="form-group">
-                            <label for="txtNombre">Tipo</label>
+                            <label for="txtNombre">Nombre</label>
                             <input type="text" class="form-control limpiar" id="txtNombre">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="txtDescripcion">Descripción</label>
+                            <textarea type="text" row="2" class="form-control limpiar" id="txtDescripcion"></textarea>
                         </div>
 
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
+                            <span id="pnMensaje"></span>
                         </div>
                     </div>
                 </div>
@@ -54,7 +60,7 @@
                 <div class="list-group">
 
                     <a id="btnConfiguracion" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis Configuraciones
+                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis registros
                     </a>
                 </div>
 
@@ -68,7 +74,7 @@
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Mis lagos</h5>
+                    <h5 class="modal-title">Tipo de lago</h5>
                     <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -80,20 +86,14 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Lago</th>
-                                <th>Sensor</th>
-                                <th>Especie</th>
-                                <th>Fecha inicio</th>
-                                <th>Fecha finalizacion</th>
+                                <th>Nombre</th>
+                                <th>Descripción</th>
                                 <th></th>
                             </tr>
                         </thead>
                         <tbody id="tdResultado"></tbody>
                         <tfoot>
                             <tr>
-                                <th></th>
-                                <th></th>
-                                <th style="text-align:left"></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -110,7 +110,8 @@
         </div>
     </div>
 
-    <input type="text" id="textLagoSensorID" value="" hidden />
+    <input type="hidden" id="txtID" value="" hidden />
+
 </body>
 
 </html>

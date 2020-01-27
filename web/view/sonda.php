@@ -16,8 +16,8 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
 
-
-    <script src='../scripts/Aplicacion/jsClassTipoLago.js'></script>
+    <script src='../scripts/Aplicacion/jsClassCultivo.js'></script>
+    <script src='../scripts/Aplicacion/jsClassSonda.js'></script>
     <script src='../scripts/Aplicacion/jsSonda.js'></script>
 
     <style>
@@ -25,7 +25,6 @@
         .only-timepicker .datepicker--content {
             display: none;
         }
-
         .only-timepicker .datepicker--time {
             border-top: none;
         }
@@ -48,17 +47,25 @@
                     </div>
                     <div class="card-body">
 
+                        <div class="form-group">
+                            <label for="ddlCultivo">Cultivo</label>
+                            <select id="ddlCultivo" class="form-control"></select>
+                        </div>
+
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
                                     <label for="txtFecha">Fecha</label>
-                                    <input type="text" class="form-control limpiar" id="txtFecha" required="">
+                                    <input type="text" data-range="true"
+                                    data-language='en' data-multiple-dates="2"
+                                    data-multiple-dates-separator=" - "
+                                    class="form-control" id="txtFecha" required="">
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="txtHora">Hora</label>
-                                    <input type="text" class="form-control limpiar" id="txtHora" required="">
+                                    <input type="text" class="form-control" id="txtHora" required="">
                                 </div>
                             </div>
                         </div>
@@ -131,13 +138,26 @@
 
             <div class="col-md-3">
 
+                 <div class="form-group">
                 <div class="list-group">
-
                     <a id="btnConfiguracion" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis Configuraciones
+                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis registros
                     </a>
                 </div>
+                </div>
 
+                <div class="form-group">
+                <div class="card">
+                    <div class="card-header">Información</div>
+                    <div class="card-body">
+                     <li> Puede utilizar los campos cultivo, fecha y hora para aplicar un filtro al momento de consultar los registros. </li>
+                     <li> Puede utilizar el campo de fecha para realizar filtro entre rangos.</li>
+                     
+                     </div>
+                    
+                </div>
+                </div>
+ 
             </div>
 
         </div>
@@ -145,10 +165,10 @@
 
 
     <div class="modal" id="modal" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
+        <div class="modal-dialog" style="max-width:1600px" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Mis lagos</h5>
+                    <h5 class="modal-title">Sonda</h5>
                     <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -160,11 +180,20 @@
                         <thead>
                             <tr>
                                 <th></th>
-                                <th>Lago</th>
-                                <th>Sensor</th>
-                                <th>Especie</th>
-                                <th>Fecha inicio</th>
-                                <th>Fecha finalizacion</th>
+                                <th>Cultivo</th>
+                                <th>Fecha</th>
+                                <th>Hora</th>
+                                <th>T. Ambiente</th>
+                                <th>T. estanque</th>
+                                <th>Oxigeno</th>
+                                <th>PH</th>
+                                <th>C. Electrica</th>
+                                <th>NH3</th>
+                                <th>NH4</th>
+                                <th>Nitrito</th>
+                                <th>Alcalinidad</th>
+                                <th>Peces muertos</th>
+                                <th>Observación</th>
                                 <th></th>
                             </tr>
                         </thead>
@@ -173,7 +202,16 @@
                             <tr>
                                 <th></th>
                                 <th></th>
-                                <th style="text-align:left"></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
+                                <th></th>
                                 <th></th>
                                 <th></th>
                                 <th></th>
@@ -181,8 +219,6 @@
                             </tr>
                         </tfoot>
                     </table>
-
-
                 </div>
                 <div class="modal-footer">
                 </div>
@@ -190,7 +226,7 @@
         </div>
     </div>
 
-    <input type="text" id="textLagoSensorID" value="" hidden />
+    <input type="text" id="txtID" value="" hidden />
 </body>
 
 </html>

@@ -21,18 +21,22 @@ $(function () {
         objLago.profundidad = $("#txtProfundidad").val();
         objLago.catidadPeces = $("#txtCantidadPeces").val();
         objLago.token = $("#txtVarUrl").val();
-        objLago.tipolago=$("#ddlTipoLago").val();
+        objLago.tipolago = $("#ddlTipoLago").val();
 
         if ($("#btnEnviar").text() == "Guardar") {
             objLago.guardar();
-            $("#btnLimpiar").click();
+            badge("#pnMensaje", "Registro guardado.", "success");
+            
         } else {
 
             objLago.id = $("#txtLagoID").val();
-
             objLago.actualizar();
-        }
 
+            badge("#pnMensaje", "Registro actualizado.", "success");
+
+        }
+        
+        $("#btnLimpiar").click();
 
     })
 
@@ -49,8 +53,7 @@ $(function () {
         obj.token = $("#txtVarUrl").val();
         var result = obj.consultar().responseJSON;
 
-        var columna = [
-            {
+        var columna = [{
                 "targets": -1,
                 "data": null,
                 "defaultContent": "<img class='seleccionarFila' src='../svg/selection-option.png'></img>"
@@ -75,7 +78,7 @@ $(function () {
             },
             {
                 "data": "lagoprofundidad",
-            
+
             },
             {
                 "targets": -1,
@@ -95,13 +98,13 @@ $(function () {
             targets: 2
         }
 
-        tabla("Tabla", result, columna,fucion);
+        tabla("Tabla", result, columna, fucion);
 
     }
 
     $('#Tabla tbody').on('click', 'tr .seleccionarFila', function () {
         var table = $('#Tabla').DataTable();
-        var data = table.row( $(this).parents("tr") ).data();
+        var data = table.row($(this).parents("tr")).data();
         $("#txtLagoID").val(data.lagoid);
         $("#txtNombreLago").val(data.lagonombre);
         $("#txtDescripcionLago").val(data.lagodescripcion);
@@ -114,19 +117,18 @@ $(function () {
         $("#btnCerrarModal").click();
         $("#btnEnviar").text("Actualizar");
         $("#btnEnviar").attr("class", "btn btn-success");
-      
+
 
     });
 
     $('#Tabla tbody').on('click', 'tr .eliminar', function () {
         var table = $('#Tabla').DataTable();
-        var data = table.row( $(this).parents("tr") ).data();
-        var si=confirm("Está seguro de eliminar: "+data.lagonombre);
-        if(si)
-        {
-            
-            var obj=new Lago();
-            obj.id=data.lagoid;
+        var data = table.row($(this).parents("tr")).data();
+        var si = confirm("Está seguro de eliminar: " + data.lagonombre);
+        if (si) {
+
+            var obj = new Lago();
+            obj.id = data.lagoid;
             obj.token = $("#txtVarUrl").val();
             obj.eliminar();
             consultarLago();
@@ -137,19 +139,18 @@ $(function () {
 
 
     $("#btnLimpiar").click(function () {
-  
-       limpiar(".limpiar");
-       $("#btnEnviar").text("Guardar");
-       $("#btnEnviar").attr("class", "btn btn-primary");
 
-       
+        limpiar(".limpiar");
+        $("#btnEnviar").text("Guardar");
+        $("#btnEnviar").attr("class", "btn btn-primary");
+
+
     });
 
-    function material()
-    {
-        var obj=new Material();
+    function material() {
+        var obj = new Material();
         obj.token = $("#txtVarUrl").val();
-        obj.cargarddl("ddlTipoLago",obj.consultar().responseJSON);
+        obj.cargarddl("ddlTipoLago", obj.consultar().responseJSON);
     }
 
 })
@@ -166,5 +167,3 @@ function showPosition(position) {
     $("#txtGeolocalizacion").val(position.coords.latitude + ";" + position.coords.longitude);
 
 }
-
-

@@ -3,6 +3,8 @@
 class Lago
 {
 
+    public $usuario;
+
     public function consultar($parametro)
     {
         $objBase64 = new Base64($parametro["token"]);
@@ -16,10 +18,10 @@ class Lago
         lagoaltitud, lagocantidadpeces, lagoprofundidad, lagofechacreacion,
         lagofechaactualizacion, lagofechaelimar, usuariocrea, usuarioactualiza,
         usuarioelimina, usuarioid, importado,tipolagoid
-        FROM lago WHERE usuarioid=:usuarioid AND  lagofechaelimar IS  NULL;';
+        FROM lago WHERE usuariopadreid=:usuarioid AND  lagofechaelimar IS  NULL;';
 
         $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+        $statement ->bindValue(':usuarioid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
         $statement->execute();              
         $resultado= $statement->fetchAll();
 
@@ -37,20 +39,16 @@ class Lago
 
         try 
         {
-            $objBase64 = new Base64($parametro["token"]);
-
-            $objUsuario = new Usuario();
-            $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
-
+            
             $sqlCommand ='INSERT INTO lago(
             lagonombre, lagodescripcion, lagogeolocalizacion, lagoarea,
             lagoaltitud, lagocantidadpeces, lagoprofundidad, lagofechacreacion,
             usuariocrea,
-            usuarioid,tipolagoid)
+            usuarioid,tipolagoid,usuariopadreid)
             VALUES ( :lagonombre, :lagodescripcion, :lagogeolocalizacion, :lagoarea,
             :lagoaltitud, :lagocantidadpeces, :lagoprofundidad, NOW(),
             :usuariocrea,
-            :usuarioid,:tipolagoid);';
+            :usuarioid,:tipolagoid,:usuariopadreid);';
     
             $statement  = $conn->prepare($sqlCommand);
             $statement ->bindValue(':lagonombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -61,9 +59,9 @@ class Lago
             $statement ->bindValue(':lagocantidadpeces',$parametro["catidadPeces"],PDO::PARAM_STR);
             $statement ->bindValue(':lagoprofundidad',$parametro["profundidad"],PDO::PARAM_STR);
             $statement ->bindValue(':tipolagoid',$parametro["tipolago"],PDO::PARAM_STR);
-            $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-            $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-            
+            $statement ->bindValue(':usuariocrea',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
 
             $statement ->execute();
     
@@ -84,12 +82,6 @@ class Lago
 
         $result="OK";
         $conn=Conexion::getInstance()->cnn();
-
-
-        $objBase64 = new Base64($parametro["token"]);
-
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
 
         $sqlCommand ='UPDATE lago
         SET
@@ -114,10 +106,6 @@ class Lago
         $result=true;
         $conn=Conexion::getInstance()->cnn();
 
-        $objBase64=new Base64($parametro["token"]);
-            
-        $objUsuario=new Usuario();
-        $resulUsuairio=$objUsuario->consultarUsuarioToken( $objBase64->decodeUsuario()["token"] );
 
         $sqlCommand =' UPDATE lago SET
         lagonombre=:lagonombre,
@@ -143,7 +131,7 @@ class Lago
              $statement ->bindValue(':lagocantidadpeces',$parametro["catidadPeces"],PDO::PARAM_STR);
              $statement ->bindValue(':lagoprofundidad',$parametro["profundidad"],PDO::PARAM_STR);
              $statement ->bindValue(':tipolagoid',$parametro["tipolago"],PDO::PARAM_STR);
-             $statement ->bindValue(':usuarioactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+             $statement ->bindValue(':usuarioactualiza',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
              $statement ->bindValue(':lagoid',$parametro["id"],PDO::PARAM_INT);
              
             

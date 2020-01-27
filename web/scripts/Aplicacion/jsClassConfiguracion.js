@@ -5,9 +5,6 @@ class LagoSensor {
     sensor;
     instalacion;
     estado;
-    especie;
-    fechaInicio;
-    fechaFinal;
     token;
 
     guardar() {
@@ -18,9 +15,6 @@ class LagoSensor {
             "&sensor=" + this.sensor.trim() +
             "&instalacion=" + this.instalacion.trim() +
             "&estado=" + this.estado +
-            "&especie=" + this.especie.trim() +
-            "&fechaInicio=" + this.fechaInicio.trim() +
-            "&fechaFinal=" + this.fechaFinal.trim() +
             "&token=" + this.token +
             "&do=";
 
@@ -37,9 +31,6 @@ class LagoSensor {
             "&sensor=" + this.sensor.trim() +
             "&instalacion=" + this.instalacion.trim() +
             "&estado=" + this.estado +
-            "&especie=" + this.especie.trim() +
-            "&fechaInicio=" + this.fechaInicio.trim() +
-            "&fechaFinal=" + this.fechaFinal.trim() +
             "&token=" + this.token +
             "&do=";
 

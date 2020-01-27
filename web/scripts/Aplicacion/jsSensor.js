@@ -11,6 +11,7 @@ $(function () {
     function marca() {
 
         var obj = new Marca();
+        obj.token=$("#txtVarUrl").val();
         obj.cargarMarca("ddlMarca", obj.consultar().responseJSON);
     }
 
@@ -36,15 +37,17 @@ $(function () {
 
         if ($("#btnEnviar").text() == "Guardar") {
             obj.guardar();
+            badge("#pnMensaje", "Registro guardado.", "success");
+
         } else {
 
             obj.id = $("#txtSensorID").val();
-
             obj.actualizar();
+            badge("#pnMensaje", "Registro guardado.", "success");
         }
 
 
-
+        $("#btnLimpiar").click();
 
     })
 

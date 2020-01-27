@@ -26,6 +26,7 @@ $(function () {
     function especie()
     {
         var obj=new Especie();
+        obj.token=$("#txtVarUrl").val();
         obj.cargarddl("ddlEspecie",obj.consultar().responseJSON);
     }
 
@@ -66,17 +67,16 @@ $(function () {
         obj.sensor = $("#ddlSensor").val();
         obj.instalacion = $("#txtFechaInstala").val();
         obj.estado = $("#chkEstado").prop('checked');
-        obj.especie = $("#ddlEspecie").val();
-        obj.fechaInicio = $("#txtFechaInicio").val();
-        obj.fechaFinal = $("#txtFechaFinaliza").val();
         obj.token = $("#txtVarUrl").val();
 
         if ($("#btnEnviar").text() == "Guardar") {
             obj.guardar();
+            badge("#pnMensaje", "Registro guardado.","success");
         } else {
 
             obj.id = $("#textLagoSensorID").val();
             obj.actualizar();
+            badge("#pnMensaje", "Registro actualizado.","success");
         }
 
 
@@ -110,15 +110,6 @@ $(function () {
                 "data": "sensornombre"
             },
             {
-                "data": "especiepez"
-            },
-            {
-                "data": "fechainicio"
-            },
-            {
-                "data": "fechafinalizacion"
-            },
-            {
                 "targets": -1,
                 "data": null,
                 "defaultContent": "<img class='eliminar' src='../svg/delete.png'></img>"
@@ -150,9 +141,6 @@ $(function () {
         $("#ddlSensor").val(data.sensorid);
         $("#txtFechaInstala").val(data.lagosensorfechainstalacion);
         $("#chkEstado").prop("checked",data.lagosensorestado);
-        $("#ddlEspecie").val(data.pezid);
-        $("#txtFechaInicio").val(data.fechainicio);
-        $("#txtFechaFinaliza").val(data.fechafinalizacion);
         $("#btnCerrarModal").click();
         $("#btnEnviar").text("Actualizar");
         $("#btnEnviar").attr("class", "btn btn-success");

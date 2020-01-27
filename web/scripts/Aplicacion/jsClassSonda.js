@@ -4,7 +4,7 @@ class Sonda {
     fecharegistro;
     oxigenodisuelto;
     ph;
-    cultivoid; 
+    cultivo; 
     horaregistro;
     temperaturaambiente;
     temperaturaestanque;
@@ -20,59 +20,75 @@ class Sonda {
 
     guardar() {
 
-        // var parametro =
-        //     "?entidad=" + this.entidad.trim() +
-        //     "&nombre=" + this.nombre.trim() +
-        //     "&descripcion=" + this.descripcion.trim() +
-        //     "&marca=" + this.marca.trim() +
-        //     "&fechaMantenimiento=" + this.fechaMantenimiento.trim() +
-        //     "&repetir=" + this.repetir.trim() +
-        //     "&codigo=" + this.codigo.trim() +
-        //     "&estado=" + this.estado +
-        //     "&token=" + this.token +
-        //     "&do=";
+       var parametro =
+            "?entidad=" + this.entidad +
+            "&fecharegistro=" + this.fecharegistro +
+            "&horaregistro=" + this.horaregistro +
+            "&temperaturaambiente=" + this.temperaturaambiente +
+            "&temperaturaestanque=" + this.temperaturaestanque +
+            "&oxigenodisuelto=" + this.oxigenodisuelto +
+            "&ph=" + this.ph +
+            "&conductividadelectrica=" + this.conductividadelectrica +
+            "&amonionh3=" + this.amonionh3 +
+            "&amonionh4=" + this.amonionh4 +
+            "&nitrito=" + this.nitrito +
+            "&alcalinidad=" + this.alcalinidad +
+            "&pecesmuertos=" + this.pecesmuertos +
+            "&descripcion=" + this.descripcion +
+            "&cultivo=" + this.cultivo +
+            "&token=" + this.token +
+            "&do=";
 
-        // return consultarAjax('POST', parametro);
-
+        return consultarAjax('POST', parametro); 
 
     }
 
     consultar()
     {
-        // var parametro = {
-        //     entidad: this.entidad,
-        //     token: this.token,
-        //     do: ""
-        // }
+        var parametro = {
+            entidad: this.entidad,
+            cultivo:this.cultivo,
+            fecharegistro:this.fecharegistro,
+            horaregistro:this.horaregistro,
+            token: this.token,
+            do: ""
+        }
 
-        // return consultarAjax('GET', parametro);
+        return consultarAjax('GET', parametro);
     }
 
     actualizar()
     {
-        // var parametro =
-        //     "?entidad=" + this.entidad +
-        //     "&id=" + this.id +
-        //     "&nombre=" + this.nombre +
-        //     "&descripcion=" + this.descripcion +
-        //     "&marca=" + this.marca +
-        //     "&fechaMantenimiento=" + this.fechaMantenimiento +
-        //     "&repetir=" + this.repetir +
-        //     "&codigo=" + this.codigo +
-        //     "&estado=" + this.estado +
-        //     "&token=" + this.token +
-        //     "&do=";
+        var parametro =
+        "?entidad=" + this.entidad +
+        "&id=" + this.id +
+        "&fecharegistro=" + this.fecharegistro +
+        "&horaregistro=" + this.horaregistro +
+        "&temperaturaambiente=" + this.temperaturaambiente +
+        "&temperaturaestanque=" + this.temperaturaestanque +
+        "&oxigenodisuelto=" + this.oxigenodisuelto +
+        "&ph=" + this.ph +
+        "&conductividadelectrica=" + this.conductividadelectrica +
+        "&amonionh3=" + this.amonionh3 +
+        "&amonionh4=" + this.amonionh4 +
+        "&nitrito=" + this.nitrito +
+        "&alcalinidad=" + this.alcalinidad +
+        "&pecesmuertos=" + this.pecesmuertos +
+        "&descripcion=" + this.descripcion +
+        "&cultivo=" + this.cultivo +
+        "&token=" + this.token +
+        "&do=";
 
-        // return consultarAjax('PUT', parametro);
+         return consultarAjax('PUT', parametro);
     }
 
     eliminar() {
-// var parametro =
-//     "?entidad=" + this.entidad +
-//     "&id=" + this.id +
-//     "&token=" + this.token +
-//     "&do=";
-// return consultarAjax('DELETE', parametro);
+        var parametro =
+            "?entidad=" + this.entidad +
+            "&id=" + this.id +
+            "&token=" + this.token +
+            "&do=";
+        return consultarAjax('DELETE', parametro);
     }
 
     importar()
@@ -84,6 +100,17 @@ class Sonda {
             "&do=importar";
 
         return consultarAjax('POST', parametro);
+    }
+
+    cargarddl(elemento,result,value,displayValue)
+    {
+        $("#"+elemento).html("");
+        var option="";
+        for (var indice in result) 
+        {
+            option+="<option value="+result[indice][value]+">"+result[indice][displayValue]+"</option>";
+        }
+        $("#"+elemento).append(option);
     }
     
 

@@ -37,10 +37,11 @@
             aria-expanded="false">Registro</a>
           <div class="dropdown-menu" aria-labelledby="ddlregistro">
             <a id="mUsuario" class="dropdown-item go usuario" go="../view/usuario.php">Usuario</a>
+            <a id="mTipoLago" class="dropdown-item go tipolago" go="../view/tipoLago.php" href="#">Tipo lago</a>
             <a id="mLago" class="dropdown-item go lago" go="../view/lago.php">Lago</a>
             <a id="mSensor" class="dropdown-item go sensor" go="../view/sensor.php">Sensor</a>
             <a id="mConfiguracion" class="dropdown-item go configuracion" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
-            <a id="mTipoLago" class="dropdown-item go tipolago" go="../view/tipoLago.php" href="#">Tipo lago</a>
+            <a id="mCultivo" class="dropdown-item go cultivo" go="../view/cultivo.php" href="#">Mi Cultivo</a>
             <a id="mSonda" class="dropdown-item go sonda" go="../view/sonda.php" href="#">Sonda</a>
           </div>
         </li>
@@ -94,15 +95,15 @@
           </li>
         </ul>
 
-        <input id="txtVarUrl" name="txtVarUrl" type="text" hidden value="<?php echo  $obj->getVar()  ?>">
-        <input id="txtUrl" name="txtUrl" type="text" hidden value="">
-        <input id="txtSalir" name="txtSalir" type="text" hidden value="">
-        <input id="txtUsuarioMenu" name="txtUsuarioMenu" type="text" hidden value="<?php echo  $result["usuario"]  ?>">
-        <input id="txtUsuarioidMenu" name="txtUsuarioMenu" type="text" hidden
+        <input id="txtVarUrl" name="txtVarUrl" type="hidden" hidden value="<?php echo  $obj->getVar()  ?>">
+        <input id="txtUrl" name="txtUrl" type="hidden" hidden value="">
+        <input id="txtSalir" name="txtSalir" type="hidden" hidden value="">
+        <input id="txtUsuarioMenu" name="txtUsuarioMenu" type="hidden" hidden value="<?php echo  $result["usuario"]  ?>">
+        <input id="txtUsuarioidMenu" name="txtUsuarioMenu" type="hidden" hidden
           value="<?php echo  $result["usuarioid"]  ?>">
-        <input id="txtPersonaidMenu" name="txtUsuarioMenu" type="text" hidden
+        <input id="txtPersonaidMenu" name="txtUsuarioMenu" type="hidden" hidden
           value="<?php echo  $result["personaid"]  ?>">
-        <input id="txtUserPadre" name="txtUserPadre" type="text" hidden
+        <input id="txtUserPadre" name="txtUserPadre" type="hidden" hidden
           value="<?php echo  $result["userPadre"]  ?>">
 
         <button id="btnGo" type="submit" hidden></button>

@@ -2,6 +2,7 @@
 
 class Sensor
 {
+    public $usuario;
 
     public function consultar($parametro)
     {
@@ -37,30 +38,27 @@ class Sensor
 
         try 
         {
-            $objBase64 = new Base64($parametro["token"]);
-
-            $objUsuario = new Usuario();
-            $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
-
+        
             $sqlCommand ='INSERT INTO sensor(
                 sensornombre,sensorcodigo,sensordescripcion, usuarioid, sensorestado, marcaid, 
                 sensorfechamantenimiento, sensorperiodicidadmantenimiento, sensorfechacreacion, 
-                usuarioidcrea)
+                usuarioidcrea,usuariopadreid)
                 VALUES (:sensornombre,:sensorcodigo,:sensordescripcion, :usuarioid, :sensorestado, :sensormarca, 
                 :sensorfechamantenimiento, :sensorperiodicidadmantenimiento,NOW(), 
-                :usuarioidcrea);';
+                :usuarioidcrea,:usuariopadreid);';
     
             $statement  = $conn->prepare($sqlCommand);
             $statement ->bindValue(':sensornombre',$parametro["nombre"],PDO::PARAM_STR);
             $statement ->bindValue(':sensorcodigo',$parametro["codigo"],PDO::PARAM_STR);
             $statement ->bindValue(':sensordescripcion',$parametro["descripcion"],PDO::PARAM_STR);
-            $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_STR);
+            $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_STR);
             $statement ->bindValue(':sensorestado',$parametro["estado"],PDO::PARAM_BOOL);
             $statement ->bindValue(':sensormarca',$parametro["marca"],PDO::PARAM_STR);
             $statement ->bindValue(':sensorfechamantenimiento',$parametro["fechaMantenimiento"],PDO::PARAM_STR);
-            $statement ->bindValue(':sensorperiodicidadmantenimiento',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-            $statement ->bindValue(':usuarioidcrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-           
+            $statement ->bindValue(':sensorperiodicidadmantenimiento',$parametro['repetir'],PDO::PARAM_INT);
+            $statement ->bindValue(':usuarioidcrea',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+
             $statement ->execute();
     
             
