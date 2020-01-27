@@ -16,6 +16,8 @@ require "Model/Sonda.php";
 require "Model/Dashboard.php";
 require "Model/Material.php";
 require "Model/Seguridad.php";
+require "Model/TipoLago.php";
+require "Model/Cultivo.php";
 
 class Piscicultura
 {
@@ -23,17 +25,35 @@ class Piscicultura
     function control($verbo,$obj)
     {
     
-        $resultado;
+        $resultado=null;
 
         try 
         {
-            $objRuta=new Ruta();
-            $metodo=$obj['entidad']."_".$verbo.$obj["do"];
+            if($obj["do"]=="login")
+            {
+                $resulUsuairio=[1];
+            }
+            else{
+                
+                $objBase64 = new Base64($obj["token"]);
+                $objUsuario = new Usuario();
+                $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+            }
+         
+            
+            if(count($resulUsuairio)>0)
+            {
+                 $objRuta=new Ruta();
+                 $metodo=$obj['entidad']."_".$verbo.$obj["do"];
     
-            $funcion=$objRuta->ruta()[$metodo];
-            $objClass=new $obj['entidad']();
-    
-            $resultado=$objClass->$funcion($obj);
+                 $funcion=$objRuta->ruta()[$metodo];
+                 $objClass=new $obj['entidad']();
+                 $objClass->usuario=$resulUsuairio;
+
+                 $resultado=$objClass->$funcion($obj);
+            }
+
+          
 
         } catch (\Exception  $e) 
         {

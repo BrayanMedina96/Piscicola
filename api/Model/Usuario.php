@@ -2,7 +2,8 @@
 
 class Usuario
 {
-
+    public $usuario;
+    
     public function consultar($parametro)
     {
         
@@ -51,7 +52,9 @@ class Usuario
                 usuario.perfilid,
                 usuario.usuarioFechacreacion,
                 usuario.usuariofechaactualizacion,
-                usuarioidcrea FROM public.usuario 
+                usuarioidcrea, 
+                usuario.usuariopadreid
+                FROM public.usuario 
                 INNER JOIN public.login ON usuario.usuarioid = login.usuarioid 
                 WHERE login.loginestado = true AND login.logintoken =:token;
             ';

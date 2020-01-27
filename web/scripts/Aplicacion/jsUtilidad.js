@@ -48,6 +48,19 @@ function modal(titulo,mensaje,largo)
 
 }
 
+function  badge(elem,mensaje,tipo) {
+   
+   var alert="";
+   alert+="<span id='badgeID' class='badge badge-"+tipo+"'>"+mensaje+"</span>";
+   
+   $(elem).append(alert);
+
+   $("#badgeID").fadeOut(4000);
+   setTimeout(function () {
+      $("#badgeID").remove();
+     }, 5000);
+
+}
 
 
 function tabla(elemento,datos,columna,funcion)

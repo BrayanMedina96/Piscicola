@@ -3,6 +3,7 @@
 
 class Especie 
 {
+    public $usuario;
     
     public function __construct()
     {

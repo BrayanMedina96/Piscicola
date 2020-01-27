@@ -49,6 +49,10 @@ class Ruta
            'LagoSensor_GET'=>'consultar',
            'LagoSensor_DELETE'=>'eliminar',
            'Sonda_POSTimportar'=>'importar',
+           'Sonda_POST'=>'guardar',
+           'Sonda_PUT'=>'actualizar',
+           'Sonda_GET'=>'consultar',
+           'Sonda_DELETE'=>'eliminar',
            'Dashboard_GETvariable'=>'variable',
            'Dashboard_POST'=>'guardar',
            'Dashboard_GET'=>'consultar',
@@ -64,11 +68,16 @@ class Ruta
            'Seguridad_GETgetFormulario'=>'getFormulario',
            'Seguridad_GETgetCampo'=>'getCampo',
            'Seguridad_GETgetAccion'=>'getAccion',
-
-           
            'Seguridad_PUT'=>'actualizar',
-           'Seguridad_DELETE'=>'eliminar'
-
+           'Seguridad_DELETE'=>'eliminar',
+           'TipoLago_POST'=>'guardar',
+           'TipoLago_PUT'=>'actualizar',
+           'TipoLago_GET'=>'consultar',
+           'TipoLago_DELETE'=>'eliminar',
+           'Cultivo_POST'=>'guardar',
+           'Cultivo_PUT'=>'actualizar',
+           'Cultivo_GET'=>'consultar',
+           'Cultivo_DELETE'=>'eliminar'
 
         );
 

@@ -76,6 +76,7 @@
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
+                            <span id="pnMensaje"></span>
                         </div>
                     </div>
                 </div>
@@ -103,7 +104,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Mis lagos</h5>
+          <h5 class="modal-title">Mis sensores</h5>
           <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>

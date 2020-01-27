@@ -1,10 +1,14 @@
 class Especie{
 
+    entidad="Especie";
+    token;
+
     consultar()
     {
      
        var parametro={
-          entidad:"Especie",
+          entidad:this.entidad,
+          token:this.token,
           do:""
        }
       

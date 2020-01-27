@@ -1,7 +1,7 @@
 <html>
 
 <head>
-    <title>Configuración sensor en lago</title>
+    <title>Mi Cultivo</title>
     <meta charset="utf-8">
 
     <?php 
@@ -16,10 +16,9 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
     <script src='../scripts/Aplicacion/jsClassEspecie.js'></script>
-    <script src='../scripts/Aplicacion/jsClassSensor.js'></script>
     <script src='../scripts/Aplicacion/jsClassLago.js'></script>
-    <script src='../scripts/Aplicacion/jsClassConfiguracion.js'></script>
-    <script src='../scripts/Aplicacion/jsConfiguracion.js'></script>
+    <script src='../scripts/Aplicacion/jsClassCultivo.js'></script>
+    <script src='../scripts/Aplicacion/jsCultivo.js'></script>
 
 </head>
 
@@ -36,30 +35,27 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Configuración del sensor en el lago</h5>
+                        <h5>Mi cultivo</h5>
                     </div>
                     <div class="card-body">
+                      
                         <div class="form-group">
                             <label for="ddlLago">Lago</label>
                             <select id="ddlLago" class="form-control"></select>
                         </div>
                         <div class="form-group">
-                            <label for="ddlSensor">Sensor</label>
-                            <select id="ddlSensor" class="form-control"></select>
-                        </div>
-
-
-                        <div class="form-group">
-                            <label for="txtFechaInstala">Fecha instalacón</label>
-                            <input type="text" class="form-control limpiar" id="txtFechaInstala">
+                            <label for="ddlEspecie">Especie</label>
+                            <select id="ddlEspecie" class="form-control"></select>
                         </div>
                         <div class="form-group">
-                            <div class="custom-control custom-checkbox mb-3">
-                                <input type="checkbox" class="custom-control-input estado" id="chkEstado"
-                                    name="chkEstado">
-                                <label class="custom-control-label" for="chkEstado">Activo</label>
-                            </div>
+                            <label for="txtFechaInicio">Fecha inicio</label>
+                            <input type="text"  id="txtFechaInicio" class="form-control limpiar">
                         </div>
+                        <div class="form-group">
+                            <label for="txtFechaFinaliza">Fecha finalización</label>
+                            <input type="text"  id="txtFechaFinaliza" class="form-control limpiar">
+                        </div>
+
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary"
                                 type="button">Guardar</button>
@@ -90,7 +86,7 @@
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
-          <h5 class="modal-title">Mis configuraciones</h5>
+          <h5 class="modal-title">Mis cultivos</h5>
           <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
             <span aria-hidden="true">&times;</span>
           </button>
@@ -102,16 +98,18 @@
             <thead>
               <tr>
                 <th></th>
-             
                 <th>Lago</th>
-                <th>Sensor</th>
-               
+                <th>Tipo pez</th>
+                <th>Fecha inicio</th>
+                <th>Fecha finalización</th>
                 <th></th>
               </tr>
             </thead>
             <tbody id="tdResultado"></tbody>
             <tfoot>
               <tr>
+              <th></th>
+                <th></th>
                 <th></th>
                 <th></th>
                 <th></th>
@@ -128,7 +126,7 @@
     </div>
   </div>
 
-  <input type="text" id="textLagoSensorID" value="" hidden/>
+  <input type="text" id="txtID" value="" hidden/>
 </body>
 
 </html>
