@@ -25,6 +25,7 @@
         .only-timepicker .datepicker--content {
             display: none;
         }
+
         .only-timepicker .datepicker--time {
             border-top: none;
         }
@@ -56,10 +57,9 @@
                             <div class="col">
                                 <div class="form-group">
                                     <label for="txtFecha">Fecha</label>
-                                    <input type="text" data-range="true"
-                                    data-language='en' data-multiple-dates="2"
-                                    data-multiple-dates-separator=" - "
-                                    class="form-control" id="txtFecha" required="">
+                                    <input type="text" data-range="true" data-language='en' data-multiple-dates="2"
+                                        data-multiple-dates-separator=" - " class="form-control" id="txtFecha"
+                                        required="">
                                 </div>
                             </div>
                             <div class="col">
@@ -138,26 +138,26 @@
 
             <div class="col-md-3">
 
-                 <div class="form-group">
-                <div class="list-group">
-                    <a id="btnConfiguracion" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis registros
-                    </a>
-                </div>
+                <div class="form-group">
+                    <div class="list-group">
+                        <a id="btnConfiguracion" class="list-group-item list-group-item-action">
+                            <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis registros
+                        </a>
+                    </div>
                 </div>
 
                 <div class="form-group">
-                <div class="card">
-                    <div class="card-header">Información</div>
-                    <div class="card-body">
-                     <li> Puede utilizar los campos cultivo, fecha y hora para aplicar un filtro al momento de consultar los registros. </li>
-                     <li> Puede utilizar el campo de fecha para realizar filtro entre rangos.</li>
-                     
-                     </div>
-                    
+                    <div class="card">
+                        <div class="card-header">Información</div>
+                        <div class="card-body">
+                            <li> Puede utilizar los campos cultivo, fecha y hora para aplicar un filtro al momento de
+                                consultar los registros. </li>
+                            <li> Puede utilizar el campo de fecha para realizar filtro entre rangos.</li>
+                        </div>
+
+                    </div>
                 </div>
-                </div>
- 
+
             </div>
 
         </div>

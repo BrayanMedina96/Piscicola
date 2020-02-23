@@ -29,7 +29,7 @@ class Piscicultura
 
         try 
         {
-            if($obj["do"]=="login")
+            if($obj["do"]=="login" || $obj["token"]=="null")
             {
                 $resulUsuairio=[1];
             }
@@ -38,11 +38,13 @@ class Piscicultura
                 $objBase64 = new Base64($obj["token"]);
                 $objUsuario = new Usuario();
                 $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+    
             }
          
             
             if(count($resulUsuairio)>0)
             {
+                
                  $objRuta=new Ruta();
                  $metodo=$obj['entidad']."_".$verbo.$obj["do"];
     

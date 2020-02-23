@@ -5,25 +5,6 @@
 class TipoDocumento 
 {
     
-    public function __construct()
-    {
-        
-    }
-
-    public function __get($atributoNombre)
-    {
-        if(array_key_exists($atributoNombre, $this->atributo))
-        {
-           return $this->atributo[$atributoNombre];
-        }
-        
-    } 
-
-    public function __set($atributoNombre, $atributoValor)
-    {
-        $this->atributo[$atributoNombre] = $atributoValor;
-    } 
-
     public function consultar($parametro)
     {
        
