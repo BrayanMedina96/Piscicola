@@ -144,6 +144,86 @@ class Lago
 
     }
 
+    public function importar($parametro)
+    {
+        $result = true;
+        $conn=Conexion::getInstance()->cnn();
+
+        $obj=new Lago();
+        $value=$obj->prepararDato( $parametro['importarText'],$this->usuario[0]['usuarioid'],$this->usuario[0]['usuariopadreid'] );
+
+
+        try {
+            
+             $sqlCommand = 'INSERT INTO lago(
+                lagonombre,
+                tipolagoid,
+                lagodescripcion,
+                lagoarea,
+                lagoaltitud,
+                lagocantidadpeces,
+                lagoprofundidad,
+                usuariocrea,
+                importado,
+                usuariopadreid)  VALUES '.$value;
+    
+                $statement  = $conn->prepare($sqlCommand);
+                $statement ->execute();
+                    
+        } catch (\Throwable $th) {
+            $result="Error";
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+
+      
+        return $result;
+    }
+
+
+
+     public function prepararDato($importarText,$usuario,$usuaioPadre)
+     {
+        $datos = explode('|',$importarText);
+        $value="";
+        
+        for ($i = 0; $i < count($datos); $i++) 
+        {
+            $linea = explode(";", $datos[$i]);
+            $text = "";
+            $primera="";
+            $one="";
+
+            for ($j = 0; $j < count($linea)-1; $j++) 
+            {
+
+            
+                $text.= $primera."'".str_replace(",",".",$linea[$j])."'";
+
+                if($primera=="")
+                {
+                    $text.=",(SELECT tipolagoid FROM tipolago  WHERE tipolagonombre='".str_replace(",",".",$linea[6])."' AND (usuariopadreid=".$usuaioPadre." OR usuariopadreid IS NULL) )";
+                    $primera=",";
+                }
+
+            }
+             
+            if($one=="")
+            {
+                $one=",";
+            }
+            if($i==count($datos)-1)
+            {
+                $one="";
+            }
+
+            $value.= "  (". $text.",". $usuario.",TRUE".",".$usuaioPadre.")".$one;
+        }
+
+        return $value;
+     }
+
 
 }
 

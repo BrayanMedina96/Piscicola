@@ -168,7 +168,8 @@ $(function () {
             $("#pnMensaje").html(modal("Alerta", "En hora buena, Cambio de contraseña.", "modal-sm"));
             $("#myModal").modal();
             $("#txtPassword").val("");
-            $("#txtToken").val( resul.responseJSON["dataCambioPass"]["token"] );
+            $("#txtToken").val( resul.responseJSON["data"] );
+            //resul.responseJSON["dataCambioPass"]["token"]
 
             return;
         }

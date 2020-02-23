@@ -188,6 +188,79 @@ class Persona
 
         return $result;
     }
+
+    public function importar($parametro)
+    {
+        $result = true;
+        $conn=Conexion::getInstance()->cnn();
+
+        $obj=new Persona();
+        $value=$obj->prepararDato( $parametro['importarText'],$this->usuario[0]['usuarioid'],$this->usuario[0]['usuariopadreid'] );
+
+
+        try {
+            
+            $sqlCommand = 'INSERT INTO persona(
+                 tipodocumentoid,
+                 personanumerodocumento,
+                 perosnanombre, 
+                 personaapellido, 
+                 usuariocrea,
+                 usuariopadreid
+                 ) VALUES '.$value;
+        
+                $statement  = $conn->prepare($sqlCommand);
+                $statement ->execute();
+                    
+        } catch (\Throwable $th) {
+            $result="Error";
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+
+      
+        return $result;
+    }
+
+
+
+     public function prepararDato($importarText,$usuario,$usuaioPadre)
+     {
+        $datos = explode('|',$importarText);
+        $value="";
+        
+        for ($i = 0; $i < count($datos); $i++) 
+        {
+            $linea = explode(";", $datos[$i]);
+            $text = "";
+            $primera="";
+            $one="";
+
+            for ($j = 0; $j < count($linea); $j++) 
+            {
+                $text.= $primera."'".str_replace(",",".",$linea[$j])."'";
+                if($primera=="")
+                {
+                    $text= $primera."(SELECT tipodocumentoid FROM tipodocumento WHERE tipodocumento='".str_replace(",",".",$linea[$j])."')";
+                    $primera=",";
+                }
+            }
+             
+            if($one=="")
+            {
+                $one=",";
+            }
+            if($i==count($datos)-1)
+            {
+                $one="";
+            }
+
+            $value.= "  (". $text.",". $usuario.",".$usuaioPadre.")".$one;
+        }
+
+        return $value;
+     }
     
     
 }

@@ -127,6 +127,13 @@ class Usuario
 
           $cambioPass=Usuario::cambioPassword( $parametro["usuario"] );
 
+          if($variable=="")
+          {
+             $variable = '{"token":"'.$cambioPass["data"]["token"].'"}';  
+
+          }
+
+
 
         } catch (\Throwable $th) {
             throw $th;
@@ -242,10 +249,6 @@ class Usuario
         $result=true;
         $conn=Conexion::getInstance()->cnn();
 
-        
-        $objUsuario=new Usuario();
-        $resulUsuairio=$objUsuario->consultarUsuarioToken( $parametro["token"] );
-
         $sqlCommand ="UPDATE public.usuario
                       SET  
                            usuariocontrasenia=:usuariocontrasenia,
@@ -259,8 +262,8 @@ class Usuario
              $statement  = $conn->prepare($sqlCommand);
 
              $statement ->bindValue(':usuariocontrasenia',$parametro["contrasenia"],PDO::PARAM_STR);
-             $statement ->bindValue(':usuarioidactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-             $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+             $statement ->bindValue(':usuarioidactualiza',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+             $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
              
              $statement ->execute();
             
@@ -432,6 +435,89 @@ class Usuario
 
     }
     
+
+    public function importar($parametro)
+    {
+        $result = true;
+        $conn=Conexion::getInstance()->cnn();
+
+        $obj=new Usuario();
+        $value=$obj->prepararDato( $parametro['importarText'],$this->usuario[0]['usuarioid'],$this->usuario[0]['usuariopadreid'] );
+
+
+        try {
+            
+            $sqlCommand = 'INSERT INTO usuario(
+                personaid,
+                usuarionombre,
+                perfilid, 
+                usuariofechaexpira, 
+               
+                usuarioidcrea, 
+                usuariocambioclave, 
+                usuariopadreid) VALUES '.$value;
+    
+                $statement  = $conn->prepare($sqlCommand);
+                $statement ->execute();
+                    
+        } catch (\Throwable $th) {
+            $result="Error";
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+
+      
+        return $result;
+    }
+
+
+
+     public function prepararDato($importarText,$usuario,$usuaioPadre)
+     {
+        $datos = explode('|',$importarText);
+        $value="";
+        
+        for ($i = 0; $i < count($datos); $i++) 
+        {
+            $linea = explode(";", $datos[$i]);
+            $text = "";
+            $primera="";
+            $one="";
+
+            for ($j = 0; $j < count($linea); $j++) 
+            {
+
+                if($j==2)
+                {
+                    
+                    $text.=",(SELECT perfilid FROM perfil WHERE perfilnombre='".str_replace(",",".",$linea[$j])."' AND (usuariocrea IS NULL OR usuariocrea=".$usuaioPadre."))";
+                    continue;
+                }
+
+                $text.= $primera."'".str_replace(",",".",$linea[$j])."'";
+                if($primera=="")
+                {
+                    $text= $primera."(SELECT personaid FROM persona WHERE personanumerodocumento='".str_replace(",",".",$linea[$j])."' AND usuariopadreid=".$usuaioPadre.")";
+                    $primera=",";
+                }
+
+            }
+             
+            if($one=="")
+            {
+                $one=",";
+            }
+            if($i==count($datos)-1)
+            {
+                $one="";
+            }
+
+            $value.= "  (". $text.",". $usuario.",TRUE".",".$usuaioPadre.")".$one;
+        }
+
+        return $value;
+     }
 
 
 

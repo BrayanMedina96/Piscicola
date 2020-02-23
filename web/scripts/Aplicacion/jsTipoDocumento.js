@@ -1,11 +1,13 @@
 class tipodocumento{
 
+   token="null";
 
   tipoDocumento()
   {
    
      var parametro={
         entidad:"TipoDocumento",
+        token:this.token,
         do:""
      }
     

@@ -18,37 +18,91 @@ $(function () {
 
     $(".opcion").click(function(){
 
+
         dibujarCampo( $("#"+this.id).attr("go") );
-    
         $("#lblImportar").text( $("#"+this.id).attr("go")  );
+
+        if($("#"+this.id).attr("go")=="Usuario")
+        {
+            $("#pnMensaje").html("");
+            $("#pnMensaje").html(modal("Información", "Para importar usuarios deben estar creados previemanete como personas.", "modal-sm"));
+            $("#myModal").modal();
+        }
+
 
     })
 
     $("#btnEnviar").click(function(){
 
-       var obj=new Sonda();
-       obj.importarText=$("#txtImportar").val();
-       obj.token = $("#txtVarUrl").val();
-       obj.importar();
+
+       switch ($("#lblImportar").text()) {
+           case "Sondeo":
+                 sonda();
+               break;
+            case "Persona":
+                 persona();
+              break;
+            case "Usuario":
+                 usuario();
+              break;
+            case "Lago":
+                 lago();
+              break;
+            case "Sensor":
+                 sensor();
+             break;
+       
+           default:
+               break;
+       }
 
     })
 
+    function sonda()
+    {
+        var obj=new Sonda();
+        obj.importarText=$("#txtImportar").val();
+        obj.token = $("#txtVarUrl").val();
+        obj.importar();
+    }
+
+    function persona()
+    {
+        var obj=new Persona();
+        obj.importarText=$("#txtImportar").val();
+        obj.token = $("#txtVarUrl").val();
+        obj.importar();
+    }
+
+    function usuario()
+    {
+        var obj=new Usuario();
+        obj.importarText=$("#txtImportar").val();
+        obj.token = $("#txtVarUrl").val();
+        obj.importar();
+    }
+
+    function lago()
+    {
+        var obj=new Lago();
+        obj.importarText=$("#txtImportar").val();
+        obj.token = $("#txtVarUrl").val();
+        obj.importar();
+    }
+
+    function sensor()
+    {
+        var obj=new Sensor();
+        obj.importarText=$("#txtImportar").val();
+        obj.token = $("#txtVarUrl").val();
+        obj.importar();
+    }
+
+
     $("#btnPlantilla").click(function () {
         
-        var url = "";
-
-        switch ($("#lblImportar").text()) {
-            case "Sondeo":
-                url = "https://drive.google.com/file/d/1AynZmJDdlSo8trO1R2yO6nJN-SR48oAE/view?usp=sharing";
-                break;
-
-            default:
-                url = "https://drive.google.com/drive/folders/1GMM3TqxgWgvvGe2dLH_5PzwlN4KdhVUu?usp=sharing";
-                break;
-        }
-
+        var url = "https://drive.google.com/drive/folders/1GMM3TqxgWgvvGe2dLH_5PzwlN4KdhVUu?usp=sharing";
         window.open(url);
-
 
     })
 
@@ -85,18 +139,17 @@ function dibujarCampo(tipo)
             'Amonio NH3', 'Amonio NH4', 'Nitrito', 'Alcalinidad',
             'Peces muertos', 'Observación'
         ],
-        'Sensor' : [''
+        'Sensor' : ['Nombre','<label title=serial>Código</label>','Descripción','Marca','Fecha mantenimiento','Repetir cada'
         ],
-        'Lago' : [''
+        'Lago' : ['Nombre','Descripción','Área m²','Altitud','Cantidad de peces','Profundidad','Tipo de lago'
         ],
-        'Usuario' : [''
+        'Usuario' : ['N. Documento','Usuario','Perfil','Fecha expiración'
         ],
-        'Persona' : [''
+        'Persona' : [ 'Tipo Documento','N. Documento','Nombre','Apellido'
         ]
     };
 
     var lista= index(titulo,tipo);
-    console.log(lista);
     var html="";
     for (const key in lista) {
 
