@@ -11,8 +11,8 @@ class TipoLago
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand = 'SELECT tipolagoid, tipolagonombre, tipolagodescripcion, tipolagomaterial, 
-                       usuariopadre, usuariocrea
-                       FROM tipolago WHERE (usuariopadre IS NULL) OR (usuariopadre=:usuariopadre);';
+                       usuariopadreid, usuariocrea
+                       FROM tipolago WHERE (usuariopadreid IS NULL) OR (usuariopadreid=:usuariopadre);';
 
         $statement  = $conn->prepare($sqlCommand); 
         $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
@@ -33,7 +33,7 @@ class TipoLago
         try 
         {
 
-            $sqlCommand ='INSERT INTO tipolago(tipolagonombre,tipolagodescripcion,usuariocrea,usuariopadre)
+            $sqlCommand ='INSERT INTO tipolago(tipolagonombre,tipolagodescripcion,usuariocrea,usuariopadreid)
                           VALUES (:tipolagonombre,:tipolagodescripcion,:usuarioid,:usuariopadre);';
     
             $statement  = $conn->prepare($sqlCommand);
@@ -63,7 +63,7 @@ class TipoLago
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand ='DELETE FROM tipolago
-        WHERE tipolagoid=:tipolagoid AND usuariopadre=:usuariopadre;';
+        WHERE tipolagoid=:tipolagoid AND usuariopadreid=:usuariopadre;';
 
         $statement  = $conn->prepare($sqlCommand);
         $statement ->bindValue(':tipolagoid',$parametro["id"],PDO::PARAM_INT);

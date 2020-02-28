@@ -235,7 +235,7 @@ class Sonda
             $obj=new Sonda();
             $value=$obj->prepararDato( $parametro['importarText'],$resulUsuairio[0]['usuarioid'] );
 
-            $sqlCommand = 'INSERT INTO estadofisicoquimico(
+          echo  $sqlCommand = 'INSERT INTO estadofisicoquimico(
                 fecharegistro,
                 horaregistro,
                 temperaturaambiente,

@@ -43,7 +43,8 @@ class Seguridad
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand = 'SELECT perfilid,perfilnombre,perfildescripcion,usuariocrea FROM perfil
-        WHERE usuariocrea=:usuariocrea OR usuariocrea IS NULL ORDER BY perfilnombre';
+        WHERE (usuariocrea=:usuariocrea OR usuariocrea IS NULL) AND usuarioelimina IS  NULL
+         ORDER BY perfilnombre';
 
         $statement  = $conn->prepare($sqlCommand); 
         $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);

@@ -42,6 +42,8 @@ class Ruta
            'Lago_DELETE'=>'eliminar',
            'Lago_POSTimportar'=>'importar', 
            'Marca_GET'=>'consultar',
+           'Marca_POST'=>'guardar',
+           'Marca_DELETE'=>'eliminar',
            'Sensor_POST'=>'guardar',
            'Sensor_GET'=>'consultar',
            'Sensor_PUT'=>'actualizar',

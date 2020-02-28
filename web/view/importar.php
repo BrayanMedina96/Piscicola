@@ -42,6 +42,12 @@
                         <h5>Importar</h5> <label id="lblImportar"></label>
                     </div>
                     <div class="card-body">
+                        <div id="pnCultivo" hidden class="form-group">
+                            <label for="ddlCultivo">Lago</label>
+                            <select id="ddlCultivo" class="form-control">
+                                <option></option>
+                            </select>
+                        </div>
                         <div class="table-responsive">
                             <div class="form-group">
                                 <table class="table table-bordered" id="tabla"></table>
@@ -49,13 +55,13 @@
                         </div>
                         <div class="form-group">
                             <label for="txtDescripcionLago"></label>
-                            <textarea charset="UTF-8" type="text"  class="form-control limpiar" id="txtImportar"
+                            <textarea charset="UTF-8" type="text" class="form-control limpiar" id="txtImportar"
                                 rows="10" required></textarea>
                         </div>
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Enviar</button>
                             <!--<button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>-->
-                            
+
                             <label for="fileToUpload" class="btn btn-default">
                                 <img width="30px" src="../svg/file.png" /> Cargar
                             </label>
@@ -92,7 +98,7 @@
                     <div class="card">
                         <div class="card-header">Ayuda</div>
                         <div class="card-body">
-                        <a id="btnPlantilla" type="button" class="btn btn-default">
+                            <a id="btnPlantilla" type="button" class="btn btn-default">
                                 <img src="../svg/documento.png" width="30px">
                                 Plantilla
                             </a>
@@ -159,7 +165,7 @@
     <div id="pnMensaje"></div>
 
     <input type="text" id="txtTipo" value="" hidden />
-    
+
 </body>
 <?php 
 require("../plantilla/pie.php");

@@ -14,8 +14,8 @@ class Material
 
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT tipolagoid, tipolagonombre, tipolagodescripcion, tipolagomaterial,*
-        FROM tipolago WHERE (usuariopadre IS NULL) OR (usuariopadre=:usuariopadre) ;';
+        $sqlCommand = 'SELECT tipolagoid, tipolagonombre, tipolagodescripcion, tipolagomaterial
+        FROM tipolago WHERE (usuariopadreid IS NULL) OR (usuariopadreid=:usuariopadre) ;';
 
         $statement  = $conn->prepare($sqlCommand); 
         $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);

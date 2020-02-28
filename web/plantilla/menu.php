@@ -27,7 +27,7 @@
       <ul class="navbar-nav mr-auto">
 
         <li id="home" class="nav-item active">
-          <a class="nav-link go" go="../view/home.php">PISC.NET</a>
+          <a class="nav-link go" go="../view/home.php">AQUA</a>
         </li>
         <li class="nav-item active">
           <a id="mCuenta" class="nav-link go cuenta" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
@@ -39,6 +39,7 @@
             <a id="mUsuario" class="dropdown-item go usuario" go="../view/usuario.php">Usuario</a>
             <a id="mTipoLago" class="dropdown-item go tipolago" go="../view/tipoLago.php" href="#">Tipo lago</a>
             <a id="mLago" class="dropdown-item go lago" go="../view/lago.php">Lago</a>
+            <a id="mMarca" class="dropdown-item go marca" go="../view/marca.php">Marcas de sensor</a>
             <a id="mSensor" class="dropdown-item go sensor" go="../view/sensor.php">Sensor</a>
             <a id="mConfiguracion" class="dropdown-item go configuracion" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
             <a id="mCultivo" class="dropdown-item go cultivo" go="../view/cultivo.php" href="#">Mi Cultivo</a>
@@ -121,7 +122,6 @@
 
 <div id="load" class="modal" >
   <div class="modal-dialog mx-auto" style="width: 200px;">
-    
        <div class="spinner-grow text-primary" role="status">
          <span class="sr-only">Loading...</span>
         </div>

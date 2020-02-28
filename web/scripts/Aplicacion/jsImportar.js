@@ -18,7 +18,7 @@ $(function () {
 
     $(".opcion").click(function(){
 
-
+        $("#pnCultivo").attr("hidden","hidden");
         dibujarCampo( $("#"+this.id).attr("go") );
         $("#lblImportar").text( $("#"+this.id).attr("go")  );
 
@@ -169,6 +169,7 @@ function index(titulo, tipo) {
         case "Sondeo":
             obj = titulo.Sondeo;
             $("#txtTipo").val(tipo);
+            $("#pnCultivo").removeAttr("hidden")
             break;
         case "Sensor":
             obj = titulo.Sensor;

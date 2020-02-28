@@ -99,7 +99,7 @@ function  consultar() {
         {
             "targets": -1,
             "data": null,
-            "defaultContent": "<img class='eliminar' src='../svg/delete.png'></img>"
+            "defaultContent": "<img class='eliminar'  src='../svg/delete.png'></img>"
         }
     ]
 
