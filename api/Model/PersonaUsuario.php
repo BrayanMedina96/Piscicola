@@ -129,7 +129,7 @@ class PersonaUsuario
             }
             else{
             
-                  $sqlCommand ='SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,:contrasenia,:nombrecomercial )';
+                  $sqlCommand ='SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
     
                    $statement  = $conn->prepare($sqlCommand);
                    $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -144,7 +144,7 @@ class PersonaUsuario
                    $statement ->execute();
                    //$result= $statement->fetchAll()[0]["personausuario"];
 
-                   $result["mensaje"]="Usuario se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.";
+                   $result["mensaje"]="Se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.";
                    $result["response"]="ok";
 
                }

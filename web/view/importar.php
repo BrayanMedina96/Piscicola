@@ -2,6 +2,7 @@
 
 <head>
     <title>Importar</title>
+    <input id="lblTitulo" type="hidden" value="importar">
     <meta charset="UTF-8">
 
     <?php 
@@ -160,5 +161,8 @@
     <input type="text" id="txtTipo" value="" hidden />
     
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

@@ -112,6 +112,7 @@
                          <button id="btnEnviar" class="btn btn-lg btn-primary btn-block" type="Submit">Inicia
                               sesión</button>
                          <button id="btnEnviar2" type="submit" hidden></button>
+                         <label id="lblTiempo" class="btn btn-lg btn-secondary  btn-block" hidden>00:00</label>
 
 
 
@@ -125,7 +126,7 @@
                <input id="hdCambioPass" name="hdCambioPass" type="hidden" value="0">
 
                
-               <input id="txtIntento" type="hidden" value="0">
+               <input id="txtIntento" type="hidden" value="1">
                <input id="txtUser" type="hidden" value="0">
 
                <div id="pnMensaje"></div>

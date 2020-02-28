@@ -2,6 +2,7 @@
 
 <head>
   <title>Lago</title>
+  <input id="lblTitulo" type="hidden" value="lago">
   <meta charset="utf-8">
 
   <?php 
@@ -157,5 +158,8 @@
 
   <input type="text" id="txtLagoID" value="" hidden />
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

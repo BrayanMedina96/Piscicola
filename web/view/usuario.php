@@ -2,6 +2,7 @@
 
 <head>
     <title>Usuario</title>
+    <input id="lblTitulo" type="hidden" value="usuario">
     <meta charset="utf-8">
 
     <?php 
@@ -16,7 +17,7 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
     <script src="../scripts/Aplicacion/jsPersonaUsuario.js"></script>
- 
+
     <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
     <script src="../scripts/Aplicacion/jsLogin.js"></script>
 
@@ -87,9 +88,12 @@
 
         </div>
     </div>
-    
-       <label id="txtTitulo" hidden>Crear una cuenta</label> 
-       <div id="pnMensaje"></div>
-    </body>
+
+    <label id="txtTitulo" hidden>Crear una cuenta</label>
+    <div id="pnMensaje"></div>
+</body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

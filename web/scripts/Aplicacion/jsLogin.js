@@ -1,6 +1,19 @@
+var totalTime;
+
 $(function () {
 
-    
+    $(document).keydown(function (e) {
+        var code = (e.keyCode ? e.keyCode : e.which);
+        if (code == 116 ) {
+            e.preventDefault();
+        }
+    });
+
+    if( parseInt( $("#txtIntento").val() )>3)
+    {
+            $("#btnEnviar").attr("hidden", "hidden");
+    }
+
     $("#hdCambioPass").val("0");
     
     $("#txtPassword").keyup(function () {
@@ -66,7 +79,7 @@ $(function () {
        
         
         $("#txtPassword").attr("data-toggle","tooltip");
-        $("#txtPassword").attr("title","Para crear una password seguro utilice (Mayúscula, Minúscula, Números y algún símbolos: ! # $ % & = ? * . @")
+        $("#txtPassword").attr("title","Para crear un password seguro utilice (Mayúscula, Minúscula, Números y algún símbolos: ! # $ % & = ? * . @")
         $('[data-toggle="tooltip"]').tooltip();
 
         cargarTipoDocumento();
@@ -196,6 +209,14 @@ $(function () {
         intento++;
         $("#txtIntento").val(intento);
 
+        if(intento>3)
+        {
+            $("#btnEnviar").attr("hidden", "hidden");
+            $("#lblTiempo").removeAttr("hidden");
+            totalTime=60;
+            updateClock();
+        }
+
     }
 
     function actulizar() {
@@ -251,6 +272,20 @@ $(function () {
   
 
 });
+
+
+
+function updateClock() {
+    document.getElementById('lblTiempo').innerHTML = totalTime;
+    if (totalTime == 0) {
+        $("#btnEnviar").removeAttr("hidden");
+        $("#lblTiempo").attr("hidden", "hidden");
+        $("#txtIntento").val("0");
+    } else {
+        totalTime -= 1;
+        setTimeout("updateClock()", 1000);
+    }
+}
 
 function cargarTipoDocumento() {
     const obj = new tipodocumento();

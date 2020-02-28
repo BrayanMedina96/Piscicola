@@ -2,6 +2,7 @@
 
 <head>
     <title>Mi Cultivo</title>
+    <input id="lblTitulo" type="hidden" value="cultivo">
     <meta charset="utf-8">
 
     <?php 
@@ -128,5 +129,8 @@
 
   <input type="text" id="txtID" value="" hidden/>
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

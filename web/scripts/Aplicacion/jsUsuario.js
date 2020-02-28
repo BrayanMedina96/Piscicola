@@ -9,6 +9,7 @@ class Usuario
     perfil;
     estado;
     cambioPassword;
+    formulario; 
 
     constructor(usuario,contrasenia,token,id,fechaExpiracion,perfil,estado)
     {
@@ -43,11 +44,19 @@ class Usuario
         var parametro={
             entidad:this.entidad,
             token:this.token,
+            formulario:this.formulario,
             do:"seguridad"
         }
        
         var result = consultarAjax('GET', parametro).responseJSON;
         for (const key in result) {
+             
+            var n=result[key][1].split("-");
+            
+            if(n.length>0)
+            {
+                $("."+result[key][0]).removeAttr(n[1]);
+            }
 
             $("."+result[key][0]).attr(result[key][1],result[key][1]);
 
@@ -58,6 +67,7 @@ class Usuario
 
         var parametro = {
             entidad: this.entidad,
+            token:this.token,
             do: "perfil"
         }
 

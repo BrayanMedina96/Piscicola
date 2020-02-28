@@ -127,7 +127,9 @@ class Usuario
 
           $cambioPass=Usuario::cambioPassword( $parametro["usuario"] );
 
-          if($variable=="")
+       
+
+          if($variable=="" && count($cambioPass["data"])>0 )
           {
              $variable = '{"token":"'.$cambioPass["data"]["token"].'"}';  
 
@@ -327,12 +329,13 @@ class Usuario
             $sqlCommand = 'SELECT campo,accion FROM restriccionperfil
             INNER JOIN perfil on restriccionperfil.perfilid = perfil.perfilid
             INNER JOIN usuario on perfil.perfilid = usuario.perfilid
-            WHERE usuario.usuarioid = :usuarioid   AND restriccionperfil.usuariocrea=:usuariocrea;
-            ';
+            WHERE usuario.usuarioid = :usuarioid  AND restriccionperfil.usuariocrea=:usuariocrea 
+            AND restriccionperfil.formulario=:formulario;';
 
             $statement = $conn ->prepare($sqlCommand);
             $statement ->bindValue(':usuarioid', $resulUsuairio[0]['usuarioid'], PDO::PARAM_INT);
             $statement ->bindValue(':usuariocrea',  $decode["userPadre"] , PDO::PARAM_INT);
+            $statement ->bindValue(':formulario',   $parametro["formulario"] , PDO::PARAM_STR);
             $statement ->execute();
             $result = $statement -> fetchAll();
 
