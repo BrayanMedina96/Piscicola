@@ -2,6 +2,7 @@
 
 <head>
     <title>Sensor</title>
+    <input id="lblTitulo" type="hidden" value="sensor">
     <meta charset="utf-8">
     <?php 
     require("../plantilla/menu.php");
@@ -151,5 +152,8 @@
 
   <input type="text" id="txtSensorID" value="" hidden/>
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

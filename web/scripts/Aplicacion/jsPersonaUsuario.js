@@ -33,7 +33,7 @@ class PersonaUsuario{
          "&usuario="+this.usuario+
          "&contrasenia="+this.contrasenia+
          "&nombreComercial="+this.nombreComercial+
-         "&do="
+         "&token=null&do="
          ;
     
 

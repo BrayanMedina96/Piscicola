@@ -144,10 +144,7 @@
       $('#load').modal('hide');
      }, 1000);
 
-    var obj = new Usuario();
-    obj.token = $("#txtVarUrl").val();
-    obj.seguridad();
-
+  
     $(".go").click(function (e) {
 
       $("#txtSalir").val("");

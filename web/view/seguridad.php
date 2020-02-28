@@ -2,6 +2,7 @@
 
 <head>
     <title>Seguridad</title>
+    <input id="lblTitulo" type="hidden" value="seguridad">
     <meta charset="utf-8">
 
     <?php 
@@ -163,5 +164,8 @@
     
 
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

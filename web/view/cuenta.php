@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <title>Cuenta</title>
+  <input id="lblTitulo" type="hidden" value="cuenta">
   <?php 
           require("../plantilla/menu.php");
   ?>
@@ -48,7 +49,7 @@
             <img width="18px" src="../svg/si-glyph-key-2.svg" />
             Seguridad
           </li>
-          <li id="btnUsuario" class="list-group-item list-group-item-action panelusuario" data-toggle="modal"
+          <li id="btnUsuario"  class="list-group-item list-group-item-action panelusuario" hidden data-toggle="modal"
             data-target="#modalPersona">
             <img width="18px" src="../svg/man-user.png" />
             Usuarios
@@ -156,9 +157,9 @@
               </div>
 
               <div class="mb-3 usuario fechaexpiracion">
-                <label for="txtFechaExpiracion">Fecha expiración<span class="text-muted"></span></label>
-                <input type="text" class="form-control fechaexpiracion" onkeydown="myFunction(event)"
-                  id="txtFechaExpiracion" placeholder="">
+                <label for="txtFechaExpiracion">Fecha expiración</label>
+                <input type="text" class="form-control fechaexpiracion" 
+                  id="txtFechaExpiracion">
               </div>
 
               <div id="pnPassword">
@@ -268,5 +269,9 @@
   <div id="pnMensaje"></div>
 
 </body>
+
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

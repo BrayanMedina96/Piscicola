@@ -2,6 +2,7 @@
 
 <head>
     <title>Dashboard</title>
+    <input id="lblTitulo" type="hidden" value="dashboard">
     <meta charset="UTF-8">
 
     <?php 
@@ -216,5 +217,8 @@
 
 
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

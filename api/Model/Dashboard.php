@@ -2,6 +2,8 @@
 
 class Dashboard
 {
+     
+    public $usuario;
 
     public function consultar($parametro)
     {
@@ -80,8 +82,8 @@ class Dashboard
             $objUsuario = new Usuario();
             $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
 
-            $sqlCommand ='INSERT INTO dashboard(nombre, x, y,usuarioid,filtro,tipografica)
-                                         VALUES (:nombre,:x,:y,:usuarioid,:filtro,:tipografica);';
+            $sqlCommand ='INSERT INTO dashboard(nombre, x, y,usuarioid,filtro,tipografica,usuariopadreid)
+                                         VALUES (:nombre,:x,:y,:usuarioid,:filtro,:tipografica,:usuariopadreid);';
     
             $statement  = $conn->prepare($sqlCommand);
             $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -89,7 +91,8 @@ class Dashboard
             $statement ->bindValue(':y',$parametro["y"],PDO::PARAM_STR);
             $statement ->bindValue(':filtro',$parametro["filtro"],PDO::PARAM_STR);
             $statement ->bindValue(':tipografica',$parametro["tipografica"],PDO::PARAM_STR);
-            $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_STR);   
+            $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_STR);  
+            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_STR); 
             $statement ->execute();
     
             

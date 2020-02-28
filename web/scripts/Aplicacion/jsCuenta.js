@@ -1,7 +1,5 @@
 $(function(){
 
-    
-    seguridad();
     cargarTipoDocumento();
     cargarID();
     buscarPersona();
@@ -73,16 +71,7 @@ $(function(){
         return objPersona;
     }
 
-    function seguridad()
-    {
-       var obj= new Usuario();
-       obj.token=$("#txtVarUrl").val();
-       obj.seguridad();
-       obj.cargarPerfil("ddlPerfil");
-    }
-
     
-
     function buscarPersona()
     {
     
@@ -245,6 +234,7 @@ $(function(){
     $("#btnUsuario").click(function () {
 
         var obj = new PersonaUsuario();
+        obj.token=$("#txtVarUrl").val();
         var result = obj.consultar().responseJSON;
         
         var columna = [

@@ -2,6 +2,7 @@
 
 <head>
     <title>Sonda</title>
+    <input id="lblTitulo" type="hidden" value="sonda">
     <meta charset="utf-8">
 
     <?php 
@@ -228,5 +229,8 @@
 
     <input type="text" id="txtID" value="" hidden />
 </body>
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>

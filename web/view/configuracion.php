@@ -2,6 +2,7 @@
 
 <head>
     <title>Configuración sensor en lago</title>
+    <input id="lblTitulo" type="hidden" value="Configuracion">
     <meta charset="utf-8">
 
     <?php 
@@ -130,5 +131,9 @@
 
   <input type="text" id="textLagoSensorID" value="" hidden/>
 </body>
+
+<?php 
+require("../plantilla/pie.php");
+?>
 
 </html>
