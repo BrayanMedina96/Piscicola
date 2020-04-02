@@ -17,7 +17,7 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
     <script src="../scripts/Aplicacion/jsPersonaUsuario.js"></script>
-
+    <script src='../scripts/Aplicacion/jsClassSeguridad.js'></script>
     <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
     <script src="../scripts/Aplicacion/jsLogin.js"></script>
 
@@ -66,6 +66,12 @@
                                 required="">
                         </div>
 
+                        <div class="mb-3 usuario perfil">
+                            <label for="ddlPerfil">Perfil<span class="text-muted"></span></label>
+                            <select id="ddlPerfil" class="form-control perfil" required="">
+                            </select>
+                        </div>
+
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Crear usuario</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
@@ -77,11 +83,13 @@
 
             <div class="col-md-3">
 
-                <div class="list-group">
+                <div class="card">
+                    <div class="card-header">Información</div>
+                    <div class="card-body">
+                        <li> Cre </li>
+                        <li> Puede utilizar el campo de fecha para realizar filtro entre rangos.</li>
+                    </div>
 
-                    <a id="btnConfiguracion" class="list-group-item list-group-item-action">
-                        <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis Configuraciones
-                    </a>
                 </div>
 
             </div>

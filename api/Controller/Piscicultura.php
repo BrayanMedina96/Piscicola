@@ -29,6 +29,12 @@ class Piscicultura
 
         try 
         {
+            if (!isset( $obj["token"],$obj["do"])) 
+            {
+               echo '<h1> Bienvenido, Oh! no hay conexion. <h1>';
+               return "";
+            }
+
             if($obj["do"]=="login" || $obj["token"]=="null")
             {
                 $resulUsuairio=[1];

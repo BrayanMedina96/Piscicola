@@ -27,7 +27,7 @@
       <ul class="navbar-nav mr-auto">
 
         <li id="home" class="nav-item active">
-          <a class="nav-link go" go="../view/home.php">AQUA</a>
+          <a class="nav-link go" go="../view/home.php"><strong>AQUA</strong></a>
         </li>
         <li class="nav-item active">
           <a id="mCuenta" class="nav-link go cuenta" go="../view/cuenta.php">Mi cuenta<span class="sr-only">(current)</span></a>
@@ -36,14 +36,14 @@
           <a class="nav-link dropdown-toggle registro" href="#" id="ddlregistro" data-toggle="dropdown" aria-haspopup="true"
             aria-expanded="false">Registro</a>
           <div class="dropdown-menu" aria-labelledby="ddlregistro">
-            <a id="mUsuario" class="dropdown-item go usuario" go="../view/usuario.php">Usuario</a>
-            <a id="mTipoLago" class="dropdown-item go tipolago" go="../view/tipoLago.php" href="#">Tipo lago</a>
-            <a id="mLago" class="dropdown-item go lago" go="../view/lago.php">Lago</a>
-            <a id="mMarca" class="dropdown-item go marca" go="../view/marca.php">Marcas de sensor</a>
-            <a id="mSensor" class="dropdown-item go sensor" go="../view/sensor.php">Sensor</a>
-            <a id="mConfiguracion" class="dropdown-item go configuracion" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
-            <a id="mCultivo" class="dropdown-item go cultivo" go="../view/cultivo.php" href="#">Mi Cultivo</a>
-            <a id="mSonda" class="dropdown-item go sonda" go="../view/sonda.php" href="#">Sonda</a>
+            <a id="mUsuario" class="dropdown-item go musuario" go="../view/usuario.php">Usuario</a>
+            <a id="mTipoLago" class="dropdown-item go mtipolago" go="../view/tipoLago.php" href="#">Tipo lago</a>
+            <a id="mLago" class="dropdown-item go mlago" go="../view/lago.php">Lago</a>
+            <a id="mMarca" class="dropdown-item go mmarca" go="../view/marca.php">Marcas de sensor</a>
+            <a id="mSensor" class="dropdown-item go msensor" go="../view/sensor.php">Sensor</a>
+            <a id="mConfiguracion" class="dropdown-item go mconfiguracion" go="../view/configuracion.php" href="#">Configuración (S-L)</a>
+            <a id="mCultivo" class="dropdown-item go mcultivo" go="../view/cultivo.php" href="#">Mi Cultivo</a>
+            <a id="mSonda" class="dropdown-item go msonda" go="../view/sonda.php" href="#">Sonda</a>
           </div>
         </li>
         <li class="nav-item active">

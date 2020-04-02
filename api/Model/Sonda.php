@@ -256,11 +256,8 @@ class Sonda
                 $statement ->execute();
                     
 
-
-
-
-        } catch (\Throwable $th) {
-            $result="Error";
+        } catch (Exception $e) {
+            $result= ["data" => $e->getMessage() ];
         }
         finally{
             Conexion::cerrar($conn);

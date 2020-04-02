@@ -16,11 +16,11 @@ class Sensor
         $sqlCommand = 'SELECT sensordescripcion, sensorcodigo, usuarioid, sensorfechamantenimiento,
         sensorperiodicidadmantenimiento, sensorfechacreacion, usuarioidcrea,
         sensorid, sensornombre, sensorestado, marcaid
-        FROM sensor WHERE usuarioid=:usuarioid
+        FROM sensor WHERE usuariopadreid=:usuariopadreid
         AND sensorfechaeliminacion IS NULL;';
 
         $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuarioid',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+        $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
         $statement->execute();              
         $resultado= $statement->fetchAll();
 
@@ -143,20 +143,88 @@ class Sensor
 
     }
 
+    public function importar($parametro)
+    {
+        $result = true;
+        $conn=Conexion::getInstance()->cnn();
+
+        $obj=new Sensor();
+        $value=$obj->prepararDato( $parametro['importarText'],$this->usuario[0]['usuarioid'],$this->usuario[0]['usuariopadreid'] );
+
+
+        try {
+            
+              $sqlCommand = 'INSERT INTO sensor(sensornombre,
+              sensorcodigo,
+              sensordescripcion,
+              marcaid,
+              sensorfechamantenimiento,
+              sensorperiodicidadmantenimiento,
+              usuarioidcrea,
+              usuariopadreid
+              ) VALUES '.$value;
+        
+                $statement  = $conn->prepare($sqlCommand);
+                $statement ->execute();
+
+                    
+        } catch (Exception  $e) {
+             $result= ["data" => $e->getMessage() ];
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+
+        return $result;
+    }
+
+
+
+     public function prepararDato($importarText,$usuario,$usuaioPadre)
+     {
+        $datos = explode('|',$importarText);
+        $value="";
+        
+        for ($i = 0; $i < count($datos); $i++) 
+        {
+            $linea = explode(";", $datos[$i]);
+            $text = "";
+            $primera="";
+            $one="";
+
+            for ($j = 0; $j < count($linea); $j++) 
+            {
+                if($j==3)
+                {
+                    $text.= $primera."(SELECT marcaid FROM marca WHERE marcanombre='".str_replace(",",".",$linea[$j])."' AND usuariopadreid=".$usuaioPadre." ) ";
+                    continue;
+                }
+
+                $text.= $primera."'".str_replace(",",".",$linea[$j])."'";
+
+                if($primera=="")
+                {
+                    $primera=",";
+                }
+            
+            }
+
+            if($one=="")
+            {
+                $one=",";
+            }
+            if($i==count($datos)-1)
+            {
+                $one="";
+            }
+             
+            $value.= "  (". $text.",". $usuario.",".$usuaioPadre.")".$one;
+        }
+
+        return $value;
+     }
 
     
-
-
-
-    
-
-
-
-
-    
-
-
-
 }
 
 ?>

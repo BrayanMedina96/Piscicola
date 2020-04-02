@@ -30,7 +30,7 @@
                <ul class="navbar-nav mr-auto">
 
                     <li id="home" class="nav-item active">
-                         <a class="nav-link go" go="../view/home.php">PISC.NET</a>
+                         <a class="nav-link go" go="../view/login.php"><strong>AQUA</strong></a>
                     </li>
                </ul>
           </div>

@@ -1,6 +1,7 @@
 $(function () {
 
     cargarTipoDocumento();
+    cargarPerfil();
 })
 
 function crearUsuario() {
@@ -19,13 +20,22 @@ function crearUsuario() {
     objpersona.tipoDocumento = $("#ddlTipoDocumento").val();
     objpersona.numeroDocumento = $("#txtNumeroDocumento").val();
     objpersona.usuarioPadre=$("#txtUserPadre").val();
+    objpersona.token=$("#txtVarUrl").val();
+    objpersona.perfil=$("#ddlPerfil").val();
 
     var result = objpersona.crearUsuario();
 
     $("#pnMensaje").html("");
     $("#pnMensaje").html(modal("Alerta",result.responseJSON["mensaje"], "modal-sm"));
     $("#myModal").modal();
-    return;
+    
 
 
+}
+
+function cargarPerfil()
+{
+    var obj=new Seguridad();
+    obj.token=$("#txtVarUrl").val();
+    obj.cargarddl("ddlPerfil",obj.consultarPerfil().responseJSON,"perfilid","perfilnombre" );
 }

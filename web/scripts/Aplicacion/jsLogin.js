@@ -168,7 +168,7 @@ $(function () {
         }
 
         const obj = new usuario($("#txtUsuario").val(), $("#txtPassword").val());
-
+      
         var resul = obj.login();
 
 
@@ -319,6 +319,7 @@ class usuario {
                 entidad: this.entidad,
                 usuario: this.usuario,
                 contrasenia: this.contrasenia,
+                token:"null",
                 do: "login"
             }
 

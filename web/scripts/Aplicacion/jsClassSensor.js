@@ -78,5 +78,16 @@ class Sensor {
         $("#"+elemento).append(option);
     }
 
+    importar()
+    {
+        var parametro =
+            "?entidad=" + this.entidad.trim() +
+            "&importarText=" + this.importarText.trim() +
+            "&token=" + this.token +
+            "&do=importar";
+
+        return consultarAjax('POST', parametro);
+    }
+
 
 }
