@@ -7,10 +7,11 @@ $(function () {
 
         if (!validarCampos("[required]")) {
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Alerta", "Debe diligenciar los campos.", "modal-sm"));
+            $("#pnMensaje").html(modal("Alerta", "Debe llenar los campos.", "modal-sm"));
             $("#myModal").modal();
             return;
         }
+
 
         var objLago = new Lago();
         objLago.nombre = $("#txtNombreLago").val();

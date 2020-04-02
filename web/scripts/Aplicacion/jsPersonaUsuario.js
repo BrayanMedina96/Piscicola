@@ -9,6 +9,8 @@ class PersonaUsuario{
     contrasenia;
     nombreComercial;
     usuarioPadre;
+    token;
+    perfil;
 
     constructor (nombre, apellido,numeroDocumento,tipoDocumento,usuario,contrasenia,nombreComercial) {
         this.nombre = nombre;
@@ -50,6 +52,8 @@ class PersonaUsuario{
          "&tipoDocumento=" + this.tipoDocumento +
          "&usuario=" + this.usuario + 
          "&usuarioPadre=" + this.usuarioPadre + 
+         "&perfil=" + this.perfil + 
+         "&token=" + this.token + 
          "&do=CrearUsuario";
 
 

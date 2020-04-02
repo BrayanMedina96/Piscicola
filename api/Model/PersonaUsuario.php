@@ -119,11 +119,11 @@ class PersonaUsuario
 
             if($this->validarExistencia($parametro["numeroDocumento"])>0)
             {
-                $result["mensaje"]="Numero de documento ya se encuentra registrado.";
+                $result["mensaje"]="Este numero de documento ya se encuentra registrado.";
                 $result["response"]="ok";
             }
             elseif ($objUsuario->validarExistencia($parametro["usuario"])>0) {
-                $result["mensaje"]="Nombre de usuario {$parametro["usuario"]} no se encuentra disponible.";
+                $result["mensaje"]="Este nombre de usuario {$parametro["usuario"]} no se encuentra disponible.";
                 $result["response"]="ok";
                 $result["tipo"]="user";
             }
@@ -185,7 +185,7 @@ class PersonaUsuario
             }
             else{
             
-                  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ) )';
+                  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ) )';
     
                    $statement  = $conn->prepare($sqlCommand);
                    $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -194,7 +194,7 @@ class PersonaUsuario
                    $statement ->bindValue(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
                    $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
                    $statement ->bindValue(':usuarioPadre',$parametro["usuarioPadre"],PDO::PARAM_INT);
-                   
+                   $statement ->bindValue(':perfil',$parametro["perfil"],PDO::PARAM_INT);
                    $statement ->execute();
                    $result["mensaje"]="Usuario se ha creado correctamente.";
                    $result["response"]="ok";

@@ -28,8 +28,10 @@ class Marca
        
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT marcaid,marcanombre FROM marca WHERE marcafechaelimina IS NULL;';
+        $sqlCommand = 'SELECT marcaid,marcanombre,marcadescripcion FROM marca 
+        WHERE marcafechaelimina IS NULL AND usuariopadreid=:usuariopadre;';
         $statement = $conn->prepare($sqlCommand);
+        $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
         $statement->execute();
         $resultado= $statement->fetchAll();
 
@@ -44,15 +46,47 @@ class Marca
     public function guardar($parametro)
     {
         $result="OK";
-       
+        $conn=Conexion::getInstance()->cnn();
+
+        try 
+        {
+
+            $sqlCommand ='INSERT INTO marca(marcanombre, marcafechacrea,marcausuariocrea,marcadescripcion,usuariopadreid)
+                          VALUES (:marcanombre,NOW(),:usuarioid,:marcadescripcion,:usuariopadre);';
+    
+            $statement  = $conn->prepare($sqlCommand);
+            $statement ->bindValue(':marcanombre',$parametro["nombre"],PDO::PARAM_STR);
+            $statement ->bindValue(':marcadescripcion',$parametro["descripcion"],PDO::PARAM_STR);
+            $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+           
+            $statement ->execute();
+    
+            
+        } catch (PDOException  $Exception) {
+            $result=$Exception->getMessage();
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
         
-        return   $result;
+     return   $result;
     }
 
     public function eliminar($parametro)
     {
         $result="OK";
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand ='UPDATE marca SET marcafechaelimina=NOW(),marcausuarioelimina=:usuario
+        WHERE marcaid=:marcaid';
+
+        $statement  = $conn->prepare($sqlCommand);
+        $statement ->bindValue(':marcaid',$parametro["id"],PDO::PARAM_INT);
+        $statement ->bindValue(':usuario',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+        $statement ->execute();
         
+        Conexion::cerrar($conn);
 
         return $result;
     }

@@ -3,6 +3,8 @@ $(function(){
     cargarTipoDocumento();
     cargarID();
     buscarPersona();
+    cargarPerfil();
+    $("#lblTitulo").text("Editar mi cuenta");
 
     $(".usuario").attr("hidden","hidden");
     
@@ -54,6 +56,7 @@ $(function(){
     }
 
     function iniciarPersona() {
+
         const objPersona = new Persona(
             $("#txtNombre").val(),
             $("#txtApellido").val(),
@@ -65,6 +68,7 @@ $(function(){
             $("#txtVarUrl").val(),
             $("#txtidPersona").val(),
         );
+
         objPersona.notificacorreo = $("#chekNotificacionCorreo").prop('checked');
         objPersona.notificamensaje = $("#chekNotificacionMensaje").prop('checked');
 
@@ -150,14 +154,19 @@ $(function(){
             $("#txtFechaExpiracion").val(result[key]["usuariofechaexpira"]);
             $("#chkEstado").prop("checked", result[key]["usuarioestado"] );
             $("#txtContrasenia").val(result[key]["usuariocontrasenia"]);
-
+            $("#txtContraseniaConfirmar").val(result[key]["usuariocontrasenia"]);
             $("#btnEnviar").text("Actualizar");
 
         }
 
     }
     
-
+    function cargarPerfil()
+    {
+        var obj=new Seguridad();
+        obj.token=$("#txtVarUrl").val();
+        obj.cargarddl("ddlPerfil",obj.consultarPerfil().responseJSON,"perfilid","perfilnombre" );
+    }
     
 
     $("#btnInfoPersonal").click(function(){
@@ -166,7 +175,7 @@ $(function(){
           $("#lblTitulo").text("Editar mi cuenta");
           $(".usuario").attr("hidden","hidden");
           $(".personal").removeAttr("hidden");
-          seguridad();
+          
           
 
     })
@@ -178,7 +187,6 @@ $(function(){
         $(".personal").attr("hidden","hidden");
         $(".usuario").removeAttr("hidden");
         $("#txtUsuario").val($("#txtUsuarioMenu").val());
-        seguridad();
         consultarUsuario();
         
 
@@ -198,9 +206,10 @@ $(function(){
            }
             
         }
-
+     
         if($("#btnEnviar").text()=="Actualizar" && $("#lblTitulo").text()=="Editar mi cuenta")
         {
+            
             actualizarPersona();
         }
 

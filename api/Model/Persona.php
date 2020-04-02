@@ -200,7 +200,7 @@ class Persona
 
         try {
             
-            $sqlCommand = 'INSERT INTO persona(
+              $sqlCommand = 'INSERT INTO persona(
                  tipodocumentoid,
                  personanumerodocumento,
                  perosnanombre, 
@@ -211,15 +211,15 @@ class Persona
         
                 $statement  = $conn->prepare($sqlCommand);
                 $statement ->execute();
+
                     
-        } catch (\Throwable $th) {
-            $result="Error";
+        } catch (Exception  $e) {
+             $result= ["data" => $e->getMessage() ];
         }
         finally{
             Conexion::cerrar($conn);
         }
 
-      
         return $result;
     }
 

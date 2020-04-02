@@ -15,7 +15,7 @@
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsMarca.js'></script>
+    <script src='../scripts/Aplicacion/jsClassMarca.js'></script>
     <script src='../scripts/Aplicacion/jsClassSensor.js'></script>
     <script src='../scripts/Aplicacion/jsClassLago.js'></script>
     <script src='../scripts/Aplicacion/jsSensor.js'></script>
@@ -59,11 +59,11 @@
 
                         <div class="form-group">
                             <label for="txtFecha">Fecha mantenimiento</label>
-                            <input type="text" class="form-control limpiar" id="txtFecha">
+                            <input type="text" class="form-control limpiar" id="txtFecha" required>
                         </div>
                         <div class="form-group">
                             <label for="txtRepetir">Repetir cada <em>(días)</em></label>
-                            <input type="number" class="form-control limpiar" id="txtRepetir">
+                            <input type="number" class="form-control limpiar" id="txtRepetir" value="0" required>
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-checkbox mb-3">

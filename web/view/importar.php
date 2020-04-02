@@ -14,6 +14,7 @@
     <script src='../scripts/Aplicacion/jsPersona.js'></script>
     <script src='../scripts/Aplicacion/jsClassSonda.js'></script>
     <script src='../scripts/Aplicacion/jsClassLago.js'></script>
+    <script src='../scripts/Aplicacion/jsClassSensor.js'></script>
     <script src='../scripts/Aplicacion/jsImportar.js'></script>
 
 
@@ -42,6 +43,12 @@
                         <h5>Importar</h5> <label id="lblImportar"></label>
                     </div>
                     <div class="card-body">
+                        <div id="pnCultivo" hidden class="form-group">
+                            <label for="ddlCultivo">Lago</label>
+                            <select id="ddlCultivo" class="form-control">
+                                <option></option>
+                            </select>
+                        </div>
                         <div class="table-responsive">
                             <div class="form-group">
                                 <table class="table table-bordered" id="tabla"></table>
@@ -49,16 +56,17 @@
                         </div>
                         <div class="form-group">
                             <label for="txtDescripcionLago"></label>
-                            <textarea charset="UTF-8" type="text"  class="form-control limpiar" id="txtImportar"
+                            <textarea charset="UTF-8" type="text" disabled class="form-control limpiar" id="txtImportar"
                                 rows="10" required></textarea>
                         </div>
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Enviar</button>
-                            <!--<button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>-->
-                            
-                            <label for="fileToUpload" class="btn btn-default">
-                                <img width="30px" src="../svg/file.png" /> Cargar
-                            </label>
+                            <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
+
+                            <label for="fileToUpload" class="btn btn-info">
+                                <img width="20px" src="../svg/file.png" /> Cargar
+                            </button>
+
                             <input type="file" name="fileToUpload" id="fileToUpload" hidden>
                         </div>
                     </div>
@@ -92,7 +100,7 @@
                     <div class="card">
                         <div class="card-header">Ayuda</div>
                         <div class="card-body">
-                        <a id="btnPlantilla" type="button" class="btn btn-default">
+                            <a id="btnPlantilla" type="button" class="btn btn-default">
                                 <img src="../svg/documento.png" width="30px">
                                 Plantilla
                             </a>
@@ -108,58 +116,11 @@
 
     <div id="pnMensaje"></div>
 
-    <div class="modal" id="modalLago" tabindex="-1" role="dialog">
-        <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">Mis lagos</h5>
-                    <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-
-                    <input class="form-control" id="myInput" type="text" placeholder="Buscar en la tabla:">
-                    <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th>Geolocalización</th>
-                                <th>Area</th>
-                                <th>Altitud</th>
-                                <th>Cant.Peces</th>
-                                <th>Profundidad</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tdResultado"></tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th style="text-align:left"></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                    </table>
-
-
-                </div>
-                <div class="modal-footer">
-                </div>
-            </div>
-        </div>
-    </div>
 
     <div id="pnMensaje"></div>
 
     <input type="text" id="txtTipo" value="" hidden />
-    
+
 </body>
 <?php 
 require("../plantilla/pie.php");
