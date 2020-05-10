@@ -79,30 +79,38 @@ class TipoLago
     public function actualizar($parametro)
     {
 
-        $result=true;
-        $conn=Conexion::getInstance()->cnn();
+        $result = "OK";
+        try {
 
-        $objBase64=new Base64($parametro["token"]);
+            $conn = Conexion::getInstance() -> cnn();
+
+            $objBase64 = new Base64($parametro["token"]);
+
+            $objUsuario = new Usuario();
+            $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+
+            $sqlCommand = 'UPDATE tipolago
+            SET tipolagonombre =:tipolagonombre, tipolagodescripcion =:tipolagodescripcion
+            WHERE tipolagoid =:tipolagoid;';
+
+
+
+            $statement = $conn -> prepare($sqlCommand);
+            $statement ->bindValue(':tipolagonombre', $parametro["nombre"], PDO::PARAM_STR);
+            $statement ->bindValue(':tipolagodescripcion', $parametro["descripcion"], PDO::PARAM_STR);
+            $statement ->bindValue(':tipolagoid', $parametro["id"], PDO::PARAM_STR);
+
+            $statement ->execute();
+
             
-        $objUsuario=new Usuario();
-        $resulUsuairio=$objUsuario->consultarUsuarioToken( $objBase64->decodeUsuario()["token"] );
+        } catch (PDOException $Exception) {
+            $result = $Exception ->getMessage();
+        }finally{
+            Conexion::cerrar($conn);
+        }
 
-        $sqlCommand ='UPDATE tipolago
-                      SET  tipolagonombre=:tipolagonombre, tipolagodescripcion=:tipolagodescripcion 
-                      WHERE tipolagoid=:tipolagoid;';
 
-                     
-
-             $statement  = $conn->prepare($sqlCommand);
-             $statement ->bindValue(':tipolagonombre',$parametro["nombre"],PDO::PARAM_STR);
-             $statement ->bindValue(':tipolagodescripcion',$parametro["descripcion"],PDO::PARAM_STR);
-             $statement ->bindValue(':tipolagoid',$parametro["id"],PDO::PARAM_STR);
-            
-             $statement ->execute();
-            
-             Conexion::cerrar($conn);
-
-        return  $result;
+        return $result;
 
     }
 

@@ -38,6 +38,7 @@ $(function () {
         $("#btnEnviar").text("Guardar");
         $("#btnEnviar").removeClass("btn-success");
         $(":text").val(" ");
+        $("#txtDescripcion").val("");
         $(".was-validated").removeClass("was-validated");
         
 

@@ -94,8 +94,34 @@ class Marca
     public function actualizar($parametro)
     {
         $result="OK";
+        $conn=Conexion::getInstance()->cnn();
 
-        return $result;
+        try 
+        {
+
+            $sqlCommand ='UPDATE marca
+                          SET  marcanombre=:marcanombre,
+                               marcafechaactualiza=NOW(), 
+                               marcausuarioactualiza=:marcausuarioactualiza, 
+                               marcadescripcion=:marcadescripcion
+                        WHERE marcaid=:marcaid';
+    
+            $statement  = $conn->prepare($sqlCommand);
+            $statement ->bindValue(':marcanombre',$parametro["nombre"],PDO::PARAM_STR);
+            $statement ->bindValue(':marcadescripcion',$parametro["descripcion"],PDO::PARAM_STR);
+            $statement ->bindValue(':marcausuarioactualiza',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':marcaid',$parametro["marcaid"],PDO::PARAM_INT);
+            $statement ->execute();
+    
+            
+        } catch (PDOException  $Exception) {
+            $result=$Exception->getMessage();
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+        
+     return   $result;
     }
     
     

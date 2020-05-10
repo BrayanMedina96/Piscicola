@@ -13,11 +13,12 @@ class Sensor
 
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT sensordescripcion, sensorcodigo, usuarioid, sensorfechamantenimiento,
-        sensorperiodicidadmantenimiento, sensorfechacreacion, usuarioidcrea,
-        sensorid, sensornombre, sensorestado, marcaid
-        FROM sensor WHERE usuariopadreid=:usuariopadreid
-        AND sensorfechaeliminacion IS NULL;';
+        $sqlCommand = 'SELECT sensor.sensordescripcion, sensor.sensorcodigo, sensor.usuarioid, sensor.sensorfechamantenimiento,
+        sensor.sensorperiodicidadmantenimiento, sensor.sensorfechacreacion, sensor.usuarioidcrea,
+        sensor.sensorid, sensor.sensornombre, sensor.sensorestado, sensor.marcaid,marca.marcanombre
+        FROM sensor INNER JOIN marca ON sensor.marcaid=marca.marcaid
+        WHERE sensor.usuariopadreid=:usuariopadreid
+        AND sensor.sensorfechaeliminacion IS NULL;';
 
         $statement  = $conn->prepare($sqlCommand); 
         $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
@@ -78,26 +79,26 @@ class Sensor
 
         $result="OK";
         $conn=Conexion::getInstance()->cnn();
+ 
+        try {
 
+            $sqlCommand ='UPDATE sensor
+            SET
+            sensorfechaeliminacion=NOW(),
+            usuarioidelimina=:usuarioidelimina
+            WHERE sensorid=:sensorid;';
+    
+            $statement  = $conn->prepare($sqlCommand);
+            $statement ->bindValue(':usuarioidelimina',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':sensorid',$parametro["id"],PDO::PARAM_INT);
+            $statement ->execute();
 
-        $objBase64 = new Base64($parametro["token"]);
-
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
-
-        $sqlCommand ='UPDATE sensor
-        SET
-        sensorfechaeliminacion=NOW(),
-        usuarioidelimina=:usuarioidelimina
-        WHERE sensorid=:sensorid;';
-
-        $statement  = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':usuarioidelimina',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-        $statement ->bindValue(':sensorid',$parametro["id"],PDO::PARAM_INT);
-        $statement ->execute();
+        }catch (PDOException  $Exception) {
+            $result=$Exception->getMessage();
+        }finally{
+            Conexion::cerrar($conn);
+        }
         
-        Conexion::cerrar($conn);
-
         return $result;
 
     }
@@ -105,40 +106,39 @@ class Sensor
     public function actualizar($parametro)
     {
 
-        $result=true;
+        $result="OK";
         $conn=Conexion::getInstance()->cnn();
+        
+        try {
 
-        $objBase64=new Base64($parametro["token"]);
-            
-        $objUsuario=new Usuario();
-        $resulUsuairio=$objUsuario->consultarUsuarioToken( $objBase64->decodeUsuario()["token"] );
+            $sqlCommand ='UPDATE sensor
+            SET sensordescripcion=:sensordescripcion, sensorcodigo=:sensorcodigo, sensorfechamantenimiento=:sensorfechamantenimiento, 
+                sensorperiodicidadmantenimiento=:sensorperiodicidadmantenimiento, 
+                 sensornombre=:sensornombre, sensorestado=:sensorestado, marcaid=:marcaid,  
+                 sensorfechaactualiza=NOW(),usuarioidactualiza=:usuarioidactualiza
+                 WHERE sensorid=:sensorid;';
+    
+                        
+                 $statement  = $conn->prepare($sqlCommand);
+                 $statement ->bindValue(':sensornombre',$parametro["nombre"],PDO::PARAM_STR);
+                 $statement ->bindValue(':sensordescripcion',$parametro["descripcion"],PDO::PARAM_STR);
+                 $statement ->bindValue(':sensorcodigo',$parametro["codigo"],PDO::PARAM_STR);
+                 $statement ->bindValue(':sensorfechamantenimiento',$parametro["fechaMantenimiento"],PDO::PARAM_STR);
+                 $statement ->bindValue(':sensorperiodicidadmantenimiento',$parametro["repetir"],PDO::PARAM_STR);
+                 $statement ->bindValue(':sensorestado',$parametro["estado"],PDO::PARAM_BOOL);
+                 $statement ->bindValue(':marcaid',$parametro["marca"],PDO::PARAM_STR);
+                 $statement ->bindValue(':usuarioidactualiza',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+                 $statement ->bindValue(':sensorid',$parametro["id"],PDO::PARAM_INT);
 
-        $sqlCommand ='UPDATE sensor
-        SET sensordescripcion=:sensordescripcion, sensorcodigo=:sensorcodigo, sensorfechamantenimiento=:sensorfechamantenimiento, 
-            sensorperiodicidadmantenimiento=:sensorperiodicidadmantenimiento, 
-             sensornombre=:sensornombre, sensorestado=:sensorestado, marcaid=:marcaid,  
-             sensorfechaactualiza=NOW(),usuarioidactualiza=:usuarioidactualiza
-      WHERE sensorid=:sensorid;';
+                 $statement ->execute();
 
-                     
-
-             $statement  = $conn->prepare($sqlCommand);
-             $statement ->bindValue(':sensornombre',$parametro["nombre"],PDO::PARAM_STR);
-             $statement ->bindValue(':sensordescripcion',$parametro["descripcion"],PDO::PARAM_STR);
-             $statement ->bindValue(':sensorcodigo',$parametro["codigo"],PDO::PARAM_STR);
-             $statement ->bindValue(':sensorfechamantenimiento',$parametro["fechaMantenimiento"],PDO::PARAM_STR);
-             $statement ->bindValue(':sensorperiodicidadmantenimiento',$parametro["repetir"],PDO::PARAM_STR);
-             $statement ->bindValue(':sensorestado',$parametro["estado"],PDO::PARAM_BOOL);
-             $statement ->bindValue(':marcaid',$parametro["marca"],PDO::PARAM_STR);
-             $statement ->bindValue(':usuarioidactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-             $statement ->bindValue(':sensorid',$parametro["id"],PDO::PARAM_INT);
-             
-            
-             
-             $statement ->execute();
-            
-             Conexion::cerrar($conn);
-
+        } catch (PDOException  $Exception) {
+            $result=$Exception->getMessage();
+         }
+        finally{
+            Conexion::cerrar($conn);
+        }
+       
         return  $result;
 
     }

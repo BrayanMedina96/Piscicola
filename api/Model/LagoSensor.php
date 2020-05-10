@@ -55,7 +55,7 @@ class LagoSensor
             $statement ->bindValue(':usuariopadreid',$this->usuario[0]["usuariopadreid"],PDO::PARAM_INT);
 
             $statement ->execute();
-            $result= $statement->fetchAll();
+           // $result= $statement->fetchAll(); //POR QUE EN LA APP NO FUNCIONA
     
             
         } catch (PDOException  $Exception) {
@@ -74,61 +74,65 @@ class LagoSensor
     
     public function eliminar($parametro)
     {
-
+      
         $result="OK";
         $conn=Conexion::getInstance()->cnn();
 
+        try {
 
-        $objBase64 = new Base64($parametro["token"]);
+            $sqlCommand ='UPDATE lagosensor 
+                          SET fechaelimina=CAST(NOW() AS DATE),
+                              usuarioelimina=:usuarioelimina 
+                          WHERE lagosensorid=:lagosensorid';
 
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+             $statement  = $conn->prepare($sqlCommand);
+             $statement ->bindValue(':usuarioelimina',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+             $statement ->bindValue(':lagosensorid',$parametro["id"],PDO::PARAM_INT);
+            $statement ->execute();
 
-        $sqlCommand ='UPDATE lagosensor 
-        SET fechaelimina=CAST(NOW() AS DATE),
-        usuarioelimina=:usuarioelimina 
-        WHERE lagosensorid=:lagosensorid';
-
-        $statement  = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':usuarioelimina',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-        $statement ->bindValue(':lagosensorid',$parametro["id"],PDO::PARAM_INT);
-        $statement ->execute();
-        
-        Conexion::cerrar($conn);
+        } catch (PDOException  $Exception) {
+            $result=$Exception->getMessage();
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
 
         return $result;
 
     }
 
-    public function actualizar($parametro)
-    {
+    public function actualizar($parametro) {
 
-        $result=true;
-        $conn=Conexion::getInstance()->cnn();
+        $result = "OK";
+        $conn = Conexion::getInstance() -> cnn();
 
-        $sqlCommand ='UPDATE lagosensor
-        SET lagoid=:lagoid, sensorid=:sensorid, lagosensorfechainstalacion=:lagosensorfechainstalacion,
-        lagosensorestado=:lagosensorestado,fechaactualiza=CAST(NOW() AS DATE),
-        usuarioactualiza=:usuarioactualiza
-        WHERE lagosensorid=:lagosensorid;';
+        try {
+
+            $sqlCommand = 'UPDATE lagosensor
+            SET lagoid =:lagoid, sensorid =:sensorid, lagosensorfechainstalacion =:lagosensorfechainstalacion,
+                lagosensorestado =:lagosensorestado, fechaactualiza = CAST(NOW() AS DATE),
+                usuarioactualiza =:usuarioactualiza
+            WHERE lagosensorid =:lagosensorid;';
 
 
-             $statement  = $conn->prepare($sqlCommand);
-             $statement ->bindValue(':lagosensorid',$parametro["id"],PDO::PARAM_STR);
-             $statement ->bindValue(':lagoid',$parametro["lago"],PDO::PARAM_STR);
-             $statement ->bindValue(':sensorid',$parametro["sensor"],PDO::PARAM_STR);
-             $statement ->bindValue(':lagosensorfechainstalacion',$parametro["instalacion"],PDO::PARAM_STR);
-             $statement ->bindValue(':lagosensorestado',$parametro["estado"],PDO::PARAM_STR);
-             $statement ->bindValue(':usuarioactualiza',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
-             $statement ->bindValue(':lagosensorid',$parametro["id"],PDO::PARAM_INT);
-             
-            
-             
-             $statement ->execute();
-            
-             Conexion::cerrar($conn);
+            $statement = $conn -> prepare($sqlCommand);
+            $statement -> bindValue(':lagosensorid', $parametro["id"], PDO::PARAM_STR);
+            $statement -> bindValue(':lagoid', $parametro["lago"], PDO::PARAM_STR);
+            $statement -> bindValue(':sensorid', $parametro["sensor"], PDO::PARAM_STR);
+            $statement -> bindValue(':lagosensorfechainstalacion', $parametro["instalacion"], PDO::PARAM_STR);
+            $statement -> bindValue(':lagosensorestado', $parametro["estado"], PDO::PARAM_STR);
+            $statement -> bindValue(':usuarioactualiza', $this -> usuario[0]['usuarioid'], PDO::PARAM_INT);
+            $statement -> bindValue(':lagosensorid', $parametro["id"], PDO::PARAM_INT);
 
-        return  $result;
+            $statement -> execute();
+
+        } catch (PDOException $Exception) {
+            $result = $Exception -> getMessage();
+        } finally {
+            Conexion::cerrar($conn);
+        }
+
+        return $result;
 
     }
 
