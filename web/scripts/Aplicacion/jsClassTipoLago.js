@@ -17,7 +17,7 @@ guardar()
             "&do=";
 
         return consultarAjax('POST', parametro);
-
+        
 }
 
 actualizar()

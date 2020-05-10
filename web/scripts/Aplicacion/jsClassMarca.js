@@ -38,6 +38,19 @@ class Marca {
 
     }
 
+    actualizar() {
+        var parametro =
+            "?entidad=" + this.entidad +
+            "&nombre=" + this.nombre.trim() +
+            "&descripcion=" + this.descripcion.trim() +
+            "&marcaid=" + this.id +
+            "&token=" + this.token +
+            "&do=";
+
+        return consultarAjax('PUT', parametro);
+
+    }
+
     eliminar() {
         var parametro =
             "?entidad=" + this.entidad +
