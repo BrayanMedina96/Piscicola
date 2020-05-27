@@ -3,9 +3,17 @@ var myChart = null;
 $(function () {
 
     $("#txtImportar").val("0");
-
-    
-
+  /*  n = new Date();
+    //Año
+    y = n.getFullYear();
+    //Mes
+    m = n.getMonth() + 1;
+    //Día
+    d = n.getDate();
+    fecha = y + "/" + m + "/" + d;
+    $("#txtFechaInicial").val(fecha);
+    $("#txtFechaFinal").val(fecha);
+*/
     miDashboard();
 
     $("#txtFechaInicial").datepicker({
@@ -114,7 +122,7 @@ $(function () {
 
 function miDashboard() {
 
-
+     
     var obj = new Dashboard();
     obj.token = $("#txtVarUrl").val();
     var result = obj.consultar().responseJSON;
@@ -142,6 +150,12 @@ function color(valor) {
         "Morado": 'rgba(231, 114, 233, 1)',
         "Lima": 'rgba(26, 236, 67, 1)',
         "Agua": 'rgba(34, 239, 206, 1)',
+        "Anaranjado": 'rgba(217, 99, 35, 1)',
+        "Rosa": 'rgba(240, 115, 216, 1)',
+        "Morado": 'rgba(174, 13, 245, 1)',
+        "Cian": 'rgba(13, 245, 227, 1)',
+        "Turquesa": 'rgba(12, 200, 229, 1)',
+        "Negro": 'rgba(0, 0, 0, 1)',
     };
 
     switch (valor) {
@@ -154,14 +168,17 @@ function color(valor) {
             color = paletaColor.Rojo;
             break;
         case "amarillo":
+        case "ph":
         case 3:
             color = paletaColor.Amarillo;
             break;
         case "azul":
+        case "oxigenodisuelto":
         case 4:
             color = paletaColor.Azul;
             break;
         case "verde":
+        case "amonionh3":
         case 5:
             color = paletaColor.Verde;
             break;
@@ -170,13 +187,36 @@ function color(valor) {
             color = paletaColor.Verde;
             break;
         case "Lima":
+        case "temperaturaestanque":
         case 7:
-            color = paletaColor.Verde;
+            color = paletaColor.Lima;
             break;
         case "Agua":
         case 8:
             color = paletaColor.Verde;
             break;
+        case "temperaturaambiente":
+            color = paletaColor.Anaranjado;
+            break;
+        case "conductividadelectrica":
+            color = paletaColor.Gris;
+            break;
+        case "amonionh3":
+            color = paletaColor.Rosa;
+            break;
+        case "amonionh4":
+            color = paletaColor.Morado;
+            break;
+        case "nitrito":
+            color = paletaColor.Cian;
+            break;
+        case "alcalinidad":
+            color = paletaColor.Turquesa;
+            break;
+        case "pecesmuertos":
+            color = paletaColor.Negro;
+            break;
+            
         default:
             break;
     }
@@ -267,11 +307,11 @@ function preparar(response, campo, title, elemen) {
                 objGrafica.label = y[index];
                 if (tipoGrafica == "bar") //|| tipoGrafica=="doughnut" || tipoGrafica=="pie" || tipoGrafica=="polarArea"
                 {
-                    objGrafica.backgroundColor = color(Math.floor((Math.random() * 9) + 1));
+                    objGrafica.backgroundColor = color(Math.floor((Math.random() * 9) + 1)) //"rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; //  color(Math.floor((Math.random() * 9) + 1));
                 }
                 if (tipoGrafica == "line") //|| tipoGrafica=="radar"
                 {
-                    objGrafica.borderColor = color(Math.floor((Math.random() * 9) + 1));
+                    objGrafica.borderColor =  color( y[index] ); // "rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; // color(Math.floor((Math.random() * 9) + 1));
                 }
 
             }
