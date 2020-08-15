@@ -158,7 +158,9 @@ $(function () {
 
     function ingresar() {
 
-        var intento = parseInt($("#txtIntento").val());
+        try {
+           
+            var intento = parseInt($("#txtIntento").val());
 
         if (!validarCampos(".login")) {
             $("#pnMensaje").html("");
@@ -216,6 +218,12 @@ $(function () {
             totalTime=60;
             updateClock();
         }
+            
+        } catch (error) {
+            badge("#pnMensaje", error, "danger");
+        }
+        
+
 
     }
 

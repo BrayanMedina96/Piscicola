@@ -319,7 +319,7 @@ function preparar(response, campo, title, elemen) {
             objGrafica.data.push(response[key][y[index]]);
 
         }
-
+ 
         data.push(objGrafica);
     }
 
