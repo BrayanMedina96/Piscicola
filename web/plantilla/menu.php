@@ -53,6 +53,9 @@
           <a id="mDashboard" class="nav-link go dashboard" go="../view/dashboard.php">Dashboard<span class="sr-only">(current)</span></a>
         </li>
         <li class="nav-item active">
+          <a id="mPredecir" class="nav-link go predecir" go="../view/predecir.php">Predecir<span class="sr-only">(current)</span></a>
+        </li>
+        <li class="nav-item active">
           <a id="mSeguridad" class="nav-link go seguridad" go="../view/seguridad.php">Seguridad<span class="sr-only">(current)</span></a>
         </li>
         
