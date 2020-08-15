@@ -51,6 +51,16 @@ function modal(titulo,mensaje,largo)
 function  badge(elem,mensaje,tipo) {
    
    var alert="";
+    alert+="<span id='badgeID' style='z-index: 1060; position: absolute;left:80%;top:20%' class='alert alert-"+tipo+"'>"+mensaje+"</span>";
+    
+    $(elem).append(alert);
+ 
+    $("#badgeID").fadeOut(8000);
+    setTimeout(function () {
+       $("#badgeID").remove();
+      }, 5000*3);
+      
+   /*var alert="";
    alert+="<span id='badgeID' class='badge badge-"+tipo+"'>"+mensaje+"</span>";
    
    $(elem).append(alert);
@@ -58,7 +68,7 @@ function  badge(elem,mensaje,tipo) {
    $("#badgeID").fadeOut(4000);
    setTimeout(function () {
       $("#badgeID").remove();
-     }, 5000);
+     }, 5000);*/
 
 }
 
