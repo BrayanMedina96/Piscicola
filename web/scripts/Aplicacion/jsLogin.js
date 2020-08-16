@@ -192,7 +192,7 @@ $(function () {
             return;
         }
         
-        if(resul.responseJSON["data"]=="")
+        if(resul.responseJSON["existe"]=="")
         {
             $("#pnMensaje").html("");
             $("#pnMensaje").html(modal("Alerta", "Usuario no registrado."));
