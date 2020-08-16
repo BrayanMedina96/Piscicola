@@ -191,7 +191,14 @@ $(function () {
 
             return;
         }
-
+        
+        if(resul.responseJSON["data"]=="")
+        {
+            $("#pnMensaje").html("");
+            $("#pnMensaje").html(modal("Alerta", "Usuario no se encuentra registrado."));
+            $("#myModal").modal();
+            return;
+        }
 
         if (resul.responseJSON["data"].length > 0)
         {
