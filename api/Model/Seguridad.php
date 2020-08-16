@@ -39,12 +39,19 @@ class Seguridad
 
         $objUsuario = new Usuario();
         $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+        $filtro="";
+        
+        if( $this->getPerfil($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
+        {
+            $filtro=" AND perfilid<>3 ";
+        }
 
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT perfilid,perfilnombre,perfildescripcion,usuariocrea FROM perfil
-        WHERE (usuariocrea=:usuariocrea OR usuariocrea IS NULL) AND usuarioelimina IS  NULL
-         ORDER BY perfilnombre';
+        $sqlCommand = "SELECT perfilid,perfilnombre,perfildescripcion,usuariocrea FROM perfil
+         WHERE (usuariocrea=:usuariocrea OR usuariocrea IS NULL)
+         AND usuarioelimina IS  NULL  $filtro
+         ORDER BY perfilnombre";
 
         $statement  = $conn->prepare($sqlCommand); 
         $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
@@ -53,6 +60,18 @@ class Seguridad
 
         Conexion::cerrar($conn);
 
+        return $resultado;
+    }
+
+    public function getPerfilUsuario($id)
+    {
+        $sqlCommand = 'SELECT perfil.perfilnombre FROM usuario
+        INNER JOIN perfil ON usuario.perfilid=perfil.perfilid
+        WHERE usuario.usuarioid=:usuarioid';
+        $statement  = $conn->prepare($sqlCommand); 
+        $statement ->bindValue(':usuarioid',$id,PDO::PARAM_INT);
+        $statement->execute();              
+        $resultado= $statement->fetchAll();
         return $resultado;
     }
 
