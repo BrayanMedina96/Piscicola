@@ -71,7 +71,8 @@ class Persona
             persona.personatelefono, persona.personatelefonoopcional,
                 persona.personacorreo, persona.tipodocumentoid, persona.personanumerodocumento, persona.personafechacreacion,
                 persona.personafechaactualizacion, persona.personafechaeliminar, persona.usuarioidelimina,
-                persona.usuarioidactualiza,usuarionombre,usuarioid,notificacioncorreo,notificacionmensaje
+                persona.usuarioidactualiza,usuarionombre,usuarioid,notificacioncorreo,notificacionmensaje,
+                usuario.perfilid
             FROM persona
             INNER JOIN usuario ON persona.personaid = usuario.personaid
             WHERE persona.personaid =:personaid;
