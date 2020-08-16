@@ -150,6 +150,8 @@ $(function () {
             $("#pnMensaje").html("");
             $("#pnMensaje").html(modal("Mensaje", result.responseJSON["mensaje"] + msg, ""));
             $("#myModal").modal();
+            $("#btnLogin").click();
+
             
 
         }
