@@ -20,9 +20,7 @@ function errorCampos(id)
       $("#"+id ).parent().addClass("was-validated") ;
 }
 
-$('.bloqueo').keypress(function(tecla) {
-   if(tecla.charCode < 48 || tecla.charCode > 57) return false;
-});
+
 
 function modal(titulo,mensaje,largo)
 {
