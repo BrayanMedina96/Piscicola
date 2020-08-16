@@ -124,7 +124,7 @@ $(function(){
 
     function actualizarUsuario()
     {
-        if ($("#txtFechaExp").text()=="") {
+        if ($("#txtFechaExp").val()=="") {
             errorCampos("txtFechaExp");
             return;
         }
