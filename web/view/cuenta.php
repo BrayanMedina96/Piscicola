@@ -159,7 +159,7 @@
 
               <div class="mb-3 usuario fechaexpiracion">
                 <label for="txtFechaExp">Fecha expiración</label>
-                <input required type="text" placeholder="Fecha" class="form-control bloqueo fechaexpiracion" 
+                <input required type=" " placeholder="Fecha" class="form-control bloqueo fechaexpiracion" 
                   id="txtFechaExp">
               </div>
 
