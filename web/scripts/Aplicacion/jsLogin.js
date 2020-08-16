@@ -214,7 +214,7 @@ $(function () {
 
         } else {
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Alerta", "Usuario y/o contraseña incorrecta. <br> Intentos:" + intento, ""));
+            $("#pnMensaje").html(modal("Alerta", "Usuario y/o contraseña incorrectos. <br> Intentos:" + intento, ""));
             $("#myModal").modal();
         }
 
