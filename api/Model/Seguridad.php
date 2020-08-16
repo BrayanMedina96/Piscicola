@@ -35,7 +35,8 @@ class Seguridad
 
     public function getPerfil($parametro)
     {
-        $objBase64 = new Base64($parametro["token"]);
+        try {
+            $objBase64 = new Base64($parametro["token"]);
 
         $objUsuario = new Usuario();
         $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
@@ -59,6 +60,10 @@ class Seguridad
         $resultado= $statement->fetchAll();
 
         Conexion::cerrar($conn);
+
+        } catch (PDOException  $Exception) {
+            $result=$Exception->getMessage();
+        }
 
         return $resultado;
     }
