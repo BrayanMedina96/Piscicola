@@ -124,6 +124,11 @@ $(function(){
 
     function actualizarUsuario()
     {
+        if ($("#txtFechaExpiracion").text()=="") {
+            errorCampos("txtFechaExpiracion");
+            return;
+        }
+
           var obj=new Usuario();
           obj.token=$("#txtVarUrl").val();
           obj.nombre=$("#txtUsuario").val();
