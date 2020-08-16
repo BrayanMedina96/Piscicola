@@ -96,6 +96,10 @@ $(function(){
                 $("#chekNotificacionMensaje").prop("checked", result[key]["notificacionmensaje"] );
                 $("#chkEstado").prop("checked", result[key]["usuarioestado"] );
                 $("#btnEnviar").text("Actualizar");
+                if(result[key]["perfilid"]==3)
+                {
+                  $("#btnUsuario").removeAttr("hidden");
+                }
                 
              }
 
