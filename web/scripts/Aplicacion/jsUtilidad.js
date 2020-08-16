@@ -15,6 +15,10 @@ function validarCampos(tipo)
        return estado;
 }
 
+function errorCampos(id)
+{
+      $("#"+id ).parent().addClass("was-validated") ;
+}
 
 function modal(titulo,mensaje,largo)
 {
