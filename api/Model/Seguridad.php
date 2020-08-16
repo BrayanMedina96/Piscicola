@@ -43,10 +43,12 @@ class Seguridad
             $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
             $filtro="";
         
-             if( $this->getPerfil($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
+            
+
+             if( $this->getPerfilUsuario($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
              {
-              $filtro=" AND perfilid<>3 ";
-            }
+               $filtro=" AND perfilid<>3 ";
+             }
 
              $conn=Conexion::getInstance()->cnn();
 
@@ -58,9 +60,9 @@ class Seguridad
              $statement  = $conn->prepare($sqlCommand); 
              $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
              $statement->execute();              
-              $resultado= $statement->fetchAll();
+             $resultado= $statement->fetchAll();
 
-        Conexion::cerrar($conn);
+            Conexion::cerrar($conn);
 
         } catch (PDOException  $Exception) {
             $result=$Exception->getMessage();
