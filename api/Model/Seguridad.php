@@ -36,28 +36,29 @@ class Seguridad
     public function getPerfil($parametro)
     {
         try {
+
             $objBase64 = new Base64($parametro["token"]);
 
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
-        $filtro="";
+            $objUsuario = new Usuario();
+            $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+            $filtro="";
         
-        if( $this->getPerfil($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
-        {
-            $filtro=" AND perfilid<>3 ";
-        }
+             if( $this->getPerfil($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
+             {
+              $filtro=" AND perfilid<>3 ";
+            }
 
-        $conn=Conexion::getInstance()->cnn();
+             $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = "SELECT perfilid,perfilnombre,perfildescripcion,usuariocrea FROM perfil
-         WHERE (usuariocrea=:usuariocrea OR usuariocrea IS NULL)
-         AND usuarioelimina IS  NULL  $filtro
-         ORDER BY perfilnombre";
+              $sqlCommand = "SELECT perfilid,perfilnombre,perfildescripcion,usuariocrea FROM perfil
+                 WHERE (usuariocrea=:usuariocrea OR usuariocrea IS NULL)
+                 AND usuarioelimina IS  NULL  $filtro
+                 ORDER BY perfilnombre";
 
-        $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-        $statement->execute();              
-        $resultado= $statement->fetchAll();
+             $statement  = $conn->prepare($sqlCommand); 
+             $statement ->bindValue(':usuariocrea',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+             $statement->execute();              
+              $resultado= $statement->fetchAll();
 
         Conexion::cerrar($conn);
 
@@ -70,6 +71,7 @@ class Seguridad
 
     public function getPerfilUsuario($id)
     {
+        $conn=Conexion::getInstance()->cnn();
         $sqlCommand = 'SELECT perfil.perfilnombre FROM usuario
         INNER JOIN perfil ON usuario.perfilid=perfil.perfilid
         WHERE usuario.usuarioid=:usuarioid';
@@ -77,6 +79,7 @@ class Seguridad
         $statement ->bindValue(':usuarioid',$id,PDO::PARAM_INT);
         $statement->execute();              
         $resultado= $statement->fetchAll();
+        Conexion::cerrar($conn);
         return $resultado;
     }
 
