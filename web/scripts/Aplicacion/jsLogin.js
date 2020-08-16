@@ -195,7 +195,7 @@ $(function () {
         if(resul.responseJSON["data"]=="")
         {
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Alerta", "Usuario no se encuentra registrado."));
+            $("#pnMensaje").html(modal("Alerta", "Usuario no registrado."));
             $("#myModal").modal();
             return;
         }
