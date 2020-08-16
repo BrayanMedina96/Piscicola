@@ -148,7 +148,8 @@ $(function () {
             }
 
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Mensaje", result.responseJSON["mensaje"] + msg, ""));
+            //$("#pnMensaje").html(modal("Mensaje", result.responseJSON["mensaje"] + msg, ""));
+            alert(result.responseJSON["mensaje"]);
             $("#myModal").modal();
             $("#btnLogin").click();
 
