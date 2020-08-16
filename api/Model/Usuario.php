@@ -135,6 +135,13 @@ class Usuario
 
           }
 
+          $existe="";
+          $existeUsuario=$this->consultarNombre($parametro["usuario"]);
+          if(count($existeUsuario)>0)
+          {
+            $existe=1;
+          }
+
 
 
         } catch (\Throwable $th) {
@@ -144,8 +151,26 @@ class Usuario
             Conexion::cerrar($conn);
         }
 
-        return array('data' => base64_encode($variable),'estado'=>  $estado, 'cambioPass'=>$cambioPass["estado"],'dataCambioPass'=>$cambioPass["data"] ); 
+        return array('data' => base64_encode($variable),'estado'=>  $estado, 'cambioPass'=>$cambioPass["estado"],'dataCambioPass'=>$cambioPass["data"],'existe'=> $existe ); 
         
+    }
+
+    public function consultarNombre($nombre)
+    {
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand  = 'SELECT usuarioid, usuarionombre, usuariocontrasenia, usuarioestado, usuariofechaexpira, personaid, perfilid, usuarioFechacreacion, usuariofechaactualizacion,
+                        usuarioidcrea FROM public.usuario
+                        WHERE usuarionombre=:usuarionombre;';
+
+        $statement  = $conn->prepare($sqlCommand); 
+        $statement ->bindValue(':usuarionombre',$nombre,PDO::PARAM_STR);
+        $statement->execute();              
+        $resultado= $statement->fetchAll();
+
+        Conexion::cerrar($conn);
+
+        return $resultado;
     }
 
     public function guardar($parametro)
