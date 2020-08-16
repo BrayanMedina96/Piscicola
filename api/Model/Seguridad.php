@@ -43,10 +43,8 @@ class Seguridad
             $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
             $filtro="";
         
-            
-            return  $this->getPerfilUsuario($resulUsuairio[0]['usuarioid'])[0]['perfilnombre'];
 
-             if( $this->getPerfilUsuario($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
+             if( $this->getPerfilUsuario($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']!="Super Administrador" )
              {
                $filtro=" AND perfilid<>3 ";
              }
