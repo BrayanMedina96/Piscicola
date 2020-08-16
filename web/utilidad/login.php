@@ -1,5 +1,7 @@
 <?php
 
+include ("../Config/Config.php");
+
 if (isset($_GET['txtUsuariohd']) != "") 
 {
       /*
@@ -9,7 +11,7 @@ if (isset($_GET['txtUsuariohd']) != "")
       '"}';
 */
      // $variable = base64_encode($variable);
-      $ip=$_SERVER['REMOTE_ADDR'];
+      $ip=IP;
       header("Location: $ip/Piscicultura/web/view/home.php?MC=".$_GET['txtUsuariohd']);
       die();
       
