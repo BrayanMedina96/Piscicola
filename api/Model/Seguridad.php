@@ -44,6 +44,7 @@ class Seguridad
             $filtro="";
         
             
+            return  $this->getPerfilUsuario($resulUsuairio[0]['usuarioid']);
 
              if( $this->getPerfilUsuario($resulUsuairio[0]['usuarioid'])[0]['perfilnombre']=="Super Administrador" )
              {
