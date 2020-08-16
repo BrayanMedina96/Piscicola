@@ -144,9 +144,12 @@ $(function(){
             $("#pnMensaje").html(modal("Mensaje","Usuario actualizado.",""));
             $("#myModal").modal();
           }
-          
-
+        
     }
+
+    $("#txtFechaExpiracion").keypress(function(){
+       $(this).val("");
+    });
 
 
     function consultarUsuario() {
