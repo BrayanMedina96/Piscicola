@@ -24,7 +24,7 @@ $(function(){
            
     });
 
-    $("#txtFechaExpiracion").datepicker({
+    $("#txtFechaExp").datepicker({
         onSelect: function (fd, d, calendar) {
             calendar.hide()
         }
@@ -124,8 +124,8 @@ $(function(){
 
     function actualizarUsuario()
     {
-        if ($("#txtFechaExpiracion").text()=="") {
-            errorCampos("txtFechaExpiracion");
+        if ($("#txtFechaExp").text()=="") {
+            errorCampos("txtFechaExp");
             return;
         }
 
@@ -134,7 +134,7 @@ $(function(){
           obj.nombre=$("#txtUsuario").val();
           obj.contrasenia=$("#txtContrasenia").val();
           obj.perfil=$("#ddlPerfil").val();
-          obj.fechaExpiracion=$("#txtFechaExpiracion").val();
+          obj.fechaExpiracion=$("#txtFechaExp").val();
           obj.estado=$("#chkEstado").prop('checked');
           obj.id=$("#txtidUsuario").val();
           obj.cambioPassword = $("#chkCambioPassword").prop('checked');
@@ -147,7 +147,7 @@ $(function(){
         
     }
 
-    $("#txtFechaExpiracion").keypress(function(){
+    $("#txtFechaExp").keyup(function(){
        $(this).val("");
     });
 
@@ -163,7 +163,7 @@ $(function(){
 
             $("#txtUsuario").val(result[key]["usuarionombre"]);
             $("#ddlPerfil").val(result[key]["perfilid"]);
-            $("#txtFechaExpiracion").val(result[key]["usuariofechaexpira"]);
+            $("#txtFechaExp").val(result[key]["usuariofechaexpira"]);
             $("#chkEstado").prop("checked", result[key]["usuarioestado"] );
             $("#txtContrasenia").val(result[key]["usuariocontrasenia"]);
             $("#txtContraseniaConfirmar").val(result[key]["usuariocontrasenia"]);
