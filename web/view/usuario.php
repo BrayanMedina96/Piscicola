@@ -72,6 +72,12 @@
                             </select>
                         </div>
 
+                        <div class="mb-3 usuario perfil">
+                            <label for="txtCorreo">Correo<span class="text-muted"></span></label>
+                            <input type="text" id="txtCorreo" class="form-control perfil" required="">
+                            
+                        </div>
+
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Crear usuario</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
@@ -86,8 +92,7 @@
                 <div class="card">
                     <div class="card-header">Información</div>
                     <div class="card-body">
-                        <li> Cre </li>
-                        <li> Puede utilizar el campo de fecha para realizar filtro entre rangos.</li>
+                        <li></li>
                     </div>
 
                 </div>

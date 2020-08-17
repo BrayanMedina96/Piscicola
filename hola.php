@@ -2,6 +2,108 @@
 
 <body>
 
+<!DOCTYPE html>
+<html>
+<head>
+<body>
+
+<table style="max-width:600px;border-width:1px;border-style:solid;border-color:#dcdcdc" width="100%" cellspacing="0"
+    cellpadding="0" border="0" align="center">
+    <tbody>
+        <tr>
+            <td style="text-align:center">
+                <figure>
+                    <center>
+                        <img width="100px"
+                            src=" data:image/png;base64,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"
+                            alt="Red dot">
+                    </center>
+                </figure>
+            </td>
+        </tr>
+        <tr>
+            <td style="padding-top:0px;padding-bottom:0px;padding-right:5%;padding-left:5%">
+                <table
+                    style="max-width:550px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:15px;color:#210049;text-align:center"
+                    width="100%" cellspacing="0" cellpadding="0" border="0" align="center">
+                    <tbody>
+                        <tr>
+                            <td style="font-size:18px;font-weight:bold;color:#fb932c;padding-top:30px;padding-bottom:20px;padding-right:0%;padding-left:0%;text-align:center"
+                                width="100%">Bienvenido</td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top:0px;padding-bottom:15px;padding-right:0px;padding-left:0px;text-align:left"
+                                width="100%">
+                                <p>
+                                    <span style="font-size:16px">
+                                        <strong>¡Ya está listo tu usurio en Aqua!</strong>
+                                        <img goomoji="1f609" data-goomoji="1f609"
+                                            style="margin:0 0.2ex;vertical-align:middle;max-height:24px" alt="😉"
+                                            src="https://mail.google.com/mail/e/1f44c" data-image-whitelisted=""
+                                            class="CToWUd">
+                                    </span>
+                                </p>
+                                <ol>
+                                    <li>
+                                        <strong>
+                                            <span style="font-size:16px">Usuario:</span>
+                                        </strong>
+                                        <span style="font-size:16px">
+                                            @USUARIO
+                                        </span>
+                                    </li>
+                                    <li>
+                                        <strong>
+                                            <span style="font-size:16px">Contraseña:</span>
+                                        </strong>
+                                        <span style="font-size:16px">
+                                            @CONTRASEÑA
+                                        </span>
+                                    </li>
+                                </ol>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td style="padding-top:30px;padding-bottom:35px;padding-right:0%;padding-left:0%">
+                                <table
+                                    style="max-width:300px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;font-size:10px;color:#fb932c;text-align:center;background-color:#fb932c;background-image:none;background-repeat:repeat;background-position:top left;border-width:1px;border-style:solid;border-color:#fb932c;border-radius:5px"
+                                    width="100%" align="center">
+                                    <tbody>
+                                        <tr>
+                                            <td style="font-size:18px;font-weight:bold;padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;color:white;line-height:20px;text-decoration:none"
+                                                width="100%">
+                                                <a href="http://3.129.150.14/aqua/web/view/login.php"
+                                                    style="color:white;text-decoration:none" target="_blank">
+                                                    Completar la inscripción
+                                                </a></td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>
+                                <table
+                                    style="max-width:570px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;border-top-width:1px;border-top-style:dotted;border-top-color:#dcdcdc;text-align:center;padding-top:20px;padding-bottom:20px;padding-right:0px;padding-left:0px"
+                                    width="100%" cellspacing="0" cellpadding="0" align="center">
+                                    <tbody>
+
+                                    </tbody>
+                                </table>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+
+</body>
+</html>
+
+
 
 
 
