@@ -190,14 +190,14 @@ class PersonaUsuario
                   $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ),:correo )';
     
                    $statement  = $conn->prepare($sqlCommand);
-                   $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
-                   $statement ->bindValue(':apellido',$parametro["apellido"],PDO::PARAM_STR);
-                   $statement ->bindValue(':numerodocumento',$parametro["numeroDocumento"],PDO::PARAM_STR);
-                   $statement ->bindValue(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
-                   $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
-                   $statement ->bindValue(':usuarioPadre',$parametro["usuarioPadre"],PDO::PARAM_INT);
-                   $statement ->bindValue(':perfil',$parametro["perfil"],PDO::PARAM_INT);
-                   $statement ->bindValue(':correo',$parametro["correo"],PDO::PARAM_STR);
+                   $statement ->bindParam(':nombre',$parametro["nombre"],PDO::PARAM_STR);
+                   $statement ->bindParam(':apellido',$parametro["apellido"],PDO::PARAM_STR);
+                   $statement ->bindParam(':numerodocumento',$parametro["numeroDocumento"],PDO::PARAM_STR);
+                   $statement ->bindParam(':tipoDocumento',$parametro["tipoDocumento"],PDO::PARAM_INT);
+                   $statement ->bindParam(':usuario',$parametro["usuario"],PDO::PARAM_STR);
+                   $statement ->bindParam(':usuarioPadre',$parametro["usuarioPadre"],PDO::PARAM_INT);
+                   $statement ->bindParam(':perfil',$parametro["perfil"],PDO::PARAM_INT);
+                   $statement ->bindParam(':correo',$parametro["correo"],PDO::PARAM_STR);
                    $statement ->execute();
                    $result["mensaje"]="Usuario se ha creado correctamente.";
                    $result["response"]="ok";
