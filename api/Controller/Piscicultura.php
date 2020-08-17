@@ -2,6 +2,7 @@
 
 require "Model/Base64.php";
 require "Model/Conexion.php";
+require "Email/Enviar.php";
 require "Ruta.php";
 require "Model/Persona.php";
 require "Model/Usuario.php";

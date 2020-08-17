@@ -11,6 +11,7 @@ class PersonaUsuario{
     usuarioPadre;
     token;
     perfil;
+    correo;
 
     constructor (nombre, apellido,numeroDocumento,tipoDocumento,usuario,contrasenia,nombreComercial) {
         this.nombre = nombre;
@@ -53,6 +54,7 @@ class PersonaUsuario{
          "&usuario=" + this.usuario + 
          "&usuarioPadre=" + this.usuarioPadre + 
          "&perfil=" + this.perfil + 
+         "&correo=" + this.correo + 
          "&token=" + this.token + 
          "&do=CrearUsuario";
 

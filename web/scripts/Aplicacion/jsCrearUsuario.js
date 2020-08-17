@@ -6,6 +6,8 @@ $(function () {
 
 function crearUsuario() {
 
+    $(":text").attr('required','required');
+
     if (!validarCampos("[required]")) {
         $("#pnMensaje").html("");
         $("#pnMensaje").html(modal("Alerta", "Debe llenar todos los campos.", "modal-sm"));
@@ -22,12 +24,22 @@ function crearUsuario() {
     objpersona.usuarioPadre=$("#txtUserPadre").val();
     objpersona.token=$("#txtVarUrl").val();
     objpersona.perfil=$("#ddlPerfil").val();
+    objpersona.correo=$("#txtCorreo").val();
 
     var result = objpersona.crearUsuario();
 
     $("#pnMensaje").html("");
     $("#pnMensaje").html(modal("Alerta",result.responseJSON["mensaje"], "modal-sm"));
     $("#myModal").modal();
+
+    if(result.responseJSON["error"]==null)
+    {
+        $(".was-validated").removeClass('was-validated');
+        $(":text").removeAttr('required');
+        $(":text").val('');
+    }
+
+    
     
 
 

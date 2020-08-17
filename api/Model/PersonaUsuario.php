@@ -162,7 +162,7 @@ class PersonaUsuario
 
     public function CrearUsuario($parametro)
     {
-        $result= ["response"=>null,"mensaje"=>null,"tipo"=>null];
+        $result= ["response"=>null,"mensaje"=>null,"tipo"=>null,'error'=>null];
         
         $conn=Conexion::getInstance()->cnn();
 
@@ -177,15 +177,17 @@ class PersonaUsuario
             {
                 $result["mensaje"]="Numero de documento ya se encuentra registrado.";
                 $result["response"]="ok";
+                $result["error"]=true;
             }
             elseif ($objUsuario->validarExistencia($parametro["usuario"])>0) {
                 $result["mensaje"]="Nombre de usuario {$parametro["usuario"]} no se encuentra disponible.";
                 $result["response"]="ok";
                 $result["tipo"]="user";
+                $result["error"]=true;
             }
             else{
             
-                  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ) )';
+                  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ),:correo )';
     
                    $statement  = $conn->prepare($sqlCommand);
                    $statement ->bindValue(':nombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -195,15 +197,23 @@ class PersonaUsuario
                    $statement ->bindValue(':usuario',$parametro["usuario"],PDO::PARAM_STR);
                    $statement ->bindValue(':usuarioPadre',$parametro["usuarioPadre"],PDO::PARAM_INT);
                    $statement ->bindValue(':perfil',$parametro["perfil"],PDO::PARAM_INT);
+                   $statement ->bindValue(':correo',$parametro["correo"],PDO::PARAM_STR);
                    $statement ->execute();
                    $result["mensaje"]="Usuario se ha creado correctamente.";
                    $result["response"]="ok";
+
+                   if($parametro["correo"]!="")
+                   {
+                       $correo=new Correo();
+                       $rs= $correo->notificacionCuenta($parametro["correo"],$parametro["usuario"],$parametro["nombre"]);
+                       $result["mensaje"]= $result["mensaje"]." ".$rs;
+                   }
 
                }
     
             
         } catch (Exception $Exception) {
-            $result=["error"=>$Exception->getMessage()];
+            $result["error"]=$Exception->getMessage();
         }
         finally{
             Conexion::cerrar($conn);
