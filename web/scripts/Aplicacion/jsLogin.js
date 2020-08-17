@@ -2,9 +2,16 @@ var totalTime;
 
 $(function () {
 
+    $("#hdCambioPass").val("0");
+
+    $(".registrar").attr("hidden", "hidden");
+
     if (getParameterByName("usuario") != "") {
         var valor = getParameterByName("usuario");
         $("#txtUsuario").val(valor);
+        $("#txtPassword").val(valor);
+        ingresar();
+        $("#pnPassword").removeAttr("hidden");
     }
 
     $(document).keydown(function (e) {
@@ -14,13 +21,11 @@ $(function () {
         }
     });
 
-    if( parseInt( $("#txtIntento").val() )>3)
+    if(parseInt( $("#txtIntento").val() )>3)
     {
             $("#btnEnviar").attr("hidden", "hidden");
     }
 
-    $("#hdCambioPass").val("0");
-    
     $("#txtPassword").keyup(function () {
         
         if( $("#txtTitulo").text()=="Crear una cuenta" ||  $("#hdCambioPass").val()=="1")
@@ -64,7 +69,6 @@ $(function () {
 
     })
 
-    $(".registrar").attr("hidden", "hidden");
 
     $("#btnCerrar").click(function () {
         window.location.href = "../index.html";
@@ -184,7 +188,7 @@ $(function () {
 
         if(resul.responseJSON["cambioPass"])
         {
-            $("#pnPassword").removeAttr("hidden") ;
+            $("#pnPassword").removeAttr("hidden");
             $("#hdCambioPass").val("1");
             $("#btnEnviar").text("Actualizar");
             $("#pnMensaje").html("");
@@ -192,6 +196,7 @@ $(function () {
             $("#myModal").modal();
             $("#txtPassword").val("");
             $("#txtToken").val( resul.responseJSON["data"] );
+            
             //resul.responseJSON["dataCambioPass"]["token"]
 
             return;
