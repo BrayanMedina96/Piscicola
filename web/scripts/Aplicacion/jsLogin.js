@@ -2,6 +2,11 @@ var totalTime;
 
 $(function () {
 
+    if (getParameterByName("usuario") != "") {
+        var valor = getParameterByName("usuario");
+        $("#txtUsuario").val(valor);
+    }
+
     $(document).keydown(function (e) {
         var code = (e.keyCode ? e.keyCode : e.which);
         if (code == 116 ) {
