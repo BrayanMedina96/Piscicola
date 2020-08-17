@@ -1,5 +1,7 @@
 function validarCampos(tipo)
 {
+   $(":text").attr('required','required');
+
         var estado=true;
         var result= $(tipo);
         for (var indice in result ) 
@@ -113,7 +115,7 @@ function tabla(elemento,datos,columna,funcion)
 
 function  limpiar (elemento) {
     
-  $(elemento).val(" ");
+  $(elemento).val("");
   $(".was-validated").removeClass("was-validated");
 
 }
@@ -238,4 +240,14 @@ function getParameterByName(name) {
    var regex = new RegExp("[\\?&]" + name + "=([^&#]*)"),
        results = regex.exec(location.search);
    return results === null ? "" : decodeURIComponent(results[1].replace(/\+/g, " "));
+}
+
+function UtlCargando() {
+
+   $('#load').show();
+   $('#load').modal();
+   setTimeout(function () {
+      $('#load').modal('hide');
+   }, 2000);
+
 }

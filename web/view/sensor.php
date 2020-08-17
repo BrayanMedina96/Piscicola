@@ -41,15 +41,15 @@
                     <div class="card-body">
                         <div class="form-group">
                             <label for="txtNombre">Nombre</label>
-                            <input type="text" class="form-control limpiar" required id="txtNombre">
+                            <input type="text" class="form-control limpiar"  id="txtNombre">
                         </div>
                         <div class="form-group">
                             <label for="txtCodigo">Código</label>
-                            <input type="text" class="form-control limpiar" required id="txtCodigo">
+                            <input type="text" class="form-control limpiar"  id="txtCodigo">
                         </div>
                         <div class="form-group">
                             <label for="txtDescripcion">Descripción</label>
-                            <textarea type="text" class="form-control limpiar" required id="txtDescripcion"></textarea>
+                            <textarea type="text" class="form-control limpiar"  id="txtDescripcion"></textarea>
                         </div>
 
                         <div class="form-group">
@@ -59,11 +59,11 @@
 
                         <div class="form-group">
                             <label for="txtFecha">Fecha mantenimiento</label>
-                            <input type="text" class="form-control limpiar" id="txtFecha" required>
+                            <input type="text" class="form-control limpiar" id="txtFecha" >
                         </div>
                         <div class="form-group">
                             <label for="txtRepetir">Repetir cada <em>(días)</em></label>
-                            <input type="number" class="form-control limpiar" id="txtRepetir" value="0" required>
+                            <input type="number" class="form-control limpiar" id="txtRepetir" value="0" >
                         </div>
                         <div class="form-group">
                             <div class="custom-control custom-checkbox mb-3">
@@ -77,7 +77,7 @@
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
-                            <span id="pnMensaje"></span>
+                            
                         </div>
                     </div>
                 </div>
@@ -98,7 +98,7 @@
         </div>
     </div>
 
-    <div id="pnMensaje"></div>
+    
 
 
     <div class="modal" id="modalSensor" tabindex="-1" role="dialog">
@@ -112,7 +112,7 @@
         </div>
         <div class="modal-body">
 
-          <input class="form-control" id="myInput" type="text" placeholder="Buscar en la tabla:">
+          <input class="form-control" id="myInput" type="" placeholder="Buscar en la tabla:">
           <br>
           <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
             <thead>
@@ -150,7 +150,9 @@
     </div>
   </div>
 
-  <input type="text" id="txtSensorID" value="" hidden/>
+  <input type="hidden" id="txtSensorID" value="" hidden/>
+  <div id="pnMensaje"></div>
+
 </body>
 <?php 
 require("../plantilla/pie.php");

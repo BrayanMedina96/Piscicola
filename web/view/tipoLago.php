@@ -49,7 +49,6 @@
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
-                            <span id="pnMensaje"></span>
                         </div>
                     </div>
                 </div>
@@ -82,7 +81,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <input class="form-control" id="myInput" type="text" placeholder="Buscar en la tabla:">
+                    <input class="form-control" id="myInput" type=""  placeholder="Buscar en la tabla:">
                     <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
                         <thead>
                             <tr>
@@ -112,6 +111,7 @@
     </div>
 
     <input type="hidden" id="txtID" value="" hidden />
+    <span id="pnMensaje"></span>
 
 </body>
 <?php 
