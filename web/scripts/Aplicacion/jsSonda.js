@@ -31,6 +31,15 @@ $(function () {
 
 
     $("#btnEnviar").click(function() {
+
+        $(".limpiar").attr("required","required");
+        if (!validarCampos("[required]")) {
+            $("#pnMensaje").html("");
+            badge("#pnMensaje","Debe llenar los campos.","danger");
+            return;
+        }
+
+        UtlCargando();
         
        var obj=new Sonda();
        obj.fecharegistro=$("#txtFecha").val().trim();
@@ -75,10 +84,13 @@ $(function () {
         $("#btnEnviar").addClass("btn-primary");
         $("#btnEnviar").text("Guardar");
         $("#btnEnviar").removeClass("btn-success");
-        $(":text").val(" ");
+        $(":text").val("");
         $(".limpiar").val("0");
-        $("#txtDescripcion").val(" ");
-    
+        $("#txtDescripcion").val("");
+
+        $(".was-validated").removeClass('was-validated');
+        $(":text").removeAttr('required');
+        $(".limpiar").removeAttr("required");
     
     })
 

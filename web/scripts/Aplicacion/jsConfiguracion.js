@@ -46,9 +46,13 @@ $(function () {
 
     $("#btnLimpiar").click(function () {
   
-        limpiar(".limpiar");
+       // limpiar(".limpiar");
         $("#btnEnviar").text("Guardar");
         $("#btnEnviar").attr("class", "btn btn-primary");
+
+        $(".was-validated").removeClass('was-validated');
+        $(":text").removeAttr('required');
+        $(":text").val('');
     
      })
 
@@ -57,10 +61,11 @@ $(function () {
 
         if (!validarCampos("[required]")) {
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Alerta", "Debe llenar los campos.", "modal-sm"));
-            $("#myModal").modal();
+            badge("#pnMensaje","Debe llenar los campos.","danger");
             return;
         }
+
+        UtlCargando();
 
         var obj = new LagoSensor();
         obj.lago = $("#ddlLago").val();

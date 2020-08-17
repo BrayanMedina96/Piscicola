@@ -32,7 +32,6 @@ class Conexion
           $conexion =new PDO($stringCnn,$this->user, $this->password);
           $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
           $conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);
-          //MYSQL_ATTR_INIT_COMMAND
        
        }
        catch(PDOException $e)
