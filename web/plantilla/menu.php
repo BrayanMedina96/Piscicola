@@ -141,7 +141,7 @@
 
 <script>
 
-     $('#load').modal();
+    $('#load').modal();
      
     setTimeout(function () {
       $('#load').modal('hide');

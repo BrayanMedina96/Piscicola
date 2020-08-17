@@ -92,7 +92,6 @@
                 <div class="card">
                     <div class="card-header">Información</div>
                     <div class="card-body">
-                        <li></li>
                     </div>
 
                 </div>

@@ -2,6 +2,13 @@ $(function () {
 
     cargarTipoDocumento();
     cargarPerfil();
+    $("#ddlPerfil").val(2);
+    $("#btnLimpiar").click(function(){
+        $(".was-validated").removeClass('was-validated');
+        $(":text").removeAttr('required');
+        $(":text").val('');
+        $("#ddlPerfil").val(2);
+    });
 })
 
 function crearUsuario() {
@@ -14,6 +21,8 @@ function crearUsuario() {
         $("#myModal").modal();
         return;
     }
+
+    UtlCargando();
 
     const objpersona = new PersonaUsuario();
     objpersona.nombre = $("#txtNombre").val();
@@ -37,12 +46,10 @@ function crearUsuario() {
         $(".was-validated").removeClass('was-validated');
         $(":text").removeAttr('required');
         $(":text").val('');
+
     }
 
     
-    
-
-
 }
 
 function cargarPerfil()
@@ -51,3 +58,4 @@ function cargarPerfil()
     obj.token=$("#txtVarUrl").val();
     obj.cargarddl("ddlPerfil",obj.consultarPerfil().responseJSON,"perfilid","perfilnombre" );
 }
+

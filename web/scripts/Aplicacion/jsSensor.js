@@ -2,6 +2,15 @@ $(function () {
 
     marca();
 
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+
+        $("#tdResultado tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+
+        });
+    });
+
     $("#txtFecha").datepicker({
         onSelect: function (fd, d, calendar) {
             calendar.hide()
@@ -19,11 +28,11 @@ $(function () {
 
         if (!validarCampos("[required]")) {
             $("#pnMensaje").html("");
-            $("#pnMensaje").html(modal("Alerta", "Debe llenar los campos.", "modal-sm"));
-            $("#myModal").modal();
+            badge("#pnMensaje","Debe llenar los campos.","danger");
             return;
         }
 
+        UtlCargando();
 
         var obj = new Sensor();
         obj.nombre = $("#txtNombre").val();
@@ -43,7 +52,7 @@ $(function () {
 
             obj.id = $("#txtSensorID").val();
             obj.actualizar();
-            badge("#pnMensaje", "Registro guardado.", "success");
+            badge("#pnMensaje", "Registro actualizado.", "success");
         }
 
 
@@ -150,10 +159,13 @@ $(function () {
     
     $("#btnLimpiar").click(function () {
   
-        limpiar(".limpiar");
+        
         $("#btnEnviar").text("Guardar");
         $("#btnEnviar").attr("class", "btn btn-primary");
- 
+        $(":text").removeAttr('required');
+        $(".was-validated").removeClass('was-validated');
+        $(":text").val('');
+
         
      });
 

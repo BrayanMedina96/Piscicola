@@ -1,9 +1,26 @@
 $(function () {
-    
+
+    $("#myInput").on("keyup", function () {
+        var value = $(this).val().toLowerCase();
+
+        $("#tdResultado tr").filter(function () {
+            $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+
+        });
+    });
 
 $("#btnEnviar").click(function() {
     
-  
+    $(":text").attr('required','required');
+
+    if (!validarCampos("[required]")) {
+        $("#pnMensaje").html("");
+        badge("#pnMensaje", "Debe llenar todos los campos.","danger");
+        return;
+    }
+
+    UtlCargando();
+
     var obj=new TipoLago();
     obj.nombre=$("#txtNombre").val();
     obj.descripcion=$("#txtDescripcion").val();
@@ -33,7 +50,11 @@ $("#btnLimpiar").click(function () {
     $("#btnEnviar").removeClass("btn-success");
     $(":text").val("");
     $("#txtDescripcion").val("");
-
+    
+    $(".was-validated").removeClass('was-validated');
+    $(":text").removeAttr('required');
+    $(":text").val('');
+  
 
 })
 
@@ -62,19 +83,20 @@ $('#Tabla tbody').on('click', 'tr .seleccionarFila', function () {
 
 $('#Tabla tbody').on('click', 'tr .eliminar', function () {
     var table = $('#Tabla').DataTable();
-    var data = table.row( $(this).parents("tr") ).data();
-    var si=confirm("Está seguro de eliminar: "+data.tipolagonombre);
-    if(si)
-    {
-        
-        var obj=new TipoLago();
-        obj.id=data.tipolagoid;
-        obj.token = $("#txtVarUrl").val();
-        obj.eliminar();
-        consultar();
+    var data = table.row($(this).parents("tr")).data();
+    if (data.usuariocrea == null) {
+        alert("Este elemento no se puede eliminar");
+    } else {
+        var si = confirm("Está seguro de eliminar: " + data.tipolagonombre);
+        if (si) {
+            var obj = new TipoLago();
+            obj.id = data.tipolagoid;
+            obj.token = $("#txtVarUrl").val();
+            obj.eliminar();
+            consultar();
 
+        }
     }
-
 });
 
 
