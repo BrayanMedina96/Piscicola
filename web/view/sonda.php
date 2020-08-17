@@ -176,7 +176,7 @@
                 </div>
                 <div class="modal-body">
 
-                    <input class="form-control" id="myInput" type="text" placeholder="Buscar en la tabla:">
+                    <input class="form-control" id="myInput" type="" placeholder="Buscar en la tabla:">
                     <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
                         <thead>
                             <tr>
