@@ -60,71 +60,71 @@
                                     <label for="txtFecha">Fecha</label>
                                     <input type="text" data-range="true" data-language='en' data-multiple-dates="2"
                                         data-multiple-dates-separator=" - " class="form-control" id="txtFecha"
-                                        required="">
+                                        >
                                 </div>
                             </div>
                             <div class="col">
                                 <div class="form-group">
                                     <label for="txtHora">Hora</label>
-                                    <input type="text" class="form-control" id="txtHora" required="">
+                                    <input type="text" class="form-control" id="txtHora" >
                                 </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label for="txtTempAmbiente">Temperatura ambiente</label>
-                            <input type="number" class="form-control limpiar" id="txtTempAmbiente" required="">
+                            <input type="number" class="form-control limpiar" id="txtTempAmbiente" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtTempEstanque">Temperatura estanque</label>
-                            <input type="number" class="form-control limpiar" id="txtTempEstanque" required="">
+                            <input type="number" class="form-control limpiar" id="txtTempEstanque" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtOxigeno">Oxigeno disuelto</label>
-                            <input type="number" class="form-control limpiar" id="txtOxigeno" required="">
+                            <input type="number" class="form-control limpiar" id="txtOxigeno" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtPh">PH</label>
-                            <input type="number" class="form-control limpiar" id="txtPh" required="">
+                            <input type="number" class="form-control limpiar" id="txtPh" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtCondElectrica">Conductividad Electrica</label>
-                            <input type="number" class="form-control limpiar" id="txtCondElectrica" required="">
+                            <input type="number" class="form-control limpiar" id="txtCondElectrica" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtAmonioNH3">Amonio NH3</label>
-                            <input type="number" class="form-control limpiar" id="txtAmonioNH3" required="">
+                            <input type="number" class="form-control limpiar" id="txtAmonioNH3" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtAmonioNH4">Amonio NH4</label>
-                            <input type="number" class="form-control limpiar" id="txtAmonioNH4" required="">
+                            <input type="number" class="form-control limpiar" id="txtAmonioNH4" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtNitrito">Nitrito</label>
-                            <input type="number" class="form-control limpiar" id="txtNitrito" required="">
+                            <input type="number" class="form-control limpiar" id="txtNitrito" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtAlcalinidad">Alcalinidad</label>
-                            <input type="number" class="form-control limpiar" id="txtAlcalinidad" required="">
+                            <input type="number" class="form-control limpiar" id="txtAlcalinidad" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtPecesMuertos">Peces muertos</label>
-                            <input type="number" class="form-control limpiar" id="txtPecesMuertos" required="">
+                            <input type="number" class="form-control limpiar" id="txtPecesMuertos" >
                         </div>
 
                         <div class="form-group">
                             <label for="txtObservacion">Observación</label>
-                            <textarea charset="UTF-8" type="text" class="form-control limpiar" id="txtObservacion"
-                                rows="3" required=""></textarea>
+                            <textarea charset="UTF-8" type="" class="form-control limpiar" id="txtObservacion"
+                                rows="3" ></textarea>
                         </div>
 
 
@@ -227,7 +227,8 @@
         </div>
     </div>
 
-    <input type="text" id="txtID" value="" hidden />
+    <input type="hidden" id="txtID" value="" hidden />
+    <span id="pnMensaje"></span>
 </body>
 <?php 
 require("../plantilla/pie.php");

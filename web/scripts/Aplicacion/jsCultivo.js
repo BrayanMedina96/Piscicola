@@ -17,6 +17,15 @@ $(function () {
 
     $("#btnEnviar").click(function () {
         
+
+        if (!validarCampos("[required]")) {
+            $("#pnMensaje").html("");
+            badge("#pnMensaje","Debe llenar los campos.","danger");
+            return;
+        }
+
+        UtlCargando();
+
         var obj=new Cultivo();
         obj.lago=$("#ddlLago").val();
         obj.especie=$("#ddlEspecie").val();
@@ -43,9 +52,13 @@ $(function () {
 
     $("#btnLimpiar").click(function () {
 
-        limpiar(".limpiar");
+        
         $("#btnEnviar").text("Guardar");
         $("#btnEnviar").attr("class", "btn btn-primary");
+
+        $(".was-validated").removeClass('was-validated');
+        $(":text").removeAttr('required');
+        $(":text").val('');
 
     })
 
