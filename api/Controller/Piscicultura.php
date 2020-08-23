@@ -19,6 +19,7 @@ require "Model/Material.php";
 require "Model/Seguridad.php";
 require "Model/TipoLago.php";
 require "Model/Cultivo.php";
+require "Model/Prediccion.php";
 
 class Piscicultura
 {

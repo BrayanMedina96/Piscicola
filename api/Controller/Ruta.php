@@ -84,8 +84,8 @@ class Ruta
            'Cultivo_POST'=>'guardar',
            'Cultivo_PUT'=>'actualizar',
            'Cultivo_GET'=>'consultar',
-           'Cultivo_DELETE'=>'eliminar'
-
+           'Cultivo_DELETE'=>'eliminar',
+           'Prediccion_GET'=>'consultar',
         );
 
        return $this->ruta;
