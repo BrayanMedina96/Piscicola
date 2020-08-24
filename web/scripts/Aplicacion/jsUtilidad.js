@@ -251,3 +251,14 @@ function UtlCargando() {
    }, 2000);
 
 }
+
+function loading()
+{
+   $('#load').show();
+   $('#load').modal();
+}
+
+function closeLoading()
+{
+   $('#load').modal('hide');
+}
