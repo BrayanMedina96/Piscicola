@@ -81,7 +81,7 @@ $(function () {
            nH4.push(element[7]);
            nitrito.push(element[8]);
            alcalinidad.push(element[9]);
-           ejex.push("d."+dia+"Hora:"+element[0]);
+           ejex.push(element.fecha+" Hora:"+element[0]);
 
            if (contdor == 2) {
                contdor = 0;
