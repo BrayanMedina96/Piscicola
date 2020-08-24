@@ -85,9 +85,6 @@ $(function () {
            alcalinidad.push(element[9]);
            ejex.push(element.fecha+" Hora:"+element[0]);
 
-         //  console.log(element.fecha);
-         //  console.log(hoy);
-         //  console.log(dia.getHours());
            if (element.fecha == hoy) {
                indexLine = dias;
                if (dia.getHours() > 12) {
@@ -99,9 +96,7 @@ $(function () {
                contdor = 0;
                dias++;
            }
-
-           //console.log(element[0]);
-           
+   
        }
        
         
@@ -128,7 +123,7 @@ $(function () {
         };
 
         objGrafica.label = label;
-        objGrafica.borderColor = color(c);//Math.floor((Math.random() * 9) + 1) getRandomColor();//
+        objGrafica.borderColor = color(c);
         objGrafica.data = data;
         return objGrafica;
     }
