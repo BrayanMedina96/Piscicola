@@ -56,15 +56,17 @@ $(function () {
        var nH4=[];
        var nitrito=[];
        var alcalinidad=[];
-       
+       var dia = new Date();
+       var hoy=dia.getFullYear()+"-0"+(dia.getMonth()+1)+'-'+dia.getDate();
 
        var label = ["T. Ambiente","T Estanque","Oxigeno D.","PH","Cond. Electrica","NH3","NH4","Nitrito","Alcalinidad"];
        var ejex=[];
 
        var tipoGrafica = "line";
-       
+       var indexLine=0;
+
        var primera=true;
-       dia=0;
+       dias=0;
        contdor=0;
 
        for (let index = 0; index < response.data.length; index++) {
@@ -83,9 +85,19 @@ $(function () {
            alcalinidad.push(element[9]);
            ejex.push(element.fecha+" Hora:"+element[0]);
 
+         //  console.log(element.fecha);
+         //  console.log(hoy);
+         //  console.log(dia.getHours());
+           if (element.fecha == hoy) {
+               indexLine = dias;
+               if (dia.getHours() > 12) {
+                   indexLine = dias + 1;
+               }
+           }
+
            if (contdor == 2) {
                contdor = 0;
-               dia++;
+               dias++;
            }
 
            //console.log(element[0]);
@@ -93,21 +105,21 @@ $(function () {
        }
        
         
-       data.push( fobjGrafica(label[0],tambiente) );
-       data.push( fobjGrafica(label[1],testanque) );
-       data.push( fobjGrafica(label[2],oxigenoD) );
-       data.push( fobjGrafica(label[3],pH) );
-       data.push( fobjGrafica(label[4],condElectrica) );
-       data.push( fobjGrafica(label[5],nH3) );
-       data.push( fobjGrafica(label[6],nH4) );
-       data.push( fobjGrafica(label[7],nitrito) );
-       data.push( fobjGrafica(label[8],alcalinidad) );
+       data.push( fobjGrafica(label[0],tambiente,"temperaturaambiente") );
+       data.push( fobjGrafica(label[1],testanque,"temperaturaestanque") );
+       data.push( fobjGrafica(label[2],oxigenoD,"oxigenodisuelto") );
+       data.push( fobjGrafica(label[3],pH,"ph") );
+       data.push( fobjGrafica(label[4],condElectrica,"conductividadelectrica") );
+       data.push( fobjGrafica(label[5],nH3,"amonionh3") );
+       data.push( fobjGrafica(label[6],nH4,"amonionh4") );
+       data.push( fobjGrafica(label[7],nitrito,"nitrito") );
+       data.push( fobjGrafica(label[8],alcalinidad,"alcalinidad") );
 
-       graficar(ejex, data, tipoGrafica, "Predicción");
+       graficar(ejex, data, tipoGrafica, "Predicción",indexLine);
 
    }
 
-    function fobjGrafica(label, data) {
+    function fobjGrafica(label, data,c) {
 
         var objGrafica = {
             "label": "",
@@ -116,47 +128,75 @@ $(function () {
         };
 
         objGrafica.label = label;
-        objGrafica.borderColor = color(Math.floor((Math.random() * 9) + 1));
+        objGrafica.borderColor = color(c);//Math.floor((Math.random() * 9) + 1) getRandomColor();//
         objGrafica.data = data;
         return objGrafica;
     }
 
-   function graficar(label, dataSet, tipoGrafica, titulo) {
+   function graficar(label, dataSet, tipoGrafica, titulo,indexLine) {
 
+       var originalLineDraw = Chart.controllers.line.prototype.draw;
+       Chart.helpers.extend(Chart.controllers.line.prototype, {
+           draw: function () {
+               originalLineDraw.apply(this, arguments);
 
-       var ctx = document.getElementById('myChart').getContext('2d');
+               var chart = this.chart;
+               var ctx = chart.chart.ctx;
 
-       myChart = new Chart(ctx, {
-           type: tipoGrafica,
-           data: {
-
-               labels: label,
-
-               datasets: dataSet
-
-           },
-           options: {
-               scales: {
-                   yAxes: [{
-                       ticks: {
-                           beginAtZero: true
-                       }
-                   }]
-               },
-
-               title: {
-                   display: true,
-                   text: titulo
-               },
-
+               var index = chart.config.data.lineAtIndex;
+               if (index) {
+                   var xaxis = chart.scales['x-axis-0'];
+                   var yaxis = chart.scales['y-axis-0'];
+                   ctx.save();
+                   ctx.beginPath();
+                   ctx.moveTo(xaxis.getPixelForValue(undefined, index), yaxis.top);
+                   ctx.strokeStyle = '#ff0000';
+                   ctx.lineTo(xaxis.getPixelForValue(undefined, index), yaxis.bottom);
+                   ctx.stroke();
+                   ctx.restore();
+               }
            }
        });
 
+       var config = {
+           type: 'line',
+           data: {
+               labels: label,
+               datasets: dataSet,
+               lineAtIndex: indexLine
+           },
+           options: {
+            scales: {
+                yAxes: [{
+                    ticks: {
+                        beginAtZero: true
+                    }
+                }]
+            },
 
+            title: {
+                display: true,
+                text: titulo
+            },
+
+        }
+       };
+
+       var ctx = document.getElementById("myChart").getContext("2d");
+       new Chart(ctx, config);
 
 
 
    }
+
+   function getRandomColor() {
+    var letters = '0123456789ABCDEF';
+    var color = '#';
+    for (var i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)];
+    }
+    return color;
+  }
 
    function color(valor) {
     var color = "";
