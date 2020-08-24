@@ -1,15 +1,28 @@
 $(function () {
 
-   consultar('prediccion','GET',null);
+   
+   lago(); 
+
+   $("#btnBuscar").click(function(){
+     loading();
+     consultar('api','GET',null);
+   })
+
+   function lago() {
+
+       var obj = new Lago();
+       obj.token = $("#txtVarUrl").val();
+       obj.cargarddl("ddlLago", obj.consultar().responseJSON);
+   }
 
    function consultar(api,tipo,parametro) {
 
        return $.ajax({
            type: 'GET',
-           url: urlApiPrediccion + api,
+           url:sw+"/"+proyecto+"/"+api+"/"+"?entidad=Prediccion&token="+$("#txtVarUrl").val().trim()+"&do=&lago_id="+$("#ddlLago").val(),
           // data: parametro,
           //  crossDomain: true,
-          // no contentType: "application/json; charset=utf-8",
+           contentType: "application/json; charset=utf-8",
            dataType: 'json',
          //  async: false,
          /* headers: {
@@ -18,10 +31,12 @@ $(function () {
            },*/
            success: function (response) {
             //   alert("");
+               closeLoading();
                graficaPrediccion(response);
            },
            failure: function (response) {
            // alert("");
+               closeLoading()
                return response;
            }
 
@@ -56,7 +71,7 @@ $(function () {
 
            contdor++;
 
-           const element = response.data[index].data;
+           const element = response.data[index];//.data
            tambiente.push(element[1]);
            testanque.push(element[2])
            oxigenoD.push(element[3]);

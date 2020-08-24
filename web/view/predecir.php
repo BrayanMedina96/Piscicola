@@ -15,6 +15,8 @@
 
     <script src='../scripts/Chart.js'></script>
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
+    <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
+    <script src='../scripts/Aplicacion/jsClassLago.js'></script>
     <script src="../scripts/Aplicacion/jsPrediccion.js"></script>
 
 </head>
@@ -33,7 +35,15 @@
                         <h5>Predicción</h5>
                     </div>
                     <div class="card-body">
+                        <div class="input-group mb-3">
+                            
+                           <select id="ddlLago" class="form-control"></select>
 
+                            <a  id="btnBuscar" id="btnBuscar" type="button" class="btn btn-default">
+                                <img src="../svg/lupa.png" width="30px">
+                            </a>
+
+                       </div>
                         <canvas id="myChart">
                             <p>Hello Fallback World</p>
                         </canvas>
@@ -41,6 +51,7 @@
                         <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
                             <thead>
                                 <tr id="tbEncabezado">
+                            
 
                                 </tr>
                             </thead>
