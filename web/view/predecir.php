@@ -16,7 +16,7 @@
     <script src='../scripts/Chart.js'></script>
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassLago.js'></script>
+    <script src='../scripts/Aplicacion/jsClassCultivo.js'></script>
     <script src="../scripts/Aplicacion/jsPrediccion.js"></script>
 
 </head>
@@ -35,15 +35,23 @@
                         <h5>Predicción</h5>
                     </div>
                     <div class="card-body">
-                        <div class="input-group mb-3">
-                            
-                           <select id="ddlLago" class="form-control"></select>
 
-                            <a  id="btnBuscar" id="btnBuscar" type="button" class="btn btn-default">
-                                <img src="../svg/lupa.png" width="30px">
-                            </a>
+                        <div class="input-group col-md-12">
 
-                       </div>
+                            <select id="ddlCultivo" class="form-control"></select>
+
+                        </div>
+                        <br>
+                        <div class="input-group col-md-3">
+                            <input id="txtSonda" placeholder="Ultima sonda" disabled class="form-control"
+                                type="text"></input>
+                        </div>
+                        <br>
+                        <div  class="input-group row">
+                            <label class="col-md-5"></label>
+                            <button id="btnBuscar" type="button" class="btn btn-primary col-md-2">Enviar</button>
+                        </div>
+
                         <canvas id="myChart">
                             <p>Hello Fallback World</p>
                         </canvas>

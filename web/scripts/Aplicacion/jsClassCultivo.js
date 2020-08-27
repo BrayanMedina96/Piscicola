@@ -1,6 +1,5 @@
 class Cultivo{
 
-
     entidad = "Cultivo";
     id;
     lago;
@@ -49,6 +48,16 @@ class Cultivo{
         return consultarAjax('GET', parametro);
     }
 
+    consultarSonda() {
+        var parametro = {
+            entidad: this.entidad,
+            token: this.token,
+            do: "Sonda"
+        }
+
+        return consultarAjax('GET', parametro);
+    }
+
     eliminar() {
         var parametro =
             "?entidad=" + this.entidad +
@@ -67,6 +76,17 @@ class Cultivo{
             option+="<option value="+result[indice][value]+">"+result[indice][displayValue]+"</option>";
         }
         $("#"+elemento).append(option);
+    }
+
+    cargarddl2(elemento,result,value,display)
+    {
+        $("#"+elemento).html("");
+        var option="";
+        for (var indice in result) 
+        {
+            option+="<option value="+result[indice][value]+">"+result[indice][display]+"</option>";
+        }
+        $("#"+elemento).append("<option value=''>Seleccionar</option>"+option);
     }
 
 }

@@ -84,6 +84,7 @@ class Ruta
            'Cultivo_POST'=>'guardar',
            'Cultivo_PUT'=>'actualizar',
            'Cultivo_GET'=>'consultar',
+           'Cultivo_GETSonda'=>'consultarSonda',
            'Cultivo_DELETE'=>'eliminar',
            'Prediccion_GET'=>'consultar',
         );

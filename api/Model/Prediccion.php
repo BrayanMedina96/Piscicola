@@ -6,24 +6,23 @@ class Prediccion
 
     public function consultar($parametro)
     {
-        $command = 'python C:\Users\Administrator\Desktop\ForecastingLibrary\integracion.py';
-        $output = Shell_exec($command);
+        
         $conn=Conexion::getInstance()->cnn();
-        $dia=0;
-        $contdor=0;
-        $result=null;
 
         try {
+           
+            $dataPrediccion=$this->getData($parametro);
 
-            $fechaInicio=$this->validarFecha($parametro);
-
-            if (count( $fechaInicio )>0) {
-    
+            if (count( $dataPrediccion )>0) {
     
             } else {
-    
-                $fechaInicio=null;
-    
+
+                $command ='python C:\Users\Administrator\Desktop\ForecastingLibrary\integracion.py'; 
+                //'python C:\Users\PCBRAYAN\Desktop\CORHUILA\ForecastingLibrary\integracion.py';
+                $output = Shell_exec($command);
+                $dia=0;
+                $contdor=0;
+                
                 foreach(json_decode($output)->data as $value) {
     
                         $data = $value->data;
@@ -32,11 +31,11 @@ class Prediccion
                         $sqlCommand = "INSERT INTO prediccion(
                              fecha_inicio,fecha, hora, temperatura_ambiente, temperatura_estanque,
                              oxigeno, ph, conductividad_electrica, nh3, nh4, nitrito, alcalanidad,
-                             lago_id)
-                              VALUES ( now(),  CAST(now()::DATE + CAST('$dia days' AS INTERVAL) AS DATE),
+                              cultivo_id)
+                              VALUES ( :fecha_inicio,  CAST(:fecha_inicio ::DATE + CAST('$dia days' AS INTERVAL) AS DATE),
                              :hora,:temperatura_ambiente,:temperatura_estanque,
                              :oxigeno,:ph,:conductividad_electrica,:nh3,:nh4,:nitrito,:alcalanidad,
-                             :lago_id);";
+                             :cultivo_id);";
     
                               $statement = $conn -> prepare($sqlCommand);
                               $statement -> bindValue(':hora', $data[0], PDO::PARAM_INT);
@@ -49,25 +48,21 @@ class Prediccion
                               $statement -> bindValue(':nh4', $data[7], PDO::PARAM_INT);
                               $statement -> bindValue(':nitrito', $data[8], PDO::PARAM_INT);
                               $statement -> bindValue(':alcalanidad', $data[9], PDO::PARAM_INT);
-                              $statement -> bindValue(':lago_id', $parametro['lago_id'], PDO::PARAM_INT);
+                              $statement -> bindValue(':cultivo_id', $parametro['cultivo_id'], PDO::PARAM_INT);
+                              $statement -> bindValue(':fecha_inicio', $parametro['fecha'], PDO::PARAM_INT);
+
                               $statement -> execute();
     
                              if ($contdor == 2) {
                                 $contdor = 0;
-                               $dia++;
+                                $dia++;
                             }
     
                 }
     
+                $dataPrediccion=$this->getData($parametro);
             }
     
-            if($fechaInicio==null)
-            {
-                $fechaInicio=$this->validarFecha($parametro);
-            }
-            
-             $dataPrediccion=$this->getData($parametro, $fechaInicio[0]['fecha_inicio']);
-
              $result=["data"=> $dataPrediccion];
 
         } catch (PDOException  $Exception) {
@@ -76,12 +71,11 @@ class Prediccion
             Conexion::cerrar($conn);
         }
        
-
         return $result; // json_decode( $output)->data[0]->data;
         
     }
 
-    public function validarFecha($parametro)
+   /* public function validarFecha($parametro)
     {
         $conn=Conexion::getInstance()->cnn();
         $sqlCommand="SELECT fecha_inicio FROM prediccion WHERE fecha=CAST(NOW() AS DATE) AND lago_id=:lago_id";
@@ -93,22 +87,22 @@ class Prediccion
         Conexion::cerrar($conn);
 
         return $resultado;
-    }
+    }*/
 
-    public function getData($parametro,$fechaInicio)
+    public function getData($parametro)
     {
-        /*(SELECT MAX(estadofisicoquimico.fecharegistro) FROM
-        estadofisicoquimico
-        INNER JOIN cultivo ON estadofisicoquimico.cultivoid=cultivo.cultivoid
-        WHERE lagoid=:lago_id) */
-
+        
         $conn=Conexion::getInstance()->cnn();
-        $sqlCommand="SELECT hora, temperatura_ambiente, temperatura_estanque,
-        oxigeno, ph, conductividad_electrica, nh3, nh4, nitrito, alcalanidad,
-        lago_id,fecha FROM prediccion WHERE CAST(fecha_inicio AS DATE)=CAST(:fecha_inicio AS DATE) AND lago_id=:lago_id";
+        $sqlCommand="SELECT prediccion.hora, prediccion.temperatura_ambiente, prediccion.temperatura_estanque,
+        prediccion.oxigeno, prediccion.ph, prediccion.conductividad_electrica, prediccion.nh3, prediccion.nh4, prediccion.nitrito, prediccion.alcalanidad, 
+        prediccion.fecha_inicio,
+        prediccion.cultivo_id, prediccion.fecha FROM prediccion 
+        WHERE fecha_inicio = (SELECT fecha FROM prediccion WHERE fecha=CAST(:fecha_inicio AS DATE) limit 1) 
+        AND cultivo_id=:cultivo_id";
+
         $statement  = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':lago_id',  $parametro['lago_id'] ,PDO::PARAM_STR);
-        $statement ->bindValue(':fecha_inicio', $fechaInicio ,PDO::PARAM_STR);
+        $statement ->bindValue(':cultivo_id',  $parametro['cultivo_id'] ,PDO::PARAM_STR);
+        $statement ->bindValue(':fecha_inicio', $parametro['fecha']  ,PDO::PARAM_STR);
         $statement->execute();   
         $resultado= $statement->fetchAll();
 

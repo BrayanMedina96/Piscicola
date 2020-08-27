@@ -1,25 +1,38 @@
+var result;
+
 $(function () {
 
    
-   lago(); 
+   cultivo(); 
 
    $("#btnBuscar").click(function(){
      loading();
      consultar('api','GET',null);
    })
 
-   function lago() {
+   function cultivo() {
 
-       var obj = new Lago();
+       var obj = new Cultivo();
        obj.token = $("#txtVarUrl").val();
-       obj.cargarddl("ddlLago", obj.consultar().responseJSON);
+       result = obj.consultarSonda().responseJSON;
+       obj.cargarddl2("ddlCultivo", result, "cultivoid", "nombre");
+
    }
+
+   $("#ddlCultivo").change(function () {
+       var sonda = result.filter(b => {
+           return (b.cultivoid == this.value)
+       });
+
+       $("#txtSonda").val(sonda[0].max);
+
+   });
 
    function consultar(api,tipo,parametro) {
 
        return $.ajax({
            type: 'GET',
-           url:sw+"/"+proyecto+"/"+api+"/"+"?entidad=Prediccion&token="+$("#txtVarUrl").val().trim()+"&do=&lago_id="+$("#ddlLago").val(),
+           url:sw+"/"+proyecto+"/"+api+"/"+"?entidad=Prediccion&token="+$("#txtVarUrl").val().trim()+"&do=&cultivo_id="+$("#ddlCultivo").val()+"&fecha="+$("#txtSonda").val(),
           // data: parametro,
           //  crossDomain: true,
            contentType: "application/json; charset=utf-8",
@@ -45,72 +58,78 @@ $(function () {
 
    function graficaPrediccion(response) {
         
-       console.log(response);
-       var data = [];
-       var tambiente=[];
-       var testanque=[];
-       var oxigenoD=[];
-       var pH=[];
-       var condElectrica=[];
-       var nH3=[];
-       var nH4=[];
-       var nitrito=[];
-       var alcalinidad=[];
-       var dia = new Date();
-       var hoy=dia.getFullYear()+"-0"+(dia.getMonth()+1)+'-'+dia.getDate();
+       try {
 
-       var label = ["T. Ambiente","T Estanque","Oxigeno D.","PH","Cond. Electrica","NH3","NH4","Nitrito","Alcalinidad"];
-       var ejex=[];
-
-       var tipoGrafica = "line";
-       var indexLine=0;
-
-       var primera=true;
-       dias=0;
-       contdor=0;
-
-       for (let index = 0; index < response.data.length; index++) {
-
-           contdor++;
-
-           const element = response.data[index];//.data
-           tambiente.push(element[1]);
-           testanque.push(element[2])
-           oxigenoD.push(element[3]);
-           pH.push(element[4]);
-           condElectrica.push(element[5]);
-           nH3.push(element[6]);
-           nH4.push(element[7]);
-           nitrito.push(element[8]);
-           alcalinidad.push(element[9]);
-           ejex.push(element.fecha+" Hora:"+element[0]);
-
-           if (element.fecha == hoy) {
-               indexLine = dias;
-               if (dia.getHours() > 12) {
-                   indexLine = dias + 1;
-               }
-           }
-
-           if (contdor == 2) {
-               contdor = 0;
-               dias++;
-           }
-   
+        console.log(response);
+        var data = [];
+        var tambiente=[];
+        var testanque=[];
+        var oxigenoD=[];
+        var pH=[];
+        var condElectrica=[];
+        var nH3=[];
+        var nH4=[];
+        var nitrito=[];
+        var alcalinidad=[];
+        var dia = new Date();
+        var hoy=dia.getFullYear()+"-0"+(dia.getMonth()+1)+'-'+dia.getDate();
+ 
+        var label = ["T. Ambiente","T Estanque","Oxigeno D.","PH","Cond. Electrica","NH3","NH4","Nitrito","Alcalinidad"];
+        var ejex=[];
+ 
+        var tipoGrafica = "line";
+        var indexLine=0;
+ 
+        var primera=true;
+        dias=0;
+        contdor=0;
+ 
+        for (let index = 0; index < response.data.length; index++) {
+ 
+            contdor++;
+ 
+            const element = response.data[index];//.data
+            tambiente.push(element[1]);
+            testanque.push(element[2])
+            oxigenoD.push(element[3]);
+            pH.push(element[4]);
+            condElectrica.push(element[5]);
+            nH3.push(element[6]);
+            nH4.push(element[7]);
+            nitrito.push(element[8]);
+            alcalinidad.push(element[9]);
+            ejex.push(element.fecha+" Hora:"+element[0]);
+ 
+            if (element.fecha == hoy) {
+                indexLine = dias;
+                if (dia.getHours() > 12) {
+                    indexLine = dias + 1;
+                }
+            }
+ 
+            if (contdor == 2) {
+                contdor = 0;
+                dias++;
+            }
+    
+         }
+        
+         
+         data.push( fobjGrafica(label[0],tambiente,"temperaturaambiente") );
+         data.push( fobjGrafica(label[1],testanque,"temperaturaestanque") );
+         data.push( fobjGrafica(label[2],oxigenoD,"oxigenodisuelto") );
+         data.push( fobjGrafica(label[3],pH,"ph") );
+         data.push( fobjGrafica(label[4],condElectrica,"conductividadelectrica") );
+         data.push( fobjGrafica(label[5],nH3,"amonionh3") );
+         data.push( fobjGrafica(label[6],nH4,"amonionh4") );
+         data.push( fobjGrafica(label[7],nitrito,"nitrito") );
+         data.push( fobjGrafica(label[8],alcalinidad,"alcalinidad") );
+ 
+         graficar(ejex, data, tipoGrafica, "Predicción",indexLine);
+       } catch (error) {
+            badge("#pnMensaje","Problemas :"+error , "success");
        }
        
-        
-       data.push( fobjGrafica(label[0],tambiente,"temperaturaambiente") );
-       data.push( fobjGrafica(label[1],testanque,"temperaturaestanque") );
-       data.push( fobjGrafica(label[2],oxigenoD,"oxigenodisuelto") );
-       data.push( fobjGrafica(label[3],pH,"ph") );
-       data.push( fobjGrafica(label[4],condElectrica,"conductividadelectrica") );
-       data.push( fobjGrafica(label[5],nH3,"amonionh3") );
-       data.push( fobjGrafica(label[6],nH4,"amonionh4") );
-       data.push( fobjGrafica(label[7],nitrito,"nitrito") );
-       data.push( fobjGrafica(label[8],alcalinidad,"alcalinidad") );
-
-       graficar(ejex, data, tipoGrafica, "Predicción",indexLine);
 
    }
 
