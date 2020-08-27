@@ -28,6 +28,30 @@ class Cultivo
 
     }
 
+    public function consultarSonda($parametro)
+    {
+       
+        $conn=Conexion::getInstance()->cnn();
+
+        $sqlCommand = "SELECT cultivo.cultivoid,CONCAT(lago.lagonombre,' - ',pez.especiepez) AS nombre,max(fecharegistro) 
+        FROM cultivo
+        INNER JOIN lago ON cultivo.lagoid=lago.lagoid
+        INNER JOIN pez ON cultivo.pezid=pez.pezid
+        INNER JOIN estadofisicoquimico ON cultivo.cultivoid=estadofisicoquimico.cultivoid 
+        WHERE cultivo.usuariopadreid=:usuariopadreid AND fechaelimina IS  NULL
+        GROUP BY cultivo.cultivoid,lago.lagonombre,pez.especiepez;";
+
+        $statement  = $conn->prepare($sqlCommand); 
+        $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+        $statement->execute();              
+        $resultado= $statement->fetchAll();
+
+        Conexion::cerrar($conn);
+
+        return $resultado;
+
+    }
+
     public function guardar($parametro)
     {
         $result="OK";
