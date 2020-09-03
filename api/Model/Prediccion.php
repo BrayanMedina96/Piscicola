@@ -17,8 +17,8 @@ class Prediccion
     
             } else {
 
-                $command ='python C:\Users\Administrator\Desktop\ForecastingLibrary\integracion.py'; 
-                //'python C:\Users\PCBRAYAN\Desktop\CORHUILA\ForecastingLibrary\integracion.py';
+                $command ='python C:\Users\Administrator\Desktop\ForecastingLibrary\integracion.py';// 'python C:\Users\PCBRAYAN\Desktop\CORHUILA\ForecastingLibrary\integracion.py'; 
+                //'python C:\Users\Administrator\Desktop\ForecastingLibrary\integracion.py' 'python C:\Users\PCBRAYAN\Desktop\CORHUILA\ForecastingLibrary\integracion.py';
                 $output = Shell_exec($command);
                 $dia=0;
                 $contdor=0;
