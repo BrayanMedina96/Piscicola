@@ -60,7 +60,7 @@ $(function () {
         
        try {
 
-        console.log(response);
+        //console.log(response);
         var data = [];
         var tambiente=[];
         var testanque=[];
@@ -72,13 +72,15 @@ $(function () {
         var nitrito=[];
         var alcalinidad=[];
         var dia = new Date();
-        var hoy=dia.getFullYear()+"-0"+(dia.getMonth()+1)+'-'+dia.getDate();
+
+        var numeroDia=dia.getDate().toString().length;
+        var hoy=dia.getFullYear()+"-0"+(dia.getMonth()+1)+'-'+(numeroDia==1?("0"+dia.getDate().toString()):dia.getDate().toString());
  
         var label = ["T. Ambiente","T Estanque","Oxigeno D.","PH","Cond. Electrica","NH3","NH4","Nitrito","Alcalinidad"];
         var ejex=[];
  
         var tipoGrafica = "line";
-        var indexLine=0;
+        var indexLine=-1;
  
         var primera=true;
         dias=0;
@@ -100,16 +102,16 @@ $(function () {
             alcalinidad.push(element[9]);
             ejex.push(element.fecha+" Hora:"+element[0]);
  
-            if (element.fecha == hoy) {
-                indexLine = dias;
-                if (dia.getHours() > 12) {
-                    indexLine = dias + 1;
-                }
-            }
- 
             if (contdor == 2) {
                 contdor = 0;
                 dias++;
+            }
+
+            if (element.fecha == hoy) {
+                indexLine ++;
+                /*if (dia.getHours() < 13) {
+                    indexLine  =indexLine - 1;
+                }*/
             }
     
          }
@@ -124,7 +126,9 @@ $(function () {
          data.push( fobjGrafica(label[6],nH4,"amonionh4") );
          data.push( fobjGrafica(label[7],nitrito,"nitrito") );
          data.push( fobjGrafica(label[8],alcalinidad,"alcalinidad") );
- 
+        
+       //  console.log(indexLine);
+
          graficar(ejex, data, tipoGrafica, "Predicción",indexLine);
        } catch (error) {
             badge("#pnMensaje","Problemas :"+error , "success");
