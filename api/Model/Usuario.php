@@ -88,7 +88,11 @@ class Usuario
                                      persona.personaid ,
                                      usuario.usuariocambioclave,
                                      personapadre.personanombrecomercial,
-                                     usuarioPadre.usuarioid AS userpadre
+                                     usuarioPadre.usuarioid AS userpadre,
+                                     persona.perosnanombre,
+                                     persona.personaapellido,
+                                     persona.personatelefono,
+                                     usuario.correo
                                     FROM public.usuario 
                                     INNER JOIN public.persona ON usuario.personaid=persona.personaid 
 
@@ -117,6 +121,11 @@ class Usuario
                 '","estado":"'.$row['usuarioestado'].
                 '","nombreComercial":"'.$row['personanombrecomercial'].
                 '","userPadre":"'.$row['userpadre'].
+                '","personaapellido":"'.$row['personaapellido'].
+                '","perosnanombre":"'.$row['perosnanombre'].
+                '","correo":"'.$row['correo'].
+                '","personatelefono":"'.$row['personatelefono'].
+                '","usuariocontrasenia":"'.$row['usuariocontrasenia'].
                 '","nombre":"'.$row['nombre'].'"}';
 
                 $estado=$row['usuarioestado'];
@@ -269,6 +278,54 @@ class Usuario
 
     }
 
+    public function actualizarAPP($parametro)
+    {
+
+        $result="OK";
+        $conn=Conexion::getInstance()->cnn();
+
+        $objBase64=new Base64($parametro["token"]);
+            
+        $objUsuario=new Usuario();
+        $resulUsuairio=$objUsuario->consultarUsuarioToken( $objBase64->decodeUsuario()["token"] );
+
+        $sqlCommand ='UPDATE public.usuario
+                      SET  
+                           usuariocontrasenia=:usuariocontrasenia,
+                           usuariofechaactualizacion=NOW(),
+                           usuarioidactualiza=:usuarioidactualiza,
+                           correo=:correo
+                      WHERE usuarioid=:usuarioid  ;';
+
+                     
+
+             $statement  = $conn->prepare($sqlCommand);
+             $statement ->bindValue(':usuariocontrasenia',$parametro["contrasenia"],PDO::PARAM_STR);
+             $statement ->bindValue(':correo',$parametro["correo"],PDO::PARAM_STR);
+             $statement ->bindValue(':usuarioidactualiza',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
+             $statement ->bindValue(':usuarioid',$parametro["usuarioid"],PDO::PARAM_INT);
+             
+             $statement ->execute();
+
+        $sqlCommand='UPDATE public.persona  
+                      SET perosnanombre=:nombrePersona,
+                          personaapellido=:apellido,
+                          personatelefono=:telefono
+                      WHERE personaid=:personaid';
+
+            $statement  = $conn->prepare($sqlCommand);
+            $statement ->bindValue(':nombrePersona',$parametro["nombrePersona"],PDO::PARAM_STR);
+            $statement ->bindValue(':apellido',$parametro["apellido"],PDO::PARAM_STR);
+            $statement ->bindValue(':telefono',$parametro["telefono"],PDO::PARAM_STR);
+            $statement ->bindValue(':personaid',$parametro["personaid"],PDO::PARAM_INT);
+
+            $statement ->execute();
+            
+             Conexion::cerrar($conn);
+
+        return  $result;
+
+    }
 
     public function actualizarPassword($parametro)
     {
