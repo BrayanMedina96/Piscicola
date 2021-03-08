@@ -26,18 +26,29 @@ class Marca
     public function consultar($parametro)
     {
        
+        $result=['estado'=>true,'mensaje'=>'','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT marcaid,marcanombre,marcadescripcion FROM marca 
-        WHERE marcafechaelimina IS NULL AND usuariopadreid=:usuariopadre;';
-        $statement = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-        $statement->execute();
-        $resultado= $statement->fetchAll();
+        try {
 
-        Conexion::cerrar($conn);
+             $conn=Conexion::getInstance()->cnn();
 
-        return $resultado;
+             $sqlCommand = 'SELECT marcaid,marcanombre,marcadescripcion FROM marca 
+             WHERE marcafechaelimina IS NULL AND usuariopadreid=:usuariopadre;';
+             $statement = $conn->prepare($sqlCommand);
+             $statement ->bindValue(':usuariopadre',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+             $statement->execute();
+             $result['data']= $statement->fetchAll();
+
+        }catch (PDOException  $Exception) {
+           $result['estado']=false;
+           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+        }
+        finally{
+             Conexion::cerrar($conn);
+        }
+
+        return $result;
 
     }
 
@@ -45,11 +56,10 @@ class Marca
 
     public function guardar($parametro)
     {
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro guardado.','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        try 
-        {
+        try {
 
             $sqlCommand ='INSERT INTO marca(marcanombre, marcafechacrea,marcausuariocrea,marcadescripcion,usuariopadreid)
                           VALUES (:marcanombre,NOW(),:usuarioid,:marcadescripcion,:usuariopadre);';
@@ -63,41 +73,49 @@ class Marca
             $statement ->execute();
     
             
-        } catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
-        }
-        finally{
-            Conexion::cerrar($conn);
-        }
+        }catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+         }
+         finally{
+              Conexion::cerrar($conn);
+         }
         
-     return   $result;
+        return   $result;
     }
 
     public function eliminar($parametro)
     {
-        $result="OK";
+        
+        $result=['estado'=>true,'mensaje'=>'Registro eliminado','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand ='UPDATE marca SET marcafechaelimina=NOW(),marcausuarioelimina=:usuario
-        WHERE marcaid=:marcaid';
+        try {
 
-        $statement  = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':marcaid',$parametro["id"],PDO::PARAM_INT);
-        $statement ->bindValue(':usuario',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
-        $statement ->execute();
+                $sqlCommand ='DELETE FROM marca
+                      WHERE marcaid=:marcaid';
+
+                 $statement  = $conn->prepare($sqlCommand);
+                 $statement ->bindValue(':marcaid',$parametro["id"],PDO::PARAM_INT);
+                 $statement ->execute();
         
-        Conexion::cerrar($conn);
+        }catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
 
         return $result;
     }
 
     public function actualizar($parametro)
     {
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro actualizado.','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        try 
-        {
+        try {
 
             $sqlCommand ='UPDATE marca
                           SET  marcanombre=:marcanombre,
@@ -114,14 +132,15 @@ class Marca
             $statement ->execute();
     
             
-        } catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
+        }catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
         }
         finally{
             Conexion::cerrar($conn);
         }
         
-     return   $result;
+       return   $result;
     }
     
     

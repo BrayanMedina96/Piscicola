@@ -18,7 +18,7 @@
     <script src='../scripts/Chart.js'></script>
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassDashboard.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassDashboard.js'></script>
     <script src='../scripts/Aplicacion/jsDashboard.js'></script>
 
 

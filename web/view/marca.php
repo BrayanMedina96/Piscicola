@@ -16,7 +16,7 @@
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassMarca.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassMarca.js'></script>
     <script src='../scripts/Aplicacion/jsMarca.js'></script>
 
 
@@ -32,7 +32,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Marca de sensor</h5>
+                        <h5>Marcas de sondas</h5>
                     </div>
                     <div class="card-body">
 
@@ -49,7 +49,7 @@
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
-                            
+
                         </div>
                     </div>
                 </div>
@@ -71,11 +71,11 @@
     </div>
 
 
-    <div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal" id="modal" tabindex="-1" style="overflow-y: scroll;" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Marcas de sensor</h5>
+                    <h5 class="modal-title">Marcas de sondas</h5>
                     <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -83,36 +83,36 @@
                 <div class="modal-body">
 
                     <input class="form-control" id="myInput" type="" placeholder="Buscar en la tabla:">
-                    <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tdResultado"></tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <div class="table-responsive">
+                        <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tdResultado"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
 
-
-                </div>
-                <div class="modal-footer">
+                    <div class="modal-footer">
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
 
-    <input type="hidden" id="txtID" value="" hidden />
-    <span id="pnMensaje"></span>
+        <input type="hidden" id="txtID" value="" hidden />
+        <span id="pnMensaje"></span>
 
 </body>
 <?php 

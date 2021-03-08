@@ -6,35 +6,46 @@ class Sensor
 
     public function consultar($parametro)
     {
+        $result=['estado'=>true,'mensaje'=>'','data'=>null];
+
         $objBase64 = new Base64($parametro["token"]);
 
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+        try {
 
-        $conn=Conexion::getInstance()->cnn();
+            $objUsuario = new Usuario();
+            $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
 
-        $sqlCommand = 'SELECT sensor.sensordescripcion, sensor.sensorcodigo, sensor.usuarioid, sensor.sensorfechamantenimiento,
-        sensor.sensorperiodicidadmantenimiento, sensor.sensorfechacreacion, sensor.usuarioidcrea,
-        sensor.sensorid, sensor.sensornombre, sensor.sensorestado, sensor.marcaid,marca.marcanombre
-        FROM sensor INNER JOIN marca ON sensor.marcaid=marca.marcaid
-        WHERE sensor.usuariopadreid=:usuariopadreid
-        AND sensor.sensorfechaeliminacion IS NULL;';
+            $conn=Conexion::getInstance()->cnn();
 
-        $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-        $statement->execute();              
-        $resultado= $statement->fetchAll();
+            $sqlCommand = 'SELECT sensor.sensordescripcion, sensor.sensorcodigo, sensor.usuarioid, sensor.sensorfechamantenimiento,
+            sensor.sensorperiodicidadmantenimiento, sensor.sensorfechacreacion, sensor.usuarioidcrea,
+            sensor.sensorid, sensor.sensornombre, sensor.sensorestado, sensor.marcaid,marca.marcanombre
+            FROM sensor INNER JOIN marca ON sensor.marcaid=marca.marcaid
+            WHERE sensor.usuariopadreid=:usuariopadreid
+            AND sensor.sensorfechaeliminacion IS NULL;';
 
-        Conexion::cerrar($conn);
+            $statement  = $conn->prepare($sqlCommand); 
+            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+            $statement->execute();  
+                        
+            $result['data']= $statement->fetchAll();
 
-        return $resultado;
+        } catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']=$Exception->getMessage();
+        }finally{
+            Conexion::cerrar($conn);
+        }
+
+    
+        return  $result;
     }
 
 
     public function guardar($parametro)
     {
          
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro guardado','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
         try 
@@ -64,7 +75,8 @@ class Sensor
     
             
         } catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
         }
         finally{
             Conexion::cerrar($conn);
@@ -77,24 +89,21 @@ class Sensor
     public function eliminar($parametro)
     {
 
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro eliminado','data'=>null];
         $conn=Conexion::getInstance()->cnn();
  
         try {
 
-            $sqlCommand ='UPDATE sensor
-            SET
-            sensorfechaeliminacion=NOW(),
-            usuarioidelimina=:usuarioidelimina
-            WHERE sensorid=:sensorid;';
+            $sqlCommand ='DELETE FROM sensor
+                          WHERE sensorid=:sensorid;';
     
             $statement  = $conn->prepare($sqlCommand);
-            $statement ->bindValue(':usuarioidelimina',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
             $statement ->bindValue(':sensorid',$parametro["id"],PDO::PARAM_INT);
             $statement ->execute();
 
         }catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
         }finally{
             Conexion::cerrar($conn);
         }
@@ -106,7 +115,7 @@ class Sensor
     public function actualizar($parametro)
     {
 
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro actualizado','data'=>null];
         $conn=Conexion::getInstance()->cnn();
         
         try {
@@ -133,7 +142,8 @@ class Sensor
                  $statement ->execute();
 
         } catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
          }
         finally{
             Conexion::cerrar($conn);
@@ -177,7 +187,6 @@ class Sensor
 
         return $result;
     }
-
 
 
      public function prepararDato($importarText,$usuario,$usuaioPadre)

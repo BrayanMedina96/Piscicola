@@ -19,7 +19,7 @@ class Cultivo{
             "&token=" + this.token +
             "&do=";
 
-        return consultarAjax('POST', parametro);
+        return consultarAjax('POST', parametro).responseJSON;
 
     }
 
@@ -35,7 +35,7 @@ class Cultivo{
         "&token=" + this.token +
         "&do=";
 
-        return consultarAjax('PUT', parametro);
+        return consultarAjax('PUT', parametro).responseJSON;
     }
 
     consultar() {
@@ -45,7 +45,7 @@ class Cultivo{
             do: ""
         }
 
-        return consultarAjax('GET', parametro);
+        return consultarAjax('GET', parametro).responseJSON;
     }
 
     consultarSonda() {
@@ -55,7 +55,7 @@ class Cultivo{
             do: "Sonda"
         }
 
-        return consultarAjax('GET', parametro);
+        return consultarAjax('GET', parametro).responseJSON;
     }
 
     eliminar() {
@@ -64,7 +64,7 @@ class Cultivo{
             "&id=" + this.id +
             "&token=" + this.token +
             "&do=";
-        return consultarAjax('DELETE', parametro);
+        return consultarAjax('DELETE', parametro).responseJSON;
     }
 
     cargarddl(elemento,result,value,displayValue)
@@ -75,7 +75,9 @@ class Cultivo{
         {
             option+="<option value="+result[indice][value]+">"+result[indice][displayValue]+"</option>";
         }
-        $("#"+elemento).append(option);
+        $("#"+elemento).append("<option value=''>Seleccionar</option>"+option);
+
+        
     }
 
     cargarddl2(elemento,result,value,display)

@@ -16,6 +16,7 @@
      <script src="../scripts/Aplicacion/jsAjax.js"></script>
      <script src="../scripts/Aplicacion/jsUtilidad.js"></script>
      <script src="../scripts/Aplicacion/jsPersonaUsuario.js"></script>
+     <script src="../scripts/Aplicacion/jsLocalStorage.js"></script>
      <?php
           include "../utilidad/login.php";
         ?>

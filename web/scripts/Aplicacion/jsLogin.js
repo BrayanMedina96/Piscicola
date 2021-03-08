@@ -2,6 +2,8 @@ var totalTime;
 
 $(function () {
 
+    limpiarStorage()
+
     $("#hdCambioPass").val("0");
 
     $(".registrar").attr("hidden", "hidden");

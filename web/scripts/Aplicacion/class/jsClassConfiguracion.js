@@ -18,7 +18,7 @@ class LagoSensor {
             "&token=" + this.token +
             "&do=";
 
-        return consultarAjax('POST', parametro);
+        return consultarAjax('POST', parametro).responseJSON;
 
 
     }
@@ -34,7 +34,7 @@ class LagoSensor {
             "&token=" + this.token +
             "&do=";
 
-        return consultarAjax('PUT', parametro);
+        return consultarAjax('PUT', parametro).responseJSON;
     }
 
     consultar() {
@@ -44,7 +44,7 @@ class LagoSensor {
             do: ""
         }
 
-        return consultarAjax('GET', parametro);
+        return consultarAjax('GET', parametro).responseJSON;
     }
 
     eliminar() {
@@ -53,7 +53,8 @@ class LagoSensor {
             "&id=" + this.id +
             "&token=" + this.token +
             "&do=";
-        return consultarAjax('DELETE', parametro);
+            
+        return consultarAjax('DELETE', parametro).responseJSON;
     }
 
    

@@ -16,9 +16,9 @@
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassEspecie.js'></script>
-    <script src='../scripts/Aplicacion/jsClassLago.js'></script>
-    <script src='../scripts/Aplicacion/jsClassCultivo.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassEspecie.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassLago.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassCultivo.js'></script>
     <script src='../scripts/Aplicacion/jsCultivo.js'></script>
 
 </head>

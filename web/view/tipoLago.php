@@ -16,7 +16,7 @@
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassTipoLago.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassTipoLago.js'></script>
     <script src='../scripts/Aplicacion/jsTipoLago.js'></script>
 
 
@@ -32,7 +32,7 @@
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Tipo lago</h5>
+                        <h5>Tipo de lagos</h5>
                     </div>
                     <div class="card-body">
 
@@ -70,37 +70,39 @@
     </div>
 
 
-    <div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal" id="modal" tabindex="-1" style="overflow-y: scroll;" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Tipo de lago</h5>
+                    <h5 class="modal-title">Tipo de lagos</h5>
                     <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
                 </div>
                 <div class="modal-body">
 
-                    <input class="form-control" id="myInput" type=""  placeholder="Buscar en la tabla:">
-                    <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
-                        <thead>
-                            <tr>
-                                <th></th>
-                                <th>Nombre</th>
-                                <th>Descripción</th>
-                                <th></th>
-                            </tr>
-                        </thead>
-                        <tbody id="tdResultado"></tbody>
-                        <tfoot>
-                            <tr>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                                <th></th>
-                            </tr>
-                        </tfoot>
-                    </table>
+                    <input class="form-control" id="myInput" type="" placeholder="Buscar en la tabla:">
+                    <div class="table-responsive">
+                        <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th>Nombre</th>
+                                    <th>Descripción</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tdResultado"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
 
 
                 </div>

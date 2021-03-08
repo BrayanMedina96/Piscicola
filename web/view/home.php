@@ -5,6 +5,8 @@
   <meta charset="utf-8">
   <link href="../content/bootstrap.min.css" rel="stylesheet" />
   <script src="../scripts/jquery-3.3.1.min.js"></script>
+  <script src="../scripts/Aplicacion/home.js"></script>
+  <script src="../scripts/Aplicacion/jsUtilidad.js"></script>
 </head>
 
 <body>

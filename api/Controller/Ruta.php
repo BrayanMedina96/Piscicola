@@ -61,6 +61,7 @@ class Ruta
            'Sonda_PUT'=>'actualizar',
            'Sonda_GET'=>'consultar',
            'Sonda_DELETE'=>'eliminar',
+           'Sonda_GETgetParametros'=>'getParametros',
            'Dashboard_GETvariable'=>'variable',
            'Dashboard_POST'=>'guardar',
            'Dashboard_GET'=>'consultar',
@@ -88,6 +89,15 @@ class Ruta
            'Cultivo_GETSonda'=>'consultarSonda',
            'Cultivo_DELETE'=>'eliminar',
            'Prediccion_GET'=>'consultar',
+           'Rango_GET'=>'consultar',
+           'Rango_GETgetRecomendado'=>'getRecomendado',
+           'Rango_GETgetRangoSensor'=>'getRangoSensor',
+           'Rango_POST'=>'guardar',
+           'Rango_POSTrangoSensor'=>'rangoSensor',
+           'Rango_PUT'=>'actualizar',
+           'Rango_DELETE'=>'eliminar',
+           'Rango_DELETEeliminarSondaRango'=>'eliminarSondaRango',
+           
         );
 
        return $this->ruta;

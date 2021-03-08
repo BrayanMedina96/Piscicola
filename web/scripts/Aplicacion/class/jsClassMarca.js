@@ -12,18 +12,8 @@ class Marca {
             do: ""
         }
 
-        return consultarAjax('GET', parametro);
+        return consultarAjax('GET', parametro).responseJSON;
 
-    }
-
-
-    cargarMarca(elemento, result) {
-        $("#" + elemento).html("");
-        var option = "";
-        for (var indice in result) {
-            option += "<option value=" + result[indice]["marcaid"] + ">" + result[indice]["marcanombre"] + "</option>";
-        }
-        $("#" + elemento).append(option);
     }
 
     guardar() {
@@ -34,7 +24,7 @@ class Marca {
             "&token=" + this.token +
             "&do=";
 
-        return consultarAjax('POST', parametro);
+        return consultarAjax('POST', parametro).responseJSON;
 
     }
 
@@ -47,7 +37,7 @@ class Marca {
             "&token=" + this.token +
             "&do=";
 
-        return consultarAjax('PUT', parametro);
+        return consultarAjax('PUT', parametro).responseJSON;
 
     }
 
@@ -57,9 +47,16 @@ class Marca {
             "&id=" + this.id +
             "&token=" + this.token +
             "&do=";
-        return consultarAjax('DELETE', parametro);
+        return consultarAjax('DELETE', parametro).responseJSON;
     }
 
-
+    cargarMarca(elemento, result) {
+        $("#" + elemento).html("");
+        var option = "";
+        for (var indice in result) {
+            option += "<option value=" + result[indice]["marcaid"] + ">" + result[indice]["marcanombre"] + "</option>";
+        }
+        $("#" + elemento).append(option);
+    }
 
 }
