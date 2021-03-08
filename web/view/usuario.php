@@ -17,7 +17,7 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
     <script src="../scripts/Aplicacion/jsPersonaUsuario.js"></script>
-    <script src='../scripts/Aplicacion/jsClassSeguridad.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassSeguridad.js'></script>
     <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
     <script src="../scripts/Aplicacion/jsLogin.js"></script>
 

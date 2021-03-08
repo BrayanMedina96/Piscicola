@@ -12,9 +12,9 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
     <script src='../scripts/Aplicacion/jsPersona.js'></script>
-    <script src='../scripts/Aplicacion/jsClassSonda.js'></script>
-    <script src='../scripts/Aplicacion/jsClassLago.js'></script>
-    <script src='../scripts/Aplicacion/jsClassSensor.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassSonda.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassLago.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassSensor.js'></script>
     <script src='../scripts/Aplicacion/jsImportar.js'></script>
 
 

@@ -17,10 +17,12 @@
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
 
-    <script src='../scripts/Aplicacion/jsClassCultivo.js'></script>
-    <script src='../scripts/Aplicacion/jsClassSonda.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassCultivo.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassSonda.js'></script>
     <script src='../scripts/Aplicacion/jsSonda.js'></script>
 
+
+   
     <style>
         .only-timepicker .datepicker--nav,
         .only-timepicker .datepicker--content {
@@ -38,20 +40,22 @@
 <body class="bg-light">
 
     <hr>
-    <div class="py-5 container">
+     <div class="py-5 container">
+
         <div class="row">
 
             <div class="col-md-9">
 
                 <div class="card">
                     <div class="card-header">
-                        <h5>Sonda</h5>
+                        <h5>Parámetros</h5>
                     </div>
-                    <div class="card-body">
+
+                    <div id="pnRegistro" class="card-body d-none">
 
                         <div class="form-group">
                             <label for="ddlCultivo">Cultivo</label>
-                            <select id="ddlCultivo" class="form-control"></select>
+                            <select id="ddlCultivo" class="form-control" disabled="disabled"></select>
                         </div>
 
                         <div class="form-row">
@@ -71,47 +75,47 @@
                             </div>
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnTempAmbiente" class="form-group">
                             <label for="txtTempAmbiente">Temperatura ambiente</label>
                             <input type="number" class="form-control limpiar" id="txtTempAmbiente" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnTempEstanque" class="form-group">
                             <label for="txtTempEstanque">Temperatura estanque</label>
                             <input type="number" class="form-control limpiar" id="txtTempEstanque" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnOxigeno" class="form-group">
                             <label for="txtOxigeno">Oxigeno disuelto</label>
                             <input type="number" class="form-control limpiar" id="txtOxigeno" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnPH" class="form-group">
                             <label for="txtPh">PH</label>
                             <input type="number" class="form-control limpiar" id="txtPh" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnConductividad" class="form-group">
                             <label for="txtCondElectrica">Conductividad Electrica</label>
                             <input type="number" class="form-control limpiar" id="txtCondElectrica" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnAmonioNH3" class="form-group">
                             <label for="txtAmonioNH3">Amonio NH3</label>
                             <input type="number" class="form-control limpiar" id="txtAmonioNH3" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnAmonioNH4" class="form-group">
                             <label for="txtAmonioNH4">Amonio NH4</label>
                             <input type="number" class="form-control limpiar" id="txtAmonioNH4" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnNitrito" class="form-group">
                             <label for="txtNitrito">Nitrito</label>
                             <input type="number" class="form-control limpiar" id="txtNitrito" >
                         </div>
 
-                        <div class="form-group">
+                        <div id="pnAlcalinidad" class="form-group">
                             <label for="txtAlcalinidad">Alcalinidad</label>
                             <input type="number" class="form-control limpiar" id="txtAlcalinidad" >
                         </div>
@@ -133,6 +137,19 @@
                             <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>
                         </div>
                     </div>
+
+
+                    <div id="pnSeleccion" class="card-body">
+                        <div class="form-group">
+                            <label for="ddlCultivoLoad">Cultivo</label>
+                            <select id="ddlCultivoLoad" class="form-control"></select>
+                        </div>
+                        <div class="form-group">
+                            <button id="btnSeleccionar" class="btn btn-primary" type="button">Seleccionar</button>
+                        </div>
+                    </div>
+
+
                 </div>
 
             </div>
@@ -144,6 +161,24 @@
                         <a id="btnConfiguracion" class="list-group-item list-group-item-action">
                             <img width="18px" src="../svg/si-glyph-pencil.svg" /> Mis registros
                         </a>
+                    </div>
+                </div>
+
+                <div id="pnCambiar" class="form-group d-none">
+                    <div class="list-group">
+                        <a id="btnCambiar" class="list-group-item list-group-item-action">
+                            <img width="18px" src="../svg/si-glyph-pencil.svg" /> Cambiar de cultivo
+                        </a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="card">
+                        <div class="card-header"></div>
+                        <div class="card-body">
+                             <div id="default-tree" style="font-size:12"></div>
+                        </div>
+
                     </div>
                 </div>
 
@@ -162,6 +197,7 @@
             </div>
 
         </div>
+
     </div>
 
 
@@ -169,7 +205,7 @@
         <div class="modal-dialog" style="max-width:1600px" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title">Sonda</h5>
+                    <h5 class="modal-title">Parámetros</h5>
                     <button id="btnCerrarModal" type="button" class="close" data-dismiss="modal" aria-label="Close">
                         <span aria-hidden="true">&times;</span>
                     </button>
@@ -227,6 +263,10 @@
         </div>
     </div>
 
+    
+
+
+    <a href="#modalCultivo"></a>
     <input type="hidden" id="txtID" value="" hidden />
     <span id="pnMensaje"></span>
 </body>

@@ -26,19 +26,20 @@ $(function () {
         obj.descripcion = $("#txtDescripcion").val();
         obj.token = $("#txtVarUrl").val();
 
+        var result=null
         if ($("#btnEnviar").text() == "Guardar") {
-            obj.guardar();
-            badge("#pnMensaje", "Registro guardado.", "success");
+            result= obj.guardar();
+            
 
         } else {
 
             obj.id = $("#txtID").val();
-            obj.actualizar();
-            badge("#pnMensaje", "Registro actualizado.", "success");
+            result= obj.actualizar();
+           
 
         }
 
-        $("#btnLimpiar").click();
+        validarRespuesta(result)
 
     })
 
@@ -53,8 +54,6 @@ $(function () {
         $(":text").removeAttr('required');
         $(":text").val('');
         
-
-
     })
 
     $("#btnConfiguracion").click(function () {
@@ -62,14 +61,13 @@ $(function () {
         $("#modal").modal();
         consultar();
 
-
     })
 
     function  consultar() {
     
         var obj = new Marca();
         obj.token = $("#txtVarUrl").val();
-        var result = obj.consultar().responseJSON;
+        var result = obj.consultar();
     
         var columna = [
             {
@@ -90,7 +88,7 @@ $(function () {
             }
         ]
     
-        tabla("Tabla", result, columna,"");
+        tabla("Tabla", result['data'], columna,"");
     
     }
 
@@ -118,11 +116,28 @@ $(function () {
             var obj = new Marca();
             obj.id = data.marcaid;
             obj.token = $("#txtVarUrl").val();
-            obj.eliminar();
-            consultar();
+            var result = obj.eliminar();
+            if (result['estado']) {
+                $(this).parents("tr").remove()
+            }
+
+            validarRespuesta(result)
 
         }
 
     });
+
+    function validarRespuesta(respuesta) {
+        if (respuesta['estado']) {
+            if (respuesta['mensaje'] != "") {
+                badge("#pnMensaje", respuesta['mensaje'], "success");
+                $("#btnLimpiar").click();
+            }
+
+        } else {
+            badge("#pnMensaje", respuesta['mensaje'], "danger");
+            console.log("ERROR:", respuesta)
+        }
+    }
 
 });

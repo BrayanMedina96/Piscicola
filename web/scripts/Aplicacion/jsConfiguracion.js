@@ -1,7 +1,7 @@
 $(function () {
 
     especie();
-    sensor(); 
+    sensor();
     lago();
 
     $("#txtFechaInicio").datepicker({
@@ -21,47 +21,54 @@ $(function () {
             calendar.hide()
         }
     })
-    
 
-    function especie()
-    {
-        var obj=new Especie();
-        obj.token=$("#txtVarUrl").val();
-        obj.cargarddl("ddlEspecie",obj.consultar().responseJSON);
+
+    function especie() {
+        var obj = new Especie();
+        obj.token = $("#txtVarUrl").val();
+        obj.cargarddl("ddlEspecie", obj.consultar()['data']);
     }
 
-    function sensor() 
-    {
-        var obj=new Sensor();
+    function sensor() {
+        var obj = new Sensor();
         obj.token = $("#txtVarUrl").val();
-        obj.cargarddl("ddlSensor",obj.consultar().responseJSON);
+        var result = obj.consultar()
+        if (result['estado']) {
+            obj.cargarddl("ddlSensor", result["data"]);
+        }
+        validarRespuesta(result)
     }
 
     function lago() {
 
         var obj = new Lago();
         obj.token = $("#txtVarUrl").val();
-        obj.cargarddl("ddlLago",obj.consultar().responseJSON);
+        var result = obj.consultar()
+        if (result['estado']) {
+            obj.cargarddl("ddlLago", result['data']);
+        }
+
+        validarRespuesta(result)
+
     }
 
     $("#btnLimpiar").click(function () {
-  
-       // limpiar(".limpiar");
+
         $("#btnEnviar").text("Guardar");
         $("#btnEnviar").attr("class", "btn btn-primary");
 
         $(".was-validated").removeClass('was-validated');
         $(":text").removeAttr('required');
         $(":text").val('');
-    
-     })
 
-     $("#btnEnviar").click(function () {
+    })
+
+    $("#btnEnviar").click(function () {
 
 
         if (!validarCampos("[required]")) {
             $("#pnMensaje").html("");
-            badge("#pnMensaje","Debe llenar los campos.","danger");
+            badge("#pnMensaje", "Debe llenar los campos.", "danger");
             return;
         }
 
@@ -74,23 +81,24 @@ $(function () {
         obj.estado = $("#chkEstado").prop('checked');
         obj.token = $("#txtVarUrl").val();
 
+        var result = null
         if ($("#btnEnviar").text() == "Guardar") {
-            obj.guardar();
-            badge("#pnMensaje", "Registro guardado.","success");
+            result = obj.guardar();
+
         } else {
 
             obj.id = $("#textLagoSensorID").val();
-            obj.actualizar();
-            badge("#pnMensaje", "Registro actualizado.","success");
+            result = obj.actualizar();
+
         }
 
+        validarRespuesta(result)
 
-        $("#btnLimpiar").click();
     })
 
 
     $("#btnConfiguracion").click(function () {
-        
+
         $("#modal").modal("show");
         consultar();
 
@@ -100,52 +108,58 @@ $(function () {
 
         var obj = new LagoSensor();
         obj.token = $("#txtVarUrl").val();
-        var result = obj.consultar().responseJSON;
+        var result = obj.consultar();
 
-        var columna = [
-            {
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<img class='seleccionarFila' src='../svg/selection-option.png'></img>"
-            },
-            {
-                "data": "lagonombre"
-            },
-            {
-                "data": "sensornombre"
-            },
-            {
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<img class='eliminar' src='../svg/delete.png'></img>"
-            }
-        ]
+        if (result['estado']) {
 
-        fucion = {
-            render: function (data, type, full, meta) {
-                var da = data.substr(0, 20);
-                if (data.length > da.length) {
-                    da = da + "...";
+
+
+            var columna = [{
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<img class='seleccionarFila' src='../svg/selection-option.png'></img>"
+                },
+                {
+                    "data": "lagonombre"
+                },
+                {
+                    "data": "sensornombre"
+                },
+                {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<img class='eliminar' src='../svg/delete.png'></img>"
                 }
-                return da;;
-            },
-            targets: 2
+            ]
+
+            fucion = {
+                render: function (data, type, full, meta) {
+                    var da = data.substr(0, 20);
+                    if (data.length > da.length) {
+                        da = da + "...";
+                    }
+                    return da;;
+                },
+                targets: 2
+            }
+
+            tabla("Tabla", result['data'], columna, fucion);
         }
 
-        tabla("Tabla", result, columna,fucion);
+        validarRespuesta(result)
 
     }
 
 
     $('#Tabla tbody').on('click', 'tr .seleccionarFila', function () {
         var table = $('#Tabla').DataTable();
-        var data = table.row( $(this).parents("tr") ).data();
+        var data = table.row($(this).parents("tr")).data();
 
         $("#textLagoSensorID").val(data.lagosensorid);
         $("#ddlLago").val(data.lagoid);
         $("#ddlSensor").val(data.sensorid);
         $("#txtFechaInstala").val(data.lagosensorfechainstalacion);
-        $("#chkEstado").prop("checked",data.lagosensorestado);
+        $("#chkEstado").prop("checked", data.lagosensorestado);
         $("#btnCerrarModal").click();
         $("#btnEnviar").text("Actualizar");
         $("#btnEnviar").attr("class", "btn btn-success");
@@ -154,19 +168,34 @@ $(function () {
 
     $('#Tabla tbody').on('click', 'tr .eliminar', function () {
         var table = $('#Tabla').DataTable();
-        var data = table.row( $(this).parents("tr") ).data();
-        var si=confirm("Está seguro de eliminar.");
-        if(si)
-        {
-            
-            var obj=new LagoSensor();
-            obj.id=data.lagosensorid;
+        var data = table.row($(this).parents("tr")).data();
+        var si = confirm("Está seguro de eliminar.");
+        if (si) {
+
+            var obj = new LagoSensor();
+            obj.id = data.lagosensorid;
             obj.token = $("#txtVarUrl").val();
-            obj.eliminar();
-            consultar();
+            var result=obj.eliminar();
+            if (result['estado']) {
+                $(this).parents("tr").remove()
+            }
+            validarRespuesta(result)
 
         }
 
     });
+
+    function validarRespuesta(respuesta) {
+        if (respuesta['estado']) {
+            if (respuesta['mensaje'] != "") {
+                badge("#pnMensaje", respuesta['mensaje'], "success");
+                $("#btnLimpiar").click();
+            }
+
+        } else {
+            badge("#pnMensaje", respuesta['mensaje'], "danger");
+            console.log("ERROR:", respuesta)
+        }
+    }
 
 })

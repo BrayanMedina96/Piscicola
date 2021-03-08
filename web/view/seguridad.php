@@ -15,7 +15,7 @@
     <link href="../Content/datepicker.min.css" rel="stylesheet" type="text/css" />
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassSeguridad.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassSeguridad.js'></script>
     <script src='../scripts/Aplicacion/jsSeguridad.js'></script>
 
 

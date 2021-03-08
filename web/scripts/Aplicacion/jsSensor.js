@@ -21,7 +21,7 @@ $(function () {
 
         var obj = new Marca();
         obj.token=$("#txtVarUrl").val();
-        obj.cargarMarca("ddlMarca", obj.consultar().responseJSON);
+        obj.cargarMarca("ddlMarca", obj.consultar()['data']);
     }
 
     $("#btnEnviar").click(function () {
@@ -45,14 +45,14 @@ $(function () {
         obj.estado=$("#chkEstado").prop('checked');
 
         if ($("#btnEnviar").text() == "Guardar") {
-            obj.guardar();
-            badge("#pnMensaje", "Registro guardado.", "success");
+            var result=obj.guardar();
+            validarRespuesta(result)
 
         } else {
 
             obj.id = $("#txtSensorID").val();
-            obj.actualizar();
-            badge("#pnMensaje", "Registro actualizado.", "success");
+            var result=obj.actualizar();
+            validarRespuesta(result)
         }
 
 
@@ -71,53 +71,59 @@ $(function () {
 
         var obj = new Sensor();
         obj.token = $("#txtVarUrl").val();
-        var result = obj.consultar().responseJSON;
+        var result = obj.consultar();
 
-        
-        var columna = [
-            {
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<img class='seleccionarFila' src='../svg/selection-option.png'></img>"
-            },
-            {
-                "data": "sensornombre"
-            },
-            {
-                "data": "sensordescripcion"
-            },
-            {
-                "data": "sensorcodigo"
-            },
-            {
-                "data": "sensorfechamantenimiento"
-            },
-            {
-                "data": "sensorperiodicidadmantenimiento"
-            },
-            {
-                "data": "sensorestado"
-            },
-            {
-                "targets": -1,
-                "data": null,
-                "defaultContent": "<img class='eliminar' src='../svg/delete.png'></img>"
-            }
-        ]
+        validarRespuesta(result)
 
-        fucion = {
-            render: function (data, type, full, meta) {
-                var da = data.substr(0, 20);
-                if (data.length > da.length) {
-                    da = da + "...";
+        if(result['estado'])
+        {
+            var columna = [
+                {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<img class='seleccionarFila' src='../svg/selection-option.png'></img>"
+                },
+                {
+                    "data": "sensornombre"
+                },
+                {
+                    "data": "sensordescripcion"
+                },
+                {
+                    "data": "sensorcodigo"
+                },
+                {
+                    "data": "sensorfechamantenimiento"
+                },
+                {
+                    "data": "sensorperiodicidadmantenimiento"
+                },
+                {
+                    "data": "sensorestado"
+                },
+                {
+                    "targets": -1,
+                    "data": null,
+                    "defaultContent": "<img class='eliminar' src='../svg/delete.png'></img>"
                 }
-                return da;;
-            },
-            targets: 2
+            ]
+    
+            fucion = {
+                render: function (data, type, full, meta) {
+                    var da = data.substr(0, 20);
+                    if (data.length > da.length) {
+                        da = da + "...";
+                    }
+                    return da;;
+                },
+                targets: 2
+            }
+    
+            tabla("Tabla", result['data'], columna,fucion);
         }
 
-        tabla("Tabla", result, columna,fucion);
-
+        
+    
     }
 
 
@@ -149,8 +155,13 @@ $(function () {
             var obj=new Sensor();
             obj.id=data.sensorid;
             obj.token = $("#txtVarUrl").val();
-            obj.eliminar();
-            consultarSensor();
+            var result= obj.eliminar();
+            if(result['estado'])
+            {
+                $(this).parents("tr").remove()
+            }
+
+            validarRespuesta(result)
 
         }
 
@@ -165,10 +176,24 @@ $(function () {
         $(":text").removeAttr('required');
         $(".was-validated").removeClass('was-validated');
         $(":text").val('');
+        $(".limpiar").val("")
+        $("#txtDescripcion").val("")
 
         
      });
 
+     function validarRespuesta(respuesta) {
+        if (respuesta['estado']) {
+            if (respuesta['mensaje'] != "") {
+                badge("#pnMensaje", respuesta['mensaje'], "success");
+                $("#btnLimpiar").click();
+            }
+
+        } else {
+            badge("#pnMensaje", respuesta['mensaje'], "danger");
+            console.log("ERROR:", respuesta)
+        }
+    }
 
 
 

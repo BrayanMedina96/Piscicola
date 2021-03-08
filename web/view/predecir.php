@@ -16,7 +16,7 @@
     <script src='../scripts/Chart.js'></script>
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-    <script src='../scripts/Aplicacion/jsClassCultivo.js'></script>
+    <script src='../scripts/Aplicacion/class/class/jsClassCultivo.js'></script>
     <script src="../scripts/Aplicacion/jsPrediccion.js"></script>
 
 </head>

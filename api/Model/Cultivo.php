@@ -6,55 +6,74 @@ class Cultivo
 
     public function consultar($parametro)
     {
-       
+        $result=['estado'=>true,'mensaje'=>'','data'=>null];
+
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = "SELECT cultivo.cultivoid, cultivo.pezid, cultivo.fechainicio, cultivo.fechafinalizacion, cultivo.usuarioidcrea, 
-                              cultivo.cantidadpezmuerto, cultivo.fechacreacion, cultivo.lagoid ,lago.lagonombre,pez.especiepez,
-                              CONCAT(lago.lagonombre,' - ',pez.especiepez) AS nombre
-                       FROM cultivo
-                       INNER JOIN lago ON cultivo.lagoid=lago.lagoid
-                       INNER JOIN pez ON cultivo.pezid=pez.pezid
-                       WHERE cultivo.usuariopadreid=:usuariopadreid AND elimina IS  NULL;";
+        try {
+            
+             $sqlCommand = "SELECT cultivo.cultivoid, cultivo.pezid, cultivo.fechainicio, cultivo.fechafinalizacion, cultivo.usuarioidcrea, 
+             cultivo.cantidadpezmuerto, cultivo.fechacreacion, cultivo.lagoid ,lago.lagonombre,pez.especiepez,
+             CONCAT('Lago: ',lago.lagonombre,' - Pez: ',pez.especiepez) AS nombre
+             FROM cultivo
+             INNER JOIN lago ON cultivo.lagoid=lago.lagoid
+             INNER JOIN pez ON cultivo.pezid=pez.pezid
+             WHERE cultivo.usuariopadreid=:usuariopadreid AND elimina IS  NULL;";
 
-        $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-        $statement->execute();              
-        $resultado= $statement->fetchAll();
+             $statement  = $conn->prepare($sqlCommand); 
+             $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+             $statement->execute();              
+             $result['data']= $statement->fetchAll();
 
-        Conexion::cerrar($conn);
+        } catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
 
-        return $resultado;
+        }finally{
+            Conexion::cerrar($conn);
+        }
+
+
+        return $result;
 
     }
 
     public function consultarSonda($parametro)
     {
-       
+        $result=['estado'=>true,'mensaje'=>'','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = "SELECT cultivo.cultivoid,CONCAT(lago.lagonombre,' - ',pez.especiepez) AS nombre,max(fecharegistro) 
-        FROM cultivo
-        INNER JOIN lago ON cultivo.lagoid=lago.lagoid
-        INNER JOIN pez ON cultivo.pezid=pez.pezid
-        INNER JOIN estadofisicoquimico ON cultivo.cultivoid=estadofisicoquimico.cultivoid 
-        WHERE cultivo.usuariopadreid=:usuariopadreid AND fechaelimina IS  NULL
-        GROUP BY cultivo.cultivoid,lago.lagonombre,pez.especiepez;";
+        try {
+            
+            $sqlCommand = "SELECT cultivo.cultivoid,CONCAT(lago.lagonombre,' - ',pez.especiepez) AS nombre,max(fecharegistro) 
+             FROM cultivo
+             INNER JOIN lago ON cultivo.lagoid=lago.lagoid
+             INNER JOIN pez ON cultivo.pezid=pez.pezid
+             INNER JOIN estadofisicoquimico ON cultivo.cultivoid=estadofisicoquimico.cultivoid 
+             WHERE cultivo.usuariopadreid=:usuariopadreid AND fechaelimina IS  NULL
+             GROUP BY cultivo.cultivoid,lago.lagonombre,pez.especiepez;";
 
-        $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-        $statement->execute();              
-        $resultado= $statement->fetchAll();
+             $statement  = $conn->prepare($sqlCommand); 
+             $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+             $statement->execute();              
+             $result['data']= $statement->fetchAll();
 
-        Conexion::cerrar($conn);
+        }catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
 
+        }finally{
+            Conexion::cerrar($conn);
+        }
+
+       
         return $resultado;
 
     }
 
     public function guardar($parametro)
     {
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro guardado.','data'=>null];
 
         $conn=Conexion::getInstance()->cnn();
 
@@ -77,42 +96,48 @@ class Cultivo
 
           
 
-        } catch (\PDOException $th) {
-            $result= $th;
+        } catch (PDOException $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+
+        }finally{
+            Conexion::cerrar($conn);
         }
 
-        Conexion::cerrar($conn);
-
-    
         return   $result;
     }
 
     public function eliminar($parametro)
     {
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro eliminado.','data'=>null];
 
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'UPDATE cultivo
-        SET elimina=CAST(NOW() AS DATE),
-        usuarioactualiza=:usuarioactualiza
-        WHERE cultivoid=:cultivoid;';
+        try {
 
-        $statement = $conn->prepare($sqlCommand);
-        
-        $statement ->bindValue(':usuarioactualiza',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
-        $statement ->bindValue(':cultivoid',$parametro['id'],PDO::PARAM_INT);
+           $sqlCommand = 'DELETE FROM cultivo
+                          WHERE cultivoid=:cultivoid;';
 
-        $statement->execute();
+           $statement = $conn->prepare($sqlCommand);
+    
+           $statement ->bindValue(':cultivoid',$parametro['id'],PDO::PARAM_INT);
 
-        Conexion::cerrar($conn);
+           $statement->execute();
+
+        }catch (PDOException $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+
+        }finally{
+            Conexion::cerrar($conn);
+        }
 
         return $result;
     }
 
     public function actualizar($parametro)
     {
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro actualizado.','data'=>null];
 
         $conn=Conexion::getInstance()->cnn();
 
@@ -135,11 +160,13 @@ class Cultivo
 
           
 
-        } catch (\PDOException $th) {
-            $result= $th;
-        }
+        }catch (PDOException $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
 
-        Conexion::cerrar($conn);
+        }finally{
+            Conexion::cerrar($conn);
+        }
 
     
         return   $result;

@@ -74,7 +74,8 @@ $(function () {
         var dia = new Date();
 
         var numeroDia=dia.getDate().toString().length;
-        var hoy=dia.getFullYear()+"-0"+(dia.getMonth()+1)+'-'+(numeroDia==1?("0"+dia.getDate().toString()):dia.getDate().toString());
+        var numeroMes=(dia.getMonth()+1).toString().length;
+        var hoy=dia.getFullYear()+"-"+(numeroMes==1?"0"+(dia.getMonth()+1):(dia.getMonth()+1))+'-'+(numeroDia==1?("0"+dia.getDate().toString()):dia.getDate().toString());
  
         var label = ["T. Ambiente","T Estanque","Oxigeno D.","PH","Cond. Electrica","NH3","NH4","Nitrito","Alcalinidad"];
         var ejex=[];
@@ -106,7 +107,7 @@ $(function () {
                 contdor = 0;
                 dias++;
             }
-
+           
             if (element.fecha == hoy) {
                 indexLine ++;
                 /*if (dia.getHours() < 13) {

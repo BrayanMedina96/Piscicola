@@ -13,8 +13,8 @@
 
   <script src="../scripts/Aplicacion/jsAjax.js"></script>
   <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
-  <script src='../scripts/Aplicacion/jsClassLago.js'></script>
-  <script src='../scripts/Aplicacion/jsClassMaterial.js'></script>
+  <script src='../scripts/Aplicacion/class/jsClassLago.js'></script>
+  <script src='../scripts/Aplicacion/class/jsClassMaterial.js'></script>
   <script src='../scripts/Aplicacion/jsLago.js'></script>
 
   <style>
@@ -70,7 +70,7 @@
               <input type="number" class="form-control limpiar" id="txtAltitud">
             </div>
             <div class="form-group">
-              <label for="txtCantidadPeces">Catidad de peces</label>
+              <label for="txtCantidadPeces">Cantidad de peces</label>
               <input type="number" class="form-control limpiar" id="txtCantidadPeces">
             </div>
             <div class="form-group">
@@ -105,7 +105,7 @@
 
   <div id="pnMensaje"></div>
 
-  <div class="modal" id="modalLago" tabindex="-1" role="dialog">
+  <div class="modal" id="modalLago" tabindex="-1" style="overflow-y: scroll;" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -117,6 +117,7 @@
         <div class="modal-body">
 
           <input class="form-control" id="myInput" type="" placeholder="Buscar en la tabla:">
+          <div class="table-responsive">
           <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
             <thead>
               <tr>
@@ -144,7 +145,7 @@
               </tr>
             </tfoot>
           </table>
-
+         </div>
 
         </div>
         <div class="modal-footer">

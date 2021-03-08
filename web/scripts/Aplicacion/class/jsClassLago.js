@@ -27,7 +27,7 @@ class Lago {
             "&tipolago="+this.tipolago+
             "&do=";
 
-        return consultarAjax('POST', parametro);
+        return consultarAjax('POST', parametro).responseJSON;
 
 
     }
@@ -47,7 +47,7 @@ class Lago {
             "&tipolago="+this.tipolago+
             "&do=";
 
-        return consultarAjax('PUT', parametro);
+        return consultarAjax('PUT', parametro).responseJSON;
     }
 
     consultar() {
@@ -57,7 +57,7 @@ class Lago {
             do: ""
         }
 
-        return consultarAjax('GET', parametro);
+        return consultarAjax('GET', parametro).responseJSON;
     }
 
     eliminar()
@@ -67,7 +67,7 @@ class Lago {
         "&id=" + this.id +
         "&token=" + this.token +
         "&do=";
-        return consultarAjax('DELETE', parametro);
+        return consultarAjax('DELETE', parametro).responseJSON;
     }
 
     cargarddl(elemento,result)

@@ -15,7 +15,7 @@ $(function () {
 
         if (!validarCampos("[required]")) {
             $("#pnMensaje").html("");
-            badge("#pnMensaje","Debe llenar los campos.","danger");
+            badge("#pnMensaje", "Debe llenar los campos.", "danger");
             return;
         }
 
@@ -32,20 +32,17 @@ $(function () {
         objLago.token = $("#txtVarUrl").val();
         objLago.tipolago = $("#ddlTipoLago").val();
 
+        var result=null
         if ($("#btnEnviar").text() == "Guardar") {
-            objLago.guardar();
-            badge("#pnMensaje", "Registro guardado.", "success");
-            
+            result=objLago.guardar();
+        
         } else {
 
             objLago.id = $("#txtLagoID").val();
-            objLago.actualizar();
-
-            badge("#pnMensaje", "Registro actualizado.", "success");
-
+            result= objLago.actualizar();
         }
-        
-        $("#btnLimpiar").click();
+
+        validarRespuesta(result)
 
     })
 
@@ -60,7 +57,7 @@ $(function () {
 
         var obj = new Lago();
         obj.token = $("#txtVarUrl").val();
-        var result = obj.consultar().responseJSON;
+        var result = obj.consultar();
 
         var columna = [{
                 "targets": -1,
@@ -107,7 +104,7 @@ $(function () {
             targets: 2
         }
 
-        tabla("Tabla", result, columna, fucion);
+        tabla("Tabla", result['data'], columna, fucion);
 
     }
 
@@ -139,8 +136,12 @@ $(function () {
             var obj = new Lago();
             obj.id = data.lagoid;
             obj.token = $("#txtVarUrl").val();
-            obj.eliminar();
-            consultarLago();
+            var result = obj.eliminar();
+            if (result['estado']) {
+                $(this).parents("tr").remove()
+            }
+
+            validarRespuesta(result)
 
         }
 
@@ -163,6 +164,19 @@ $(function () {
         var obj = new Material();
         obj.token = $("#txtVarUrl").val();
         obj.cargarddl("ddlTipoLago", obj.consultar().responseJSON);
+    }
+
+    function validarRespuesta(respuesta) {
+        if (respuesta['estado']) {
+            if (respuesta['mensaje'] != "") {
+                badge("#pnMensaje", respuesta['mensaje'], "success");
+                $("#btnLimpiar").click();
+            }
+
+        } else {
+            badge("#pnMensaje", respuesta['mensaje'], "danger");
+            console.log("ERROR:", respuesta)
+        }
     }
 
 })

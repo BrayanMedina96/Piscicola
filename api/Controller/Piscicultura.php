@@ -1,5 +1,6 @@
 <?php
 
+require "Model/UserError.php";
 require "Model/Base64.php";
 require "Model/Conexion.php";
 require "Email/Enviar.php";
@@ -20,6 +21,7 @@ require "Model/Seguridad.php";
 require "Model/TipoLago.php";
 require "Model/Cultivo.php";
 require "Model/Prediccion.php";
+require "Model/Rango.php";
 
 class Piscicultura
 {
@@ -31,7 +33,7 @@ class Piscicultura
 
         try 
         {
-            if (!isset( $obj["token"],$obj["do"])) 
+            if (!isset($obj["token"],$obj["do"])) 
             {
                echo '<h1> Bienvenido, Oh! no hay conexion. <h1>';
                return "";

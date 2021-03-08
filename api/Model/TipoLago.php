@@ -63,7 +63,7 @@ class TipoLago
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand ='DELETE FROM tipolago
-        WHERE tipolagoid=:tipolagoid AND usuariopadreid=:usuariopadre;';
+                      WHERE tipolagoid=:tipolagoid AND usuariopadreid=:usuariopadre;';
 
         $statement  = $conn->prepare($sqlCommand);
         $statement ->bindValue(':tipolagoid',$parametro["id"],PDO::PARAM_INT);

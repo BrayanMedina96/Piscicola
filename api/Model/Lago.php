@@ -7,40 +7,45 @@ class Lago
 
     public function consultar($parametro)
     {
-        $objBase64 = new Base64($parametro["token"]);
-
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
-
+        
+        $result=['estado'=>true,'mensaje'=>'','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT lago.lagoid, lago.lagonombre, lago.lagodescripcion, lago.lagogeolocalizacion, lago.lagoarea,
-        lago.lagoaltitud, lago.lagocantidadpeces, lago.lagoprofundidad, lago.lagofechacreacion,
-        lago.lagofechaactualizacion, lago.lagofechaelimar, lago.usuariocrea, lago.usuarioactualiza,
-        lago.usuarioelimina, lago.usuarioid, lago.importado,lago.tipolagoid,tipolago.tipolagonombre
-        FROM lago 
-        INNER JOIN tipolago ON lago.tipolagoid=tipolago.tipolagoid 
-        WHERE lago.usuariopadreid=:usuarioid AND  lago.lagofechaelimar IS  NULL;';
+        try {
 
-        $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuarioid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-        $statement->execute();              
-        $resultado= $statement->fetchAll();
+           $sqlCommand = 'SELECT lago.lagoid, lago.lagonombre, lago.lagodescripcion, lago.lagogeolocalizacion, lago.lagoarea,
+           lago.lagoaltitud, lago.lagocantidadpeces, lago.lagoprofundidad, lago.lagofechacreacion,
+           lago.lagofechaactualizacion, lago.lagofechaelimar, lago.usuariocrea, lago.usuarioactualiza,
+           lago.usuarioelimina, lago.usuarioid, lago.importado,lago.tipolagoid,tipolago.tipolagonombre
+           FROM lago 
+           INNER JOIN tipolago ON lago.tipolagoid=tipolago.tipolagoid 
+           WHERE lago.usuariopadreid=:usuarioid AND  lago.lagofechaelimar IS  NULL;';
 
-        Conexion::cerrar($conn);
+           $statement  = $conn->prepare($sqlCommand); 
+           $statement ->bindValue(':usuarioid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+           $statement->execute();              
+           $result['data']= $statement->fetchAll();
 
-        return $resultado;
+        }catch (PDOException  $Exception) {
+           $result['estado']=false;
+           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+        }
+        finally{
+           Conexion::cerrar($conn);
+        }
+
+        return $result;
     }
 
 
     public function guardar($parametro)
     {
          
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro guardado.','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        try 
-        {
+        try {
+
             
             $sqlCommand ='INSERT INTO lago(
             lagonombre, lagodescripcion, lagogeolocalizacion, lagoarea,
@@ -69,34 +74,39 @@ class Lago
     
             
         } catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
-        }
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+         }
         finally{
             Conexion::cerrar($conn);
         }
         
-     return   $result;
+      return   $result;
 
     }
 
     public function eliminar($parametro)
     {
 
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro eliminado.','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand ='UPDATE lago
-        SET
-        lagofechaelimar=NOW(),
-        usuarioelimina=:usuarioelimina
-        WHERE lagoid=:lagoid;';
+        try {
 
-        $statement  = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':usuarioelimina',$resulUsuairio[0]['usuarioid'],PDO::PARAM_INT);
-        $statement ->bindValue(':lagoid',$parametro["id"],PDO::PARAM_INT);
-        $statement ->execute();
+            $sqlCommand ='DELETE FROM lago
+                      WHERE lagoid=:lagoid;';
+
+            $statement  = $conn->prepare($sqlCommand);
+            $statement ->bindValue(':lagoid',$parametro["id"],PDO::PARAM_INT);
+            $statement ->execute();
         
-        Conexion::cerrar($conn);
+        }catch (PDOException  $Exception) {
+           $result['estado']=false;
+           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+        }
+        finally{
+           Conexion::cerrar($conn);
+        }
 
         return $result;
 
@@ -105,10 +115,10 @@ class Lago
     public function actualizar($parametro)
     {
 
-        $result="OK";
+        $result=['estado'=>true,'mensaje'=>'Registro actualizado.','data'=>null];
         $conn=Conexion::getInstance()->cnn();
 
-         try {
+        try {
 
             $sqlCommand =' UPDATE lago SET
             lagonombre=:lagonombre,
@@ -139,8 +149,10 @@ class Lago
                  $statement ->execute();
 
          } catch (PDOException  $Exception) {
-            $result=$Exception->getMessage();
-         }finally{
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+         }
+         finally{
             Conexion::cerrar($conn);
          }
 
