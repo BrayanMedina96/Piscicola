@@ -1,0 +1,2337 @@
+--
+-- PostgreSQL database dump
+--
+
+-- Dumped from database version 9.4.24
+-- Dumped by pg_dump version 9.4.24
+-- Started on 2021-04-02 19:43:15
+
+SET statement_timeout = 0;
+SET lock_timeout = 0;
+SET client_encoding = 'UTF8';
+SET standard_conforming_strings = on;
+SELECT pg_catalog.set_config('search_path', '', false);
+SET check_function_bodies = false;
+SET xmloption = content;
+SET client_min_messages = warning;
+
+--
+-- TOC entry 2295 (class 0 OID 0)
+-- Dependencies: 2294
+-- Name: DATABASE piscicola; Type: COMMENT; Schema: -; Owner: postgres
+--
+
+COMMENT ON DATABASE piscicola IS 'ok';
+
+
+--
+-- TOC entry 1 (class 3079 OID 11855)
+-- Name: plpgsql; Type: EXTENSION; Schema: -; Owner: 
+--
+
+CREATE EXTENSION IF NOT EXISTS plpgsql WITH SCHEMA pg_catalog;
+
+
+--
+-- TOC entry 2298 (class 0 OID 0)
+-- Dependencies: 1
+-- Name: EXTENSION plpgsql; Type: COMMENT; Schema: -; Owner: 
+--
+
+COMMENT ON EXTENSION plpgsql IS 'PL/pgSQL procedural language';
+
+
+--
+-- TOC entry 232 (class 1255 OID 65657)
+-- Name: crearlagosensor(smallint, smallint, date, boolean, smallint, smallint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.crearlagosensor(var_lagoid smallint, var_sensorid smallint, var_lagosensorfechainstalacion date, var_lagosensorestado boolean, var_usuarioidcrea smallint, var_usuariopadreid smallint) RETURNS text
+    LANGUAGE plpgsql
+    AS $$  
+    declare  
+        resul text;
+        var_lagosensorid SMALLINT;  
+    BEGIN  
+
+
+INSERT INTO lagosensor (lagoid, sensorid, lagosensorfechainstalacion, usuarioidcrea, fechacreacion, lagosensorestado, usuarioid,usuariopadreid)
+                VALUES (var_lagoid,var_sensorid,var_lagosensorfechainstalacion, var_usuarioidcrea,CAST( now() AS DATE),var_lagosensorestado,
+                var_usuarioidcrea,var_usuariopadreid);
+/*
+SELECT   lagosensor.lagosensorid into var_lagosensorid  FROM  lagosensor WHERE lagosensor.lagoid=var_lagoid AND lagosensor.sensorid=var_sensorid AND fechacreacion=CAST( now() AS DATE);
+
+
+INSERT INTO cultivo(lagosensorid, pezid,fechainicio,fechafinalizacion,usuarioidcrea, fechacreacion, usuariopadreid)
+            VALUES (var_lagosensorid, var_pezid,var_fechainicio,var_fechafinalizacion,var_usuarioidcrea,CAST( now() AS DATE),var_usuariopadreid);
+*/
+resul:='ok';
+
+return resul;
+      
+    END;  
+   $$;
+
+
+ALTER FUNCTION public.crearlagosensor(var_lagoid smallint, var_sensorid smallint, var_lagosensorfechainstalacion date, var_lagosensorestado boolean, var_usuarioidcrea smallint, var_usuariopadreid smallint) OWNER TO postgres;
+
+--
+-- TOC entry 231 (class 1255 OID 65599)
+-- Name: crearpersonausuario(text, text, text, smallint, text, smallint); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.crearpersonausuario(nombre text, apellido text, numerodocumento text, tipodocumento smallint, usuario text, padreid smallint) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+declare  
+        resul text;idpersona integer; 
+begin
+
+---CREAR PERSONA.
+
+insert into persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
+values (nombre,apellido,tipodocumento,numerodocumento,now(),padreid);
+
+
+select  personaid into idpersona from  persona  where personanumerodocumento=numerodocumento AND usuariocrea=padreid;
+
+---CREAR EL USUARIO ASOCIADO A LA PERSONA.
+
+insert into usuario(usuarionombre,personaid,perfilid,usuariofechacreacion,usuariocambioclave,usuariopadreid,usuarioestado)
+values (usuario,idpersona,2,now(),TRUE,padreid,TRUE);
+
+
+
+
+resul:='ok';
+
+return resul;
+
+
+end;
+$$;
+
+
+ALTER FUNCTION public.crearpersonausuario(nombre text, apellido text, numerodocumento text, tipodocumento smallint, usuario text, padreid smallint) OWNER TO postgres;
+
+--
+-- TOC entry 234 (class 1255 OID 73861)
+-- Name: crearpersonausuario(text, text, text, smallint, text, smallint, smallint, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.crearpersonausuario(nombre text, apellido text, numerodocumento text, tipodocumento smallint, usuario text, padreid smallint, perfil smallint, correo text) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+declare  
+        resul text;idpersona integer; 
+begin
+
+---CREAR PERSONA.
+
+insert into persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
+values (nombre,apellido,tipodocumento,numerodocumento,now(),padreid);
+
+
+select  personaid into idpersona from  persona  where personanumerodocumento=numerodocumento AND usuariocrea=padreid;
+
+---CREAR EL USUARIO ASOCIADO A LA PERSONA.
+
+insert into usuario(usuarionombre,personaid,perfilid,usuariofechacreacion,usuariocambioclave,usuariopadreid,usuarioestado,correo)
+values (usuario,idpersona,perfil,now(),TRUE,padreid,TRUE,correo);
+
+
+
+
+resul:='ok';
+
+return resul;
+
+
+end;
+$$;
+
+
+ALTER FUNCTION public.crearpersonausuario(nombre text, apellido text, numerodocumento text, tipodocumento smallint, usuario text, padreid smallint, perfil smallint, correo text) OWNER TO postgres;
+
+--
+-- TOC entry 233 (class 1255 OID 73837)
+-- Name: personausuario(text, text, text, smallint, text, text, text); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.personausuario(nombre text, apellido text, numerodocumento text, tipodocumento smallint, var_usuario text, contrasenia text, nombrecomercial text) RETURNS text
+    LANGUAGE plpgsql
+    AS $$
+declare  
+        resul text;idpersona integer; 
+begin
+
+  
+
+insert into persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,personanombrecomercial)
+values (nombre,apellido,tipodocumento,numerodocumento,now(),nombrecomercial);
+
+
+select  personaid into idpersona from  persona  where personanumerodocumento=numerodocumento;
+
+
+
+insert into usuario(usuarionombre,usuariocontrasenia,personaid,perfilid,usuariofechacreacion)
+values (var_usuario,contrasenia,idpersona,1,now());
+
+
+UPDATE  usuario SET usuariopadreid=(SELECT usuarioid FROM usuario WHERE usuario.usuarionombre=var_usuario)  WHERE usuarionombre=var_usuario;
+
+
+resul:='ok';
+
+return resul;
+
+
+end;
+$$;
+
+
+ALTER FUNCTION public.personausuario(nombre text, apellido text, numerodocumento text, tipodocumento smallint, var_usuario text, contrasenia text, nombrecomercial text) OWNER TO postgres;
+
+--
+-- TOC entry 230 (class 1255 OID 16509)
+-- Name: totalrecords(); Type: FUNCTION; Schema: public; Owner: postgres
+--
+
+CREATE FUNCTION public.totalrecords() RETURNS integer
+    LANGUAGE plpgsql
+    AS $$  
+    declare  
+        total integer;  
+    BEGIN  
+       SELECT count(*) into total FROM EMPLOYEES;  
+       RETURN total;  
+    END;  
+    $$;
+
+
+ALTER FUNCTION public.totalrecords() OWNER TO postgres;
+
+SET default_tablespace = '';
+
+SET default_with_oids = false;
+
+--
+-- TOC entry 206 (class 1259 OID 65608)
+-- Name: accion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.accion (
+    accionid text NOT NULL,
+    acciondescripcion text
+);
+
+
+ALTER TABLE public.accion OWNER TO postgres;
+
+--
+-- TOC entry 190 (class 1259 OID 24623)
+-- Name: campo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.campo (
+    formulario text,
+    campo text
+);
+
+
+ALTER TABLE public.campo OWNER TO postgres;
+
+--
+-- TOC entry 202 (class 1259 OID 41004)
+-- Name: campograficaid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.campograficaid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.campograficaid_seq OWNER TO postgres;
+
+--
+-- TOC entry 201 (class 1259 OID 40996)
+-- Name: campografica; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.campografica (
+    nombre text,
+    campotabla text,
+    tabla text,
+    estado boolean,
+    campograficaid smallint DEFAULT nextval('public.campograficaid_seq'::regclass) NOT NULL
+);
+
+
+ALTER TABLE public.campografica OWNER TO postgres;
+
+--
+-- TOC entry 177 (class 1259 OID 16436)
+-- Name: ciudad; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.ciudad (
+    ciudadcodigo text NOT NULL,
+    ciudadnombre text
+);
+
+
+ALTER TABLE public.ciudad OWNER TO postgres;
+
+--
+-- TOC entry 199 (class 1259 OID 32831)
+-- Name: cultivo_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cultivo_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cultivo_seq OWNER TO postgres;
+
+--
+-- TOC entry 173 (class 1259 OID 16394)
+-- Name: cultivo; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.cultivo (
+    cultivoid integer DEFAULT nextval('public.cultivo_seq'::regclass) NOT NULL,
+    pezid smallint,
+    fechainicio date,
+    fechafinalizacion date,
+    usuarioidcrea smallint,
+    cantidadpezmuerto smallint,
+    fechacreacion date,
+    usuariopadreid smallint,
+    lagoid smallint,
+    usuarioactualiza smallint,
+    elimina date
+);
+
+
+ALTER TABLE public.cultivo OWNER TO postgres;
+
+--
+-- TOC entry 198 (class 1259 OID 32822)
+-- Name: cultivoid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.cultivoid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.cultivoid_seq OWNER TO postgres;
+
+--
+-- TOC entry 204 (class 1259 OID 41015)
+-- Name: dashboardid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.dashboardid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.dashboardid_seq OWNER TO postgres;
+
+--
+-- TOC entry 203 (class 1259 OID 41007)
+-- Name: dashboard; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.dashboard (
+    dashboardid smallint DEFAULT nextval('public.dashboardid_seq'::regclass) NOT NULL,
+    nombre text,
+    x text,
+    y text,
+    usuarioid smallint,
+    filtro text,
+    tipografica text,
+    usuariopadreid smallint
+);
+
+
+ALTER TABLE public.dashboard OWNER TO postgres;
+
+--
+-- TOC entry 200 (class 1259 OID 40992)
+-- Name: estadofisicoquimicoid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.estadofisicoquimicoid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.estadofisicoquimicoid_seq OWNER TO postgres;
+
+--
+-- TOC entry 178 (class 1259 OID 16442)
+-- Name: estadofisicoquimico; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.estadofisicoquimico (
+    estadofisicoquimicoid bigint DEFAULT nextval('public.estadofisicoquimicoid_seq'::regclass) NOT NULL,
+    fecharegistro date,
+    oxigenodisuelto numeric,
+    ph numeric,
+    cultivoid bigint,
+    horaregistro time without time zone,
+    temperaturaambiente numeric,
+    temperaturaestanque numeric,
+    conductividadelectrica numeric,
+    amonionh3 numeric,
+    amonionh4 numeric,
+    nitrito numeric,
+    alcalinidad numeric,
+    descripcion text,
+    pecesmuertos smallint,
+    usuarioid smallint,
+    usuariopadreid smallint,
+    usuarioactulizaid smallint,
+    fechaactualiza timestamp with time zone,
+    usuarioelimina smallint,
+    fechaelimina date,
+    sensorid smallint,
+    lagoid smallint
+);
+
+
+ALTER TABLE public.estadofisicoquimico OWNER TO postgres;
+
+--
+-- TOC entry 2299 (class 0 OID 0)
+-- Dependencies: 178
+-- Name: TABLE estadofisicoquimico; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.estadofisicoquimico IS 'Tabla almacena los resultados emitidos por un sensor ';
+
+
+--
+-- TOC entry 205 (class 1259 OID 65600)
+-- Name: formulario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.formulario (
+    formularioid text NOT NULL,
+    formularionombre text,
+    formulariodescripcion text
+);
+
+
+ALTER TABLE public.formulario OWNER TO postgres;
+
+--
+-- TOC entry 192 (class 1259 OID 32782)
+-- Name: lagoid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.lagoid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lagoid_seq OWNER TO postgres;
+
+--
+-- TOC entry 191 (class 1259 OID 32768)
+-- Name: lago; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.lago (
+    lagoid integer DEFAULT nextval('public.lagoid_seq'::regclass) NOT NULL,
+    lagonombre text,
+    lagodescripcion text,
+    lagogeolocalizacion text,
+    lagoarea text,
+    lagoaltitud text,
+    lagocantidadpeces text,
+    lagoprofundidad text,
+    lagofechacreacion timestamp with time zone DEFAULT now(),
+    lagofechaactualizacion timestamp with time zone,
+    usuariocrea smallint,
+    usuarioactualiza smallint,
+    usuarioelimina smallint,
+    usuarioid smallint,
+    importado boolean,
+    tipolagoid smallint,
+    usuariopadreid smallint,
+    lagofechaelimar timestamp without time zone
+);
+
+
+ALTER TABLE public.lago OWNER TO postgres;
+
+--
+-- TOC entry 197 (class 1259 OID 32819)
+-- Name: lagosensorid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.lagosensorid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.lagosensorid_seq OWNER TO postgres;
+
+--
+-- TOC entry 174 (class 1259 OID 16397)
+-- Name: lagosensor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.lagosensor (
+    lagosensorid integer DEFAULT nextval('public.lagosensorid_seq'::regclass) NOT NULL,
+    lagoid integer,
+    sensorid integer,
+    lagosensorfechainstalacion date,
+    usuarioidcrea integer,
+    fechacreacion date,
+    lagosensorestado boolean,
+    usuarioid smallint,
+    fechaelimina date,
+    fechaactualiza date,
+    usuarioactualiza smallint,
+    usuarioelimina smallint,
+    usuariopadreid smallint
+);
+
+
+ALTER TABLE public.lagosensor OWNER TO postgres;
+
+--
+-- TOC entry 2300 (class 0 OID 0)
+-- Dependencies: 174
+-- Name: TABLE lagosensor; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.lagosensor IS 'Relacion entre sensor y lago';
+
+
+--
+-- TOC entry 185 (class 1259 OID 24576)
+-- Name: login; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.login (
+    loginusuario text,
+    logintoken text,
+    loginfecha timestamp with time zone,
+    loginfechasesioncerrada timestamp with time zone,
+    usuarioid integer,
+    loginestado boolean DEFAULT true
+);
+
+
+ALTER TABLE public.login OWNER TO postgres;
+
+--
+-- TOC entry 2301 (class 0 OID 0)
+-- Dependencies: 185
+-- Name: TABLE login; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.login IS 'Tabla donde se registra la información de los inicio de session de los usuarios.';
+
+
+--
+-- TOC entry 194 (class 1259 OID 32793)
+-- Name: marcaid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.marcaid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.marcaid_seq OWNER TO postgres;
+
+--
+-- TOC entry 193 (class 1259 OID 32785)
+-- Name: marca; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.marca (
+    marcaid smallint DEFAULT nextval('public.marcaid_seq'::regclass) NOT NULL,
+    marcanombre text,
+    marcafechacrea time with time zone,
+    marcafechaactualiza time with time zone,
+    marcafechaelimina time with time zone,
+    marcausuariocrea smallint,
+    marcausuarioactualiza smallint,
+    marcausuarioelimina smallint,
+    marcadescripcion text,
+    usuariopadreid smallint
+);
+
+
+ALTER TABLE public.marca OWNER TO postgres;
+
+--
+-- TOC entry 187 (class 1259 OID 24602)
+-- Name: perfilid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.perfilid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.perfilid_seq OWNER TO postgres;
+
+--
+-- TOC entry 186 (class 1259 OID 24594)
+-- Name: perfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.perfil (
+    perfilid smallint DEFAULT nextval('public.perfilid_seq'::regclass) NOT NULL,
+    perfilnombre text,
+    perfildescripcion text,
+    usuariocrea smallint,
+    usuarioelimina smallint
+);
+
+
+ALTER TABLE public.perfil OWNER TO postgres;
+
+--
+-- TOC entry 183 (class 1259 OID 16530)
+-- Name: personaid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.personaid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.personaid_seq OWNER TO postgres;
+
+--
+-- TOC entry 184 (class 1259 OID 16532)
+-- Name: persona; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.persona (
+    personaid integer DEFAULT nextval('public.personaid_seq'::regclass) NOT NULL,
+    perosnanombre text,
+    personaapellido text,
+    personatelefono text,
+    personatelefonoopcional text,
+    personacorreo text,
+    tipodocumentoid smallint NOT NULL,
+    personanumerodocumento text NOT NULL,
+    personafechacreacion timestamp with time zone DEFAULT now(),
+    personafechaactualizacion timestamp with time zone,
+    personafechaeliminar timestamp with time zone,
+    usuarioidelimina smallint,
+    usuarioidactualiza smallint,
+    notificacioncorreo boolean DEFAULT false,
+    notificacionmensaje boolean DEFAULT false,
+    personanombrecomercial text,
+    usuariocrea smallint,
+    usuariopadreid smallint
+);
+
+
+ALTER TABLE public.persona OWNER TO postgres;
+
+--
+-- TOC entry 2302 (class 0 OID 0)
+-- Dependencies: 184
+-- Name: TABLE persona; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.persona IS 'Tabla donde se guarda los datos personales de una perosna natural o juridica.';
+
+
+--
+-- TOC entry 196 (class 1259 OID 32816)
+-- Name: pezid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.pezid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.pezid_seq OWNER TO postgres;
+
+--
+-- TOC entry 175 (class 1259 OID 16406)
+-- Name: pez; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.pez (
+    pezid smallint DEFAULT nextval('public.pezid_seq'::regclass) NOT NULL,
+    especiepez text,
+    pezdescripcion text,
+    temperatura smallint,
+    oxigenodisuelto smallint,
+    ph smallint,
+    amonio smallint,
+    estado boolean
+);
+
+
+ALTER TABLE public.pez OWNER TO postgres;
+
+--
+-- TOC entry 210 (class 1259 OID 73850)
+-- Name: plantilla; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.plantilla (
+    id numeric NOT NULL,
+    correo text,
+    password text,
+    setfrom text,
+    subject text,
+    body text,
+    tipo text,
+    estado boolean
+);
+
+
+ALTER TABLE public.plantilla OWNER TO postgres;
+
+--
+-- TOC entry 212 (class 1259 OID 73873)
+-- Name: predecir_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.predecir_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.predecir_seq OWNER TO postgres;
+
+--
+-- TOC entry 211 (class 1259 OID 73865)
+-- Name: prediccion; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.prediccion (
+    id numeric DEFAULT nextval('public.predecir_seq'::regclass) NOT NULL,
+    fecha date,
+    hora numeric,
+    temperatura_ambiente numeric,
+    temperatura_estanque numeric,
+    oxigeno numeric,
+    ph numeric,
+    conductividad_electrica numeric,
+    nh3 numeric,
+    nh4 numeric,
+    nitrito numeric,
+    alcalanidad numeric,
+    cultivo_id numeric,
+    fecha_inicio date
+);
+
+
+ALTER TABLE public.prediccion OWNER TO postgres;
+
+--
+-- TOC entry 214 (class 1259 OID 73908)
+-- Name: rango_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.rango_seq
+    START WITH 12
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rango_seq OWNER TO postgres;
+
+--
+-- TOC entry 215 (class 1259 OID 73911)
+-- Name: rango; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.rango (
+    id numeric DEFAULT nextval('public.rango_seq'::regclass) NOT NULL,
+    temperaturaambiente_max numeric,
+    temperaturaestanque_max numeric,
+    oxigeno_max numeric,
+    ph_max numeric,
+    conductividad_max numeric,
+    amonionh3_max numeric,
+    amonionh4_max numeric,
+    nitrito_max numeric,
+    alcalinidad_max numeric,
+    temperaturaambiente_min numeric,
+    temperaturaestanque_min numeric,
+    oxigeno_min numeric,
+    ph_min numeric,
+    conductividad_min numeric,
+    amonionh3_min numeric,
+    amonionh4_min numeric,
+    nitrito_min numeric,
+    alcalinidad_min numeric,
+    usuariopadreid integer,
+    descripcion text
+);
+
+
+ALTER TABLE public.rango OWNER TO postgres;
+
+--
+-- TOC entry 213 (class 1259 OID 73902)
+-- Name: rango_plantilla; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.rango_plantilla (
+    id numeric NOT NULL,
+    temperaturaambiente_max numeric,
+    temperaturaestanque_max numeric,
+    oxigeno_max numeric,
+    ph_max numeric,
+    conductividad_max numeric,
+    amonionh3_max numeric,
+    amonionh4_max numeric,
+    nitrito_max numeric,
+    alcalinidad_max numeric,
+    temperaturaambiente_min numeric,
+    temperaturaestanque_min numeric,
+    oxigeno_min numeric,
+    ph_min numeric,
+    conductividad_min numeric,
+    amonionh3_min numeric,
+    amonionh4_min numeric,
+    nitrito_min numeric,
+    alcalinidad_min numeric,
+    estado boolean
+);
+
+
+ALTER TABLE public.rango_plantilla OWNER TO postgres;
+
+--
+-- TOC entry 217 (class 1259 OID 73942)
+-- Name: rangosensor_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.rangosensor_seq
+    START WITH 12
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.rangosensor_seq OWNER TO postgres;
+
+--
+-- TOC entry 216 (class 1259 OID 73937)
+-- Name: rango_sensor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.rango_sensor (
+    id integer DEFAULT nextval('public.rangosensor_seq'::regclass) NOT NULL,
+    rango_id integer,
+    sonda_id integer,
+    fecha date,
+    usuario_id integer,
+    usuariopadreid integer
+);
+
+
+ALTER TABLE public.rango_sensor OWNER TO postgres;
+
+--
+-- TOC entry 189 (class 1259 OID 24620)
+-- Name: restriccionid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.restriccionid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.restriccionid_seq OWNER TO postgres;
+
+--
+-- TOC entry 188 (class 1259 OID 24605)
+-- Name: restriccionperfil; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.restriccionperfil (
+    restriccionid smallint DEFAULT nextval('public.restriccionid_seq'::regclass) NOT NULL,
+    campo text,
+    formulario text,
+    perfilid smallint,
+    accion text,
+    usuariocrea smallint
+);
+
+
+ALTER TABLE public.restriccionperfil OWNER TO postgres;
+
+--
+-- TOC entry 2304 (class 0 OID 0)
+-- Dependencies: 188
+-- Name: TABLE restriccionperfil; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.restriccionperfil IS 'Tabla donde se registra las restricciones de perfil';
+
+
+--
+-- TOC entry 195 (class 1259 OID 32796)
+-- Name: sensorid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.sensorid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.sensorid_seq OWNER TO postgres;
+
+--
+-- TOC entry 176 (class 1259 OID 16412)
+-- Name: sensor; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.sensor (
+    sensordescripcion text,
+    sensorcodigo text,
+    usuarioid integer,
+    sensorfechamantenimiento date,
+    sensorperiodicidadmantenimiento smallint,
+    sensorfechacreacion time with time zone,
+    usuarioidcrea integer,
+    sensorid integer DEFAULT nextval('public.sensorid_seq'::regclass) NOT NULL,
+    sensornombre text,
+    sensorestado boolean,
+    marcaid smallint NOT NULL,
+    sensorfechaeliminacion time with time zone,
+    sensorfechaactualiza time with time zone,
+    usuarioidactualiza smallint,
+    usuarioidelimina smallint,
+    usuariopadreid smallint NOT NULL
+);
+
+
+ALTER TABLE public.sensor OWNER TO postgres;
+
+--
+-- TOC entry 179 (class 1259 OID 16485)
+-- Name: tipodocumentoid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tipodocumentoid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipodocumentoid_seq OWNER TO postgres;
+
+--
+-- TOC entry 180 (class 1259 OID 16487)
+-- Name: tipodocumento; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.tipodocumento (
+    tipodocumentoid smallint DEFAULT nextval('public.tipodocumentoid_seq'::regclass) NOT NULL,
+    tipodocumentonombre text,
+    tipodocumento character(3),
+    tipodocumentoestado boolean
+);
+
+
+ALTER TABLE public.tipodocumento OWNER TO postgres;
+
+--
+-- TOC entry 207 (class 1259 OID 65616)
+-- Name: tipoid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tipoid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipoid_seq OWNER TO postgres;
+
+--
+-- TOC entry 208 (class 1259 OID 65627)
+-- Name: tipolagoid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.tipolagoid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.tipolagoid_seq OWNER TO postgres;
+
+--
+-- TOC entry 209 (class 1259 OID 65629)
+-- Name: tipolago; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.tipolago (
+    tipolagoid smallint DEFAULT nextval('public.tipolagoid_seq'::regclass) NOT NULL,
+    tipolagonombre text,
+    tipolagodescripcion text,
+    tipolagomaterial text,
+    usuariopadreid smallint,
+    usuariocrea smallint
+);
+
+
+ALTER TABLE public.tipolago OWNER TO postgres;
+
+--
+-- TOC entry 181 (class 1259 OID 16517)
+-- Name: usuarioid_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.usuarioid_seq
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.usuarioid_seq OWNER TO postgres;
+
+--
+-- TOC entry 182 (class 1259 OID 16519)
+-- Name: usuario; Type: TABLE; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE TABLE public.usuario (
+    usuarioid integer DEFAULT nextval('public.usuarioid_seq'::regclass) NOT NULL,
+    usuarionombre text,
+    usuariocontrasenia text,
+    usuariofechaexpira date,
+    personaid integer,
+    perfilid integer,
+    usuariofechacreacion timestamp with time zone,
+    usuariofechaactualizacion timestamp without time zone,
+    usuarioidcrea integer,
+    usuariofechaeliminacion timestamp with time zone,
+    usuarioidelimina smallint,
+    usuarioidactualiza smallint,
+    usuarioestado boolean DEFAULT false,
+    usuariocambioclave boolean,
+    usuariopadreid smallint,
+    correo text
+);
+
+
+ALTER TABLE public.usuario OWNER TO postgres;
+
+--
+-- TOC entry 2305 (class 0 OID 0)
+-- Dependencies: 182
+-- Name: TABLE usuario; Type: COMMENT; Schema: public; Owner: postgres
+--
+
+COMMENT ON TABLE public.usuario IS 'Se almacena la información de usuarios del aplicativo';
+
+
+--
+-- TOC entry 2277 (class 0 OID 65608)
+-- Dependencies: 206
+-- Data for Name: accion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.accion (accionid, acciondescripcion) FROM stdin;
+disabled	Visible e inactivo
+hidden	Oculto
+\.
+
+
+--
+-- TOC entry 2261 (class 0 OID 24623)
+-- Dependencies: 190
+-- Data for Name: campo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.campo (formulario, campo) FROM stdin;
+cuenta	nombre
+cuenta	apellido
+cuenta	tipodocumento
+cuenta	numerodocumento
+cuenta	email
+cuenta	telefono
+cuenta	telefonoopcional
+cuenta	usuarionombre
+cuenta	perfil
+cuenta	fechaexpiracion
+cuenta	contrasenia
+cuenta	activo
+cuenta	estado
+cuenta	panelinformacionpersonal
+cuenta	panelseguridad
+cuenta	panelnotificacioncorreo
+cuenta	panelnotificacionmensaje
+cuenta	panelusuario
+\.
+
+
+--
+-- TOC entry 2272 (class 0 OID 40996)
+-- Dependencies: 201
+-- Data for Name: campografica; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.campografica (nombre, campotabla, tabla, estado, campograficaid) FROM stdin;
+Fecha registro	fecharegistro	estadofisicoquimico	t	1
+Oxigeno disuelto	oxigenodisuelto	estadofisicoquimico	t	2
+PH	ph	estadofisicoquimico	t	3
+Temperatura ambiente	temperaturaambiente	estadofisicoquimico	t	5
+Temperatura estanque	temperaturaestanque	estadofisicoquimico	t	6
+Conductividad electrica	conductividadelectrica	estadofisicoquimico	t	7
+Amonion H3	amonionh3	estadofisicoquimico	t	8
+Nitrito	nitrito	estadofisicoquimico	t	10
+Alcalinidad	alcalinidad	estadofisicoquimico	t	11
+Peces muertos	pecesmuertos	estadofisicoquimico	t	12
+Amonion H4	amonionh4	estadofisicoquimico	t	9
+Hora	horaregistro	estadofisicoquimico	t	4
+\.
+
+
+--
+-- TOC entry 2306 (class 0 OID 0)
+-- Dependencies: 202
+-- Name: campograficaid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.campograficaid_seq', 12, true);
+
+
+--
+-- TOC entry 2248 (class 0 OID 16436)
+-- Dependencies: 177
+-- Data for Name: ciudad; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.ciudad (ciudadcodigo, ciudadnombre) FROM stdin;
+\.
+
+
+--
+-- TOC entry 2244 (class 0 OID 16394)
+-- Dependencies: 173
+-- Data for Name: cultivo; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.cultivo (cultivoid, pezid, fechainicio, fechafinalizacion, usuarioidcrea, cantidadpezmuerto, fechacreacion, usuariopadreid, lagoid, usuarioactualiza, elimina) FROM stdin;
+13	1	2020-08-01	2020-08-31	88	\N	2020-08-16	85	35	88	2020-08-16
+12	1	2020-02-01	2020-09-30	85	\N	2020-02-28	85	18	88	2021-03-06
+14	1	2021-03-06	2021-03-05	88	\N	2021-03-06	85	35	88	2021-03-06
+15	1	2021-03-06	2021-03-07	88	\N	2021-03-06	85	35	\N	\N
+17	1	2021-03-07	2021-03-09	88	\N	2021-03-07	85	40	\N	\N
+\.
+
+
+--
+-- TOC entry 2307 (class 0 OID 0)
+-- Dependencies: 199
+-- Name: cultivo_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cultivo_seq', 17, true);
+
+
+--
+-- TOC entry 2308 (class 0 OID 0)
+-- Dependencies: 198
+-- Name: cultivoid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.cultivoid_seq', 1, false);
+
+
+--
+-- TOC entry 2274 (class 0 OID 41007)
+-- Dependencies: 203
+-- Data for Name: dashboard; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.dashboard (dashboardid, nombre, x, y, usuarioid, filtro, tipografica, usuariopadreid) FROM stdin;
+39	Peces muertos por O2 y PH	fecharegistro	pecesmuertos,oxigenodisuelto,ph	88		line	85
+42	PH	fecharegistro	ph	88		line	85
+43	PH y OXIGENO DISUELTO	fecharegistro	ph,oxigenodisuelto	88		line	85
+44	EJEMPLO	fecharegistro	pecesmuertos,oxigenodisuelto	88		line	85
+\.
+
+
+--
+-- TOC entry 2309 (class 0 OID 0)
+-- Dependencies: 204
+-- Name: dashboardid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.dashboardid_seq', 44, true);
+
+
+--
+-- TOC entry 2249 (class 0 OID 16442)
+-- Dependencies: 178
+-- Data for Name: estadofisicoquimico; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.estadofisicoquimico (estadofisicoquimicoid, fecharegistro, oxigenodisuelto, ph, cultivoid, horaregistro, temperaturaambiente, temperaturaestanque, conductividadelectrica, amonionh3, amonionh4, nitrito, alcalinidad, descripcion, pecesmuertos, usuarioid, usuariopadreid, usuarioactulizaid, fechaactualiza, usuarioelimina, fechaelimina, sensorid, lagoid) FROM stdin;
+41	2020-05-03	10	7	12	14:49:00	24	20	9	10	7	5	7	ok	10	85	85	\N	\N	\N	\N	\N	\N
+42	2020-05-02	101	4	12	21:20:00	18	15	6	2	1	1	3	101	101	85	85	85	2020-05-02 21:52:53.432-05	\N	\N	\N	\N
+43	2020-05-04	10	5	12	21:20:00	30	25	3	7	5	10	2	101	101	85	85	85	2020-05-02 21:52:53.432-05	\N	\N	\N	\N
+44	2020-06-26	20	7	12	14:27:00	24	18	6	3	3	3	5		10	88	85	\N	\N	\N	\N	\N	\N
+45	2020-06-25	6	5	12	05:38:00	26	20	3	3	3	3	6	ok	20	88	85	\N	\N	\N	\N	\N	\N
+46	2020-06-24	6	5	12	09:41:00	24	19	6	7	3	3	6	10	10	88	85	\N	\N	\N	\N	\N	\N
+47	2020-06-23	6	7	12	09:25:00	23	17	6	3	3	3	4	1	1	88	85	\N	\N	\N	\N	\N	\N
+48	2020-06-22	6	5	12	10:25:00	22	17	3	4	3	3	3	0	2	88	85	\N	\N	\N	\N	\N	\N
+49	2020-06-21	6	6	12	08:49:00	14	17	5	3	3	3	5	OK	0	88	85	\N	\N	\N	\N	\N	\N
+50	2020-08-31	0	0	12	10:08:00	0	0	0	0	0	0	0	0	0	88	85	\N	\N	88	2020-08-16	\N	\N
+51	2020-08-27	10	10	12	23:06:00	10	10	10	10	10	10	10	ok	10	88	85	\N	\N	\N	\N	\N	\N
+53	2020-09-07	80	80	12	17:15:00	80	80	80	80	80	80	80	k	0	88	85	\N	\N	\N	\N	\N	\N
+52	2020-09-03	6	6	12	10:53:00	24	16	3	4	2	1	3	NA	0	88	85	88	2020-09-07 17:14:55.618-05	88	2020-09-07	\N	\N
+54	2020-09-02	10	5	12	13:43:00	30	20	5	4	4	10	10	ok	0	88	85	\N	\N	\N	\N	\N	\N
+55	2020-09-15	5	6	12	11:43:00	25	15	7	3	3	4	4	0	0	88	85	\N	\N	\N	\N	\N	\N
+56	2020-09-14	5	7	12	15:15:00	32	20	6	4	3	3	5	normal	0	88	85	\N	\N	\N	\N	\N	\N
+57	2020-10-20	20	20	12	05:48:00	10	20	20	20	20	20	20	ok	20	88	85	\N	\N	\N	\N	\N	\N
+58	2020-11-02	10	10	12	08:17:00	10	10	10	10	10	9	10	10	10	88	85	\N	\N	\N	\N	\N	\N
+59	2020-11-11	7	3	12	21:16:00	10	10	7	10	10	10	10	NN	0	88	85	\N	\N	\N	\N	\N	\N
+60	2021-03-07	7	5	17	17:44:00	24	20	\N	\N	\N	\N	\N	0	0	88	85	\N	\N	\N	\N	\N	\N
+61	2021-03-17	\N	\N	17	22:51:00	18	\N	\N	\N	\N	\N	\N	ninguna	0	88	85	\N	\N	\N	\N	33	40
+62	2021-03-18	\N	\N	17	00:02:00	18	\N	\N	\N	\N	\N	\N	n	0	88	85	\N	\N	\N	\N	33	40
+63	2021-03-18	5	7	17	00:05:00	25	18	6	2	1	0	0	0	0	88	85	\N	\N	\N	\N	37	40
+64	2021-03-18	5	7	17	00:05:00	25	18	6	2	1	0	0	0	0	88	85	\N	\N	\N	\N	37	40
+65	2021-03-18	\N	\N	17	09:34:00	21	\N	\N	\N	\N	\N	\N	ok	0	88	85	\N	\N	\N	\N	33	40
+66	2021-03-18	\N	\N	17	09:34:00	21	\N	\N	\N	\N	\N	\N	ok	0	88	85	\N	\N	\N	\N	33	40
+\.
+
+
+--
+-- TOC entry 2310 (class 0 OID 0)
+-- Dependencies: 200
+-- Name: estadofisicoquimicoid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.estadofisicoquimicoid_seq', 66, true);
+
+
+--
+-- TOC entry 2276 (class 0 OID 65600)
+-- Dependencies: 205
+-- Data for Name: formulario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.formulario (formularioid, formularionombre, formulariodescripcion) FROM stdin;
+usuario	Usuario	\N
+lago	Lago	\N
+sensor	Sensor	\N
+tipolago	Tipo lago	\N
+sonda	Sonda	\N
+importar	Importar	\N
+dashboard	Dashboard	\N
+seguridad	Seguridad	\N
+registro	Registro	\N
+Configuracion	Configuración (S-L)	\N
+cuenta	Mi cuenta	\N
+cultivo	Mi cultivo	\N
+marca	Marcas de sensor	\N
+\.
+
+
+--
+-- TOC entry 2262 (class 0 OID 32768)
+-- Dependencies: 191
+-- Data for Name: lago; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.lago (lagoid, lagonombre, lagodescripcion, lagogeolocalizacion, lagoarea, lagoaltitud, lagocantidadpeces, lagoprofundidad, lagofechacreacion, lagofechaactualizacion, usuariocrea, usuarioactualiza, usuarioelimina, usuarioid, importado, tipolagoid, usuariopadreid, lagofechaelimar) FROM stdin;
+40	PRADOS DEL SAUCE	CIUDAD DE NEIVA	2.8863266999999997;-75.2522596	10	1000	300	20	2021-03-07 14:59:16.71-05	2021-03-07 15:20:33.234-05	88	88	\N	88	\N	2	85	\N
+41	CENTRO		2.936465;-75.2830617	10	800	300	10	2021-03-07 23:34:07.426-05	\N	88	\N	\N	88	\N	2	85	\N
+42	LAGO 2	LAGO 2	2.7777809;-75.2681912	10	10	10	10	2021-03-09 15:21:06.739-05	\N	88	\N	\N	88	\N	16	85	\N
+43	M10		2.9695038;-75.2668988	100	20	100	1	2021-03-18 10:07:22.279-05	\N	88	\N	\N	88	\N	16	85	\N
+\.
+
+
+--
+-- TOC entry 2311 (class 0 OID 0)
+-- Dependencies: 192
+-- Name: lagoid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.lagoid_seq', 43, true);
+
+
+--
+-- TOC entry 2245 (class 0 OID 16397)
+-- Dependencies: 174
+-- Data for Name: lagosensor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.lagosensor (lagosensorid, lagoid, sensorid, lagosensorfechainstalacion, usuarioidcrea, fechacreacion, lagosensorestado, usuarioid, fechaelimina, fechaactualiza, usuarioactualiza, usuarioelimina, usuariopadreid) FROM stdin;
+53	40	33	2021-03-07	88	2021-03-07	t	88	\N	\N	\N	\N	85
+56	40	37	2021-03-17	88	2021-03-17	t	88	\N	\N	\N	\N	85
+\.
+
+
+--
+-- TOC entry 2312 (class 0 OID 0)
+-- Dependencies: 197
+-- Name: lagosensorid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.lagosensorid_seq', 56, true);
+
+
+--
+-- TOC entry 2256 (class 0 OID 24576)
+-- Dependencies: 185
+-- Data for Name: login; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.login (loginusuario, logintoken, loginfecha, loginfechasesioncerrada, usuarioid, loginestado) FROM stdin;
+brayan.medina	f85165abd08fe356bac7abd4ded9540c6ae089d6ce13c2ac448d5878539de2d37a1be214476b46a08e8bd5436f798abc53793ac115d35f28de552443626d473c	2020-04-13 09:46:53.116-05	\N	85	t
+brayan.medina	89e350d9278c76810978d86c34cc58607870b594a5a0af0ad21789054a3afd355f5e11c7607746d3c6de28eece7d4543cd05eac4ed2f83f23da598ccefe9dd7a	2020-04-13 09:51:17.922-05	\N	85	t
+brayan.medina	35fd90eac9f793676c44c0a12fa37c4dba4d5c51aa4f97a75838cc10b5d2db11a7381a095a68a78626d5f6ca5afe8e0378125cadfb951f725066c2de5da6b3bd	2020-04-13 09:58:58.116-05	\N	85	t
+brayan.medina	8cc6ea5b2539243597ab4cfcf6cd967bd82a4a6e66d840ecd86aff4db3f448ed2fbc81e9a8aa407a91bc06c28c0229652bb722628e640d09c4bd7990e9848e4f	2020-04-13 10:08:59.346-05	\N	85	t
+brayan.medina	a3541ba22975f053489cc0270ba35e248983af5fc2cf573bc5025edd2776f89648d3f59b6975a9b85a745393716e71ae89c84d9158deb36dac6ff5c91171e889	2020-04-13 11:30:38.607-05	\N	85	t
+brayan.medina	198522c8296a604b4aa74556e9d6b4b73bee074784ffb85e04c4cc589d6639eb149d4c5ffd172aa4c33f55be2bd4bac21eaed3e0242f184c5e1c13a3e0204924	2020-04-13 11:30:38.657-05	\N	85	t
+brayan.medina	4e9948855282087fe5e98606e0510b9a19da0989ff7c046f6c787f4f20c65000922ce5753885a019468025b3b4a7803cfc262f434daf74d1bc053ea450cc85f2	2020-04-13 12:45:48.411-05	\N	85	t
+brayan.medina	dd7cd13a569e168c6465bd0510fe6a52d219c5626a71069eeaf230554a590aeb847bb7db2a8e5146e397589214955f883a489a744edc4de0146503cd340ad79a	2020-04-13 13:50:04.288-05	\N	85	t
+brayan.medina	b60a655720b35eabbe56ba4b26c8769fc1efb66a1fcf4d6899294efdd43b7882c5a0337d705547433149888231b53046fdd90608a04c04c13ffab399492c8ae1	2020-04-13 17:57:38.793-05	\N	85	t
+brayan.medina	68be4c451f550415bd3061d0b92e4d74bd7fd4e142d61c81db7f127db5692c110337ae5e8928094f308b8769c34eb1581341a9138c377421e36e411a98906850	2020-04-27 18:23:26.773-05	\N	85	t
+brayan.medina	3185819020973a5c3322eaa1b70b322dd6a2bb1af9ca289d6440aac5ccb04d2c32f3ba9a77c442da5f3c01251ac10f89f460f23a4c2cddd947f3ec38bfed5c21	2020-05-01 18:41:50.271-05	\N	85	t
+brayan.cardozo	c7dec615c3f63d438ec1532bc95f8129874c008951029d2b45ddb0d6853357a26f2582e60ba6fbe7fe4382c3dc0530d12a5e7d686547ce12443d94eb71b8a5d4	2020-05-01 19:08:01.632-05	\N	88	t
+brayan.cardozo	eefb1be986faa3aa754985fd68748c61254928d5f171866ea55c3e34051737366082fd5c65d40303268d98d3887b421a94a46c2b6d1505855f4479cb9de4f9bb	2020-05-02 16:12:55.942-05	\N	88	t
+brayan.cardozo	196a2c1c430cd33446f1037500bcfa0342cf80aa02bd017c282cd42961e4d66844485e66c52529011a721b99388559038c80819bf37bd42fd7d19767d3497cac	2020-05-02 16:12:57.549-05	\N	88	t
+brayan.cardozo	f3d3f180245f94a4856fb516baced56ecbb0e2c6b9136a980f19025ab865f8f25d030bd90364e2e7ba523c051d4c2b7f269460fbd217fb689b694c3b9cfe4587	2020-05-10 11:17:26.082-05	\N	88	t
+brayan.cardozo	477e0c0f6427bd876bd9262e8e497283f28bf678be40edec613fb421fe7582c04cbc90d3195b81e77f7f55a9c133c13c99eed3a26ada564ba71eb986ba44403c	2020-05-10 15:41:04.453-05	\N	88	t
+brayan.cardozo	22f61ad90e77270091aa318ec55a70b1e2f27f41171e9f2d00a8aa83b310bc7db8c775a7cf7f2d8a04b6dca6a07602d13cc7699699ad09dbe1a9cb15e33fe207	2020-05-11 16:04:55.011-05	\N	88	t
+brayan.cardozo	ef29abc76d2a817ecf1c44caad9d0ec433da29f9502dab60fa244ac9d32d16a06d1613d4aa933996509dfa2724ec9e0881c336ec8f9434228fc7c0399df7aea0	2020-05-12 17:22:23.204-05	\N	88	t
+brayan.cardozo	85f94b91620e414cdf6aa345f32a29b8ad721fdf706cb8708d8c13032c4cb4054d2f96bff4b467da2363d5a8219b70a12a0d7ae1c2f3f0392ab3ab5af26886c3	2020-05-18 14:40:36.373-05	\N	88	t
+brayan.cardozo	627693fa70860cbb08e0d893daf31feefebde279e460fb01e1eb01e803b51f125fa3aaf66479a5a04718c9187a5229cd2b2e6a6f5b36a66d44f4e7c25f8662e6	2020-05-18 14:57:27.977-05	\N	88	t
+brayan.cardozo	f0ef25a4cccb94c1d864c753d01fb6f09dcb74019e5d39209ad9689d9ebbffe286384fb81c66a50aea1ea182a9ca0bcc4745cece73f81f8ffeab726e0d3d454a	2020-05-18 15:34:47.523-05	\N	88	t
+brayan.cardozo	e591f827216199bd0872b21b870a2f838e44ffc39fa2d4d327026385cb0d217c854011ae731083a14d04d72eb26ca2bc0cf4d6a6f0d82aad117080fd1dc16215	2020-05-18 16:21:06.487-05	\N	88	t
+brayan.cardozo	70016d3df6601817dbe397b48a7ab6004a43de0b570830ed43405d1a398ddc4b1936021d975d1c9bd5850b102c498cf41f6f24531024c3c843a02ea81036d198	2020-05-18 16:21:06.487-05	\N	88	t
+brayan.cardozo	64a5627bc652685a05c9acd4ec7e3e21bddfc1a4f723cd3aa25b684004da26aa5350b7bae0d4b22124a5a8a907ccdfa59d231f0e10a49b05f87cc4eb886e1772	2020-05-18 16:21:06.488-05	\N	88	t
+brayan.cardozo	56482e2946ced6d0e0b4a868ca0d13f21ac5f6ef5e08d45f4cfca3ad8c4916b6d051cd6fce9015a8c869319969b07bf2402d2b02f7c7bac6564d612b494bc34c	2020-05-18 16:22:36.801-05	\N	88	t
+brayan.cardozo	ceaf0db84f45169fbf4bcf40963d9aee5569be8369badef5a2b98504c84099e15d308de27ba8f2da5e3d337d499cc4dde29c590bb6bf1167459fbc1e423ff178	2020-05-18 16:32:23.483-05	\N	88	t
+brayan.cardozo	14b52046cdb8e03562593269c1f6f4499f420cb00c3ad796eae02ed86bdb9066c9cc80e70543b0252cfea7885c39fe3b8cd29fdbf10420e80a7a9bddfb210e3b	2020-05-18 16:35:05.909-05	\N	88	t
+brayan.cardozo	0cc4552c4812c1aa8cb998fd2f5117d84f5c9774ad3d89ca7db50ae78868e88835dc386a07aadc4f6767b25a645eb35797ea22180ae6ee9d129d5a4ca2a93ef1	2020-05-18 16:37:57.868-05	\N	88	t
+brayan.cardozo	e673ae15036e2ad58c828fee1c6319cb791e4596e8bfc2e21f215ebfe86c1e932d92781eff33acb7de1c646b1edaaf2d5d7169a11e0a0c6389b352ae067de18d	2020-05-18 16:39:50.973-05	\N	88	t
+brayan.cardozo	3174104a210af9ecddd01440ad10d4f55f5de31f99d274ee10fbc47f8822753c25577a37daa4205cdb9fe61f12fbe9ecb0a231a3cf3f09397f8882ad3b87978a	2020-05-18 16:43:00.762-05	\N	88	t
+brayan.cardozo	5eb62a1c19f47356a411a9df47412f3ef972f05b29b0f05c0ca179d725ebe2de8193f21df3af9f0363e7a35460a1bce57069af7286f3bf45e0713c105712c257	2020-05-21 18:17:27.832-05	\N	88	t
+brayan.cardozo	e2d385e399b47df3f1b4729d7d26b1325c8fd10d7dda2250250e945d080b84452d12c7e908717fcf5afb1ea554c66e3940d100b209b56538507b6db9d16c8982	2020-05-29 18:06:30.08-05	\N	88	t
+brayancardozo	615d3180bbb37433844e798e40daccc256db2f74ef27b1a03a294fc201fc63a03451ee2bbc62612980de4d8ccdab62a9f85c1e389d6e42df88eff09e74a281fe	2020-06-08 00:45:48.825-05	\N	88	t
+brayancardozo	4184398033278fe9d22ac40a3e2c66e0d11a33595053fc8311e31bc2aec0424b2611a9134ba1d0af96f201761e7ba4250885beb2d9e323d8be0b0c5484b64fc9	2020-06-08 00:45:58.972-05	\N	88	t
+brayancardozo	ce97d139687040977c9a0ffd2ca52c043f6a3b0e5a8eec16b9dd7bd8c15e6d031d6ffaf293eedfed0f52ccc336933550d66a184049669f543292341d2be3e3bb	2020-06-26 14:25:27.791-05	\N	88	t
+brayancardozo	d9ccd1a04c3a9a65e2f93831b2eb95ad7ee4c379393d1b2ee644d4c5a5347e3656e8241ea0548058bc84d995b14cd706a4b813f6478f401746d3f93fbfbb53d5	2020-06-26 14:30:50.787-05	\N	88	t
+brayancardozo	4f8eee6a413ed4caac8c74658d64dafd92bded15e723d50567aa05502de87fcd959c1f25fc69aeffcdd0dfaf527a732bd85f3a3cfbdf9f442d2c0de2199cf68f	2020-06-26 15:04:17.168-05	\N	88	t
+brayancardozo	ad864d146264fea4d78155a91fa002eecc0e3e3b96fee157a7ce8a21fe4f6a2ffa2556707f5341399911fed263373d560140ac60ef7469c5a695b5d0ff836f2f	2020-06-26 15:27:28.963-05	\N	88	t
+brayancardozo	2e8d763e05b4205ac8e21fd68cffbdadce797aeb709ab026a8fbede358b9a8f408e200f1053a55e6d0273edfcecb09ee78520c52279161d31c0b88f46beeba53	2020-06-26 15:39:57.198-05	\N	88	t
+brayancardozo	42eada3d47ee2518a7292128288716ffdff87a481cebd0baf2613730fa33ba255bb050cbd680856977489515f9081ac67a2c9f5778ed23f2c34ad0861f79b585	2020-07-19 11:46:24.137-05	\N	88	t
+brayancardozo	6ef1a1b11ecc4582ea00fabb0f8f2d5c068a49f7f8989c8580f4532a0546cdf4c85eb068540d0f93e980c704834310d8fe397e6945458ad66dee0b6cabd15fd9	2020-07-20 10:17:11.977-05	\N	88	t
+brayancardozo	a8d17a77b471eb5a8380da74ff7badcb306bdd59c660dc4efa1d1eeab6053bfed00b09ef58c9c409db816c92dab1b31fd756d8eb2a0ddbd2489517c66720687f	2020-08-08 18:33:58.228-05	\N	88	t
+brayancardozo	36c8dfc279833e3410406770bc3de3e61e681a5552d2f801109451a4f6698a22f6cc370c24515133d63e6b939a53d717572994cb98aa77599c6b91e74145f68c	2020-08-12 18:51:17.329-05	\N	88	t
+brayancardozo	f7313f284560f2908990bc6b5fa3d804886a0c092923f60ec10c03827f4a2eee0c5dd3e8828cc985f715a8a0a09d9638261b0981a5c4cacc0796d26abff435ab	2020-08-13 08:31:35.52-05	\N	88	t
+brayancardozo	ecfd205936c3befc2484060abe85db16099f4d90278bd23b80e9827c54eab5f5ae44c3045d0920aa75a72825357f6b086f2e479f81911a556cf3788a4337db37	2020-08-15 20:50:08.492-05	\N	88	t
+brayancardozo	29c7fd9fdea719714e2b8be1d6062f74b2d92285e0826360f4dbbfdb531c086e90e15de466fa88d1e4be722d8ad39d2c87d26269eb3bb59c01873b5cb94830fc	2020-08-15 20:50:43.492-05	\N	88	t
+brayancardozo	ea84c6075c5494a8967cb9e798040303947f835d0ef018784eb4f6dd988feaf1e493fb7b9bae00381f3ca5716eac3b2db982f1766b096c460bc856d675db5866	2020-08-15 20:51:13.775-05	\N	88	t
+brayancardozo	69bdd885d1046ff55665eeb367366c192d11d02f344ed40493b56af83856151004fd11c8e03cc8af243965be5820e612d71ac4ce4f7323ff8475f00eb961d56e	2020-08-16 17:50:44.349-05	\N	88	t
+brayancardozo	f2ab1133cce2a5759c22d6311e931c90896526e60d90e376ac0e3f80fa20641c8027f3511956885faae7c0d2334dc4d1262b9443e0641a534a96bd8c27c39e3e	2020-08-16 18:29:03.917-05	\N	88	t
+Camilo.TRujillo	c3d49c91ab5324bd3f6dab147aee2bc08ab5d433a86fcc21dd29dea729a33d3c1383f45d3f9dbf0832cd4d8764f088bf4f668d04add353537bb92f33925b0b79	2020-08-16 19:38:23.147-05	\N	98	t
+Camilo.TRujillo	a26e964aea289f68d1b26a9d8d99fe0e26fd6a98d0edd00e656265e713c2d7789a7f8cf37d0c7808e978d49c4c190e53b424e84b5557bf52b93d0b6eef14cba6	2020-08-16 19:42:30.607-05	\N	98	t
+Camilo.TRujillo	8bcc40deb580573cf1280961e473e889623781845713f98bdb6b3e207fb35f2148a12d6aee91de1a3eaaea19c817812556382eb7efd8cd4bb0b18b01a4fb5855	2020-08-16 19:42:58.178-05	\N	98	t
+Camilo.TRujillo	806c4d174a33aedb682303213c925b2926db3d9cc7cb3d689ddc825847b3c6113f786d1242b2e6bfd6b621a167c7946701823bf2f4072e42e407d567a64001bc	2020-08-16 19:47:19.134-05	\N	98	t
+Camilo.TRujillo	ca803ded2423d8b34baacbc09f4886755ab637e6bffb7e6e1ee353b8adb3c53b9d2228702b2eccb0cfbc966ca8445b9e8c6b367c3923e8016f7cab878d2ff48c	2020-08-16 19:48:25.071-05	\N	98	t
+Camilo.TRujillo	535dd5e3b22f18558548b84ff6200ce4ad406a8257580a2881af0f634f9e4ecd7490abb2752eb56a294e45516f484c51805a0dd4200b1b2a74aeab29a9928ea0	2020-08-16 19:49:02.723-05	\N	98	t
+Camilo.TRujillo	d62285ce2189f7dab5fe4fe295626c906831e962e863fa4909cfd2f1958f0ed4a610973f183170e6a94f33353fd1f02cbd193b8ea10c0b88a9300c8749493bba	2020-08-16 19:50:26.481-05	\N	98	t
+Camilo.TRujillo	1ff95e8fd658c7018eb44d2e30226ea99e4c7b9e2fb6df7289be9d398611b359e482f17b646c7c1bef086b9e23a268c4491429588566adc650b3259149f8af35	2020-08-16 19:50:52.293-05	\N	98	t
+brayancardozo	82969aecb5543037912b172168f83f25fca9a7ddb1dffdaccd956680bcd09870db7c620cadf54e9b2b0f3886ff3f1029163d974fc7d4d6241159d0ec94342148	2020-08-16 19:58:25.319-05	\N	88	t
+brayancardozo	fcbba014a7b8b08833adab59eb58481a088a89b7754a7d4da39afaddb864498e9ab9670479216dfa1b33a8d8e32628b55a536fc075720f2b7735c65bf68e07dd	2020-08-21 11:46:50.337-05	\N	88	t
+brayancardozo	958a2db237435681e5b1e64ada5f6be0b3211cfafde678225badc5bd656c2f41d46cb184f0e2486fd56f2e8952f6eb85fed728ef45861e2f6c51d176e1f5b69e	2020-08-21 16:09:42.211-05	\N	88	t
+brayancardozo	1573949995a5ca71c365786d0f0663b58163b5365d57ad05972ed9278f9b1af9fcb6ca13b185da4680017093b02cfc26b7442f6f5ebcf2d2cb29c6c5b847e5b0	2020-08-21 18:56:02.626-05	\N	88	t
+brayancardozo	b6f69efcf8102eab3c608333222e04f899aa8757ed1a24f9f812d844ea27fde8fb8e806f4e749c4db27f9ee1ad34ffe33b5af97e27813111c998f5dbd6bb60e2	2020-08-23 12:15:14.561-05	\N	88	t
+brayancardozo	850d06d5166ede34252157f3607c1c815981b3a81ad1d7e40feac631346e166d59d082b4563b92fe057c5000385fd70c3404f759318d58dcb2d57d24e825a0dc	2020-08-24 06:29:19.79-05	\N	88	t
+brayancardozo	e86c325afa422fffc9e1827e56e8d671391afbea2f827c7a5a6765f5725aa731de88e62fa52abd6b7e15d9437c5206bab7772f2152f7ad641bd49fe7923b5815	2020-08-26 18:37:44.893-05	\N	88	t
+brayancardozo	d0ec1b5988851b0965ac541c11739eb82673ac9f65159e8e059bdb5495224a8fab7803fd28a105e75b426d9e5517f271202ce55e653db76ffb9348c8ea0db405	2020-08-27 08:35:06.313-05	\N	88	t
+brayancardozo	5400866a2fe3a6ae8e7f8802976bc2dc0f04b5e56e8020654e7f3caaa9c7fa3b712e02c818ee3521116f82656eacc7d3f68e56eee12a0cd52b0989e233181d65	2020-09-03 06:54:54.785-05	\N	88	t
+brayancardozo	1bc3356f840a077d4bc3d5fb57d20b15dd2802e09ecaeca5d824a2821346fc6e603d8ffe3e0086c27548162685fdf864335d1d556325ffa876a30503241e1e1b	2020-09-03 10:40:14.995-05	\N	88	t
+brayancardozo	5ebe40aa02e31de8bf8acf6cd558c24603d0294a0e2a6aaa9c8ba6c789e189b37f50148150002ea1881875cd7b43cf6b73167aabc9c2aee6d51e14460a3b54a2	2020-09-07 15:36:45.193-05	\N	88	t
+brayancardozo	08b0d13a2a089264944939619b1cf8c639538d7ea59efa71e07c2ec8e3c562ac5b8cbdd4547ec76602c7e91d9a8d73332a1ed1fc02e16130a4ce1dba12227ea2	2020-09-07 16:52:30.115-05	\N	88	t
+brayancardozo	d2f256142c5ee01cd2767d329ae067fc3941c6be855f697022578bdb62952a2a42dcbc49fdbfe3ac59127041d9c470507646f7416b94cce76699d3c3debd5463	2020-09-12 20:37:32.861-05	\N	88	t
+brayancardozo	e5e5de080b054593604c6cb76f5701499b16da80c956ab23854fe60a247321a807e7a5e63fcd32cd32db8a173cfd2d4b7c142ab17b5c84c54afd64a8e962f0cf	2020-09-13 17:56:02.493-05	\N	88	t
+brayancardozo	9579a9c5edee1c0e241ce5a39d7b27923f1469e2a48b870e71a77c4e61d1ff5d4d6535b7b5f92696163f15a273a26a9e0ba724ecfb61c475937f1f542e982008	2020-09-13 20:02:08.753-05	\N	88	t
+brayancardozo	57d6481e9d68d39ec5ccee42414e3cef7d8ff395d88777c97f5f466ac7e6992e04165a7c8e1f728e7fec0aa5f7aa7583860e7c9ed3dd511b4cf3872fc0144973	2020-09-13 20:29:06.897-05	\N	88	t
+brayancardozo	1883458615a3a912e57ea4b25adae00e8f5ab13c0fbb76aa0f02222f856fb7145c59c00572bbae3676af66b32bb70426396fc6b500b25b02342bf2f60b67c6a5	2020-09-13 20:32:04.928-05	\N	88	t
+brayancardozo	f94ad478a07da1862a1763579b1130f514ba0cff30cf2bc161eb9879f57434bb900e7aee3a4edeb360239e01d54e57c342d4127f76b2768605fa22b23c703fe7	2020-09-13 20:35:52.166-05	\N	88	t
+brayancardozo	2adf962db18a37fb7af24fd642825fbbe0fb1aa9a4edf5cc7ca252e665c740a1029414541554f23955f3c26d0700eca5a51a3006c405207039db46686f85a6d0	2020-09-13 21:11:02.545-05	\N	88	t
+brayancardozo	6cd85b7fd78cba12daf2b5a6bae00c47f9cdced4bf13722c95a76e48d8aaf8d9a40d0416bfe86472ec13b431a591bc4bd79c25b0295bc5de6afa70a3e608d49d	2020-09-13 21:58:02.634-05	\N	88	t
+brayancardozo	9734b98804aa0f9508815aa69f5b2ec536ca9b1cc0a7a6e47d04ed1c499e8b526f543b738194aaafb3c445e8a46bcb9beff034864904e65648129fbedeb24fa7	2020-09-13 21:58:03.961-05	\N	88	t
+brayancardozo	4ab441b25d3f9dc2d8c18ab7de8684fca356de6aec47c3a8ab0bc779442c0fe53d0d6c50b54f2d5c1c9cafb11940606d1253e56268b142e4cd82f09cfd9750c2	2020-09-13 22:08:49.149-05	\N	88	t
+brayancardozo	86557353110f0b87c8ee7f1ceeb81be20420bdb9489964f7914235849197eeddb9532c89c5e054d4e02e334bf3554b70d1bcc44499b1ded16cabec8aeeb93156	2020-09-14 14:42:32.492-05	\N	88	t
+brayancardozo	84ae95f25808ef8502470f0bcfc6e900e236bc962d73a9e53eb7b5627cef3894314e093daa7f6db41080644633836b566e2d582830f66fab9797579c6393d699	2020-09-18 12:35:47.388-05	\N	88	t
+brayancardozo	41f20ad29bd6135fc793981746f0822fe63a2bface87ad6981e2b181cd02d3113cdfe6a8b69ce760d9794ca44b0124104106d59270bab57762106e5c6c7cd88f	2020-10-01 12:16:16.916-05	\N	88	t
+brayancardozo	c034fa3231abec07ab0edd229e3bd922e932c8895c6bcd866e54d574b95915b3b5e9a7421d23f11ea12ec9b7371d7bac129422977089c2d6c6cbe3fea453b5b2	2020-10-01 12:19:18.985-05	\N	88	t
+brayancardozo	4b0f2fb93613411fdf26c64dad7e26f51995a2328b346936a431778114b92d1713a07186e845788f7aa33dbaf9f47d13ffbccc98981ae16322e6a3488869c5f6	2020-10-20 14:42:02.533-05	\N	88	t
+brayancardozo	97056ea54ab69c3d4895161ad5d28fab544f51825295774a5131b2cc7fc2b76e96bcc3978e18aff44a3438de7424899fafe69c01db99dc1ffe04d9bb1dbf3635	2020-10-20 14:47:21.8-05	\N	88	t
+brayancardozo	e48548e3b5f55e5274ddfcb840d7e72ae316838f24a18f5d18cbbaeaaa501c0b33d74cdc010451a837188fd02bdf36aa0cbc45702e8e986fe51e546acf6152f4	2020-11-03 07:34:17.34-05	\N	88	t
+brayancardozo	cae354823e09ed2b8cacd1e5bd5886e7a4f4ce7cd29b4fae3b17753cde7077975e2c2f1034c7d01ce4189597c6c95017673c0c05e8d8acaefde1c3881c01cdac	2020-11-09 08:18:35.629-05	\N	88	t
+brayancardozo	1a72f80d7d905c11f1ed041388bdf4f7f35f642a5376f17a48463cb2c9b6c1e084260a71a99921d00e94955606acfe85739a7ca36190daabdf646e79306d56bc	2020-11-11 19:12:17.721-05	\N	88	t
+brayancardozo	0335b522fa4189e0745f5890c49e88c0f063e6ab56d9fcc34da7b6ad91e8d30520f0b8e6c790402474a1efcd27173423ef71867e33f7e7eb61e8db5d3c3d4439	2020-11-11 19:12:17.805-05	\N	88	t
+brayancardozo	be648213e1be5672a45b9f5681ff5f01262fbe98e35f6ced6a894567bc62ebe54b169d00c1c995e81a600490a09213099582d11534d7df441b10ae2759f29160	2021-02-04 06:36:59.065-05	\N	88	t
+brayancardozo	68ed0d525d85315f778161757a84f80348bf6db2208bcbe889b6fa0ba0ae7b5ba1c6b7ef521bf2bdc465f629616ad174714369b1c81ab1f329da462f29f1199c	2021-02-04 07:15:54.186-05	\N	88	t
+brayancardozo	20c068bf6306388d55c27f41b06abad65707d25bbeff522d6afdc8d3b70c89b1267ecfeba15f887630df6636e5bf1638cdb428e8c4b4df28337175c34c55ec72	2021-02-04 08:57:06.343-05	\N	88	t
+brayancardozo	4f9a855e9bd5bef9372e01d123fe2e000b29edc7838f8b08664e6353af1a1595e7d2b145014b260af3c6f421745231d037f5af36e6b46551728da35277044adf	2021-02-04 08:58:05.846-05	\N	88	t
+brayancardozo	598c27f85e8b9fcffefb1b6104f710118c5b6d4866d0b62e7d0b4c613b945b73c55edf0eb6788b130b35e7ebacd47a1de77eadd9160656b7b38156ce78ccab31	2021-02-04 09:05:54.326-05	\N	88	t
+brayancardozo	1f5a6acce78076d6bcc0f48d1139bbcb5ed3bf8614dd2c8176be8a815aa11a27759444917cec08e391c79cfc1b586efe25a281848542c14ff3ed2b937e2b71cc	2021-02-05 15:39:58.952-05	\N	88	t
+brayancardozo	1254518060271498029500b8f424b09e1226d2895ee2524e5842f05c96a73579fd58456e934589b0c13b909faecf0072e50e92e03a53cbf4d130a6f5b8fdb138	2021-02-06 11:31:00.831-05	\N	88	t
+brayancardozo	1dac28edcee306c80f4908d162c4ccd89506aae8b89e6dde521d46a3b941e28011b414fb1e76d27c119892cd9865dd5f5d9636a0697fb4b4e72dd75337f098fe	2021-02-06 13:34:36.94-05	\N	88	t
+brayancardozo	88562cc55b2a83c12d217f1bc8a847eeb0924986d5ff7550319fb9814e60642a3f8d466e0368245abc2c636734e22276924e709e43e6e8c755abe5ada09a87de	2021-02-06 13:40:49.009-05	\N	88	t
+brayancardozo	24249276b47c43a2f12dcc166d9cda5f9e754c0606573a00c7d5f2676d13bd1f5b34286081bae27272509e95da065fbeafd600ea6d6e6e925804a01f64c2d03c	2021-02-06 13:41:49.993-05	\N	88	t
+brayancardozo	34cdd4b16182e053409e78fb56b676e19f797f8be906a5d43fc70f131ca7473b4e84ab514c4fd30c47ba07c581e1b383c5b09329ddb0f0375a1a4eddcad32df6	2021-02-06 13:47:18.887-05	\N	88	t
+brayancardozo	46928da32535ffacf6b838f8d3d09666cd1fbeba9f1ae8d4fe88612c2d1b5485aadd748134451b8dcbc682cdfdcf9b0e963f0d5b2f48c447ebc9df76d293c8b1	2021-02-06 16:18:00.941-05	\N	88	t
+brayancardozo	01f04e10b43202bb47bf629b7fb2494fedb891fdc6a06b85c7b8cd78a6c2ba5de6adb8c67d0e3e2be57979d9245eab222e1680dc3c9224a6debb27a09adcfba5	2021-02-09 11:20:11.081-05	\N	88	t
+brayancardozo	8fb6112cccca0c1e12d663ceaf7a103bf260fb1ce33df11f8569895feed7e24a7614c9681a7538a962b7c0e76c22a4efbac15bfbeb7cc64e2a6d2cfcaddaa0dd	2021-02-10 11:50:58.598-05	\N	88	t
+brayancardozo	0fc0160df3f70de47cb5fd4b8a6ca4b4fc1d2d1fd6519b20bcdb3e979f8a376e8a9fcef733ef5ff7387e937f25fc6d0cad7dfccb342b8c5355916be517b899af	2021-02-10 21:02:55.265-05	\N	88	t
+brayancardozo	4ce8016540364620657e9ef4541b49862a66584ff1a8f256421e0cc0497be85f5b56351e54d4a9b939099cc66755dc70fdd25d426659ef4948fd266df28b88ba	2021-02-17 19:02:16.669-05	\N	88	t
+brayancardozo	2bea2ca102eb90a08de563e121495b0387f8b5b9b316a145c77adb2e7b5a94514e1c804c6b3072574fe3f5a1fbb435f68f2399b8bf545402243200bbe254a5a4	2021-03-01 21:32:30.069-05	\N	88	t
+brayancardozo	4ab60131f9bc533edcd9a68c75f4e879d2c81ca299a067087d245aa0bdca6b71e29c4399c9f59e4c0b1a7bb362f320e08c3ee0a88bf3ef4fa5fe5cfaabb32d39	2021-03-06 11:13:36.701-05	\N	88	t
+brayancardozo	78d7ff05a51d05b68a9c0af174c64aad1d2b731b4d443f76e8a9ee238562624564dac1f8d826ab1a2a6e1618497c2685ec61d06404ef4ed0a84e81e259f3e360	2021-03-07 11:25:59.43-05	\N	88	t
+brayancardozo	5892359a35d303c9fc65e9f3a112c91420cdac9405c96dd16b15209a0a04a984de23310d26c051656fe6a0214d576d5f2ca50b2e3866add9b935a65a4e83113e	2021-03-07 20:24:23.462-05	\N	88	t
+brayancardozo	5512ddbcb1acbaa7b8301ec0695f178004b24d0f5cefab85a9cdfba5cfcf245a575edc2a483e94aa58560217382fe554b21a4d1f4521fe56d176eeec2445e92a	2021-03-07 20:38:42.077-05	\N	88	t
+brayancardozo	199fcea5c78bd9bdf99b595299ef15a890b9d0bdbad9a880350b22ded90887ddb5cf2b09d38b6a77de3b062c33752f14ceede4ea818ee1ed47c230b71d25b4a9	2021-03-07 21:09:02.222-05	\N	88	t
+brayancardozo	6429582cda3abc87ad49e8c1126050635cda949bbce64f2a78f36feb4fda477c42098227e44229f73fd41521690618b5ebd94d410682c80d4d6fbc43f1a01ae0	2021-03-07 21:10:33.347-05	\N	88	t
+brayancardozo	21d72e4fc92dc0a55d698f53afdcfccfa4a0e3af98e649a6516aaebfb9b01f7ae009831287b09debcfa150c0ddf7594c6b811c3de8da8d8d3a701e2ca17c21f1	2021-03-07 21:12:21.033-05	\N	88	t
+brayancardozo	fe198d5b924aff929e7e8edc0ce21159f4d55b40457b6ec2eef224f876d450ef5057d4c6e6978507db1e4764bb7bcc8a1abe9c5c27defb473fe40a7518222305	2021-03-07 21:12:59.297-05	\N	88	t
+brayancardozo	a56e52fcc9e40795684df43ef183515a7c1a29ba7b2a4c98cd8cd40aedffd691991cf775247476c6f0633a65027b65e9f8db0fa88fce3ab8d131e29b9a93683e	2021-03-07 21:13:37.509-05	\N	88	t
+brayancardozo	b7a0d46e8d00bb198d58f5a3420b62b7426e13d11c2d0bf5f4628b95847b97a3716e2064f853d89f1b03c25cb78178e05b214fa30c62352a22371cea5b262f00	2021-03-07 21:18:05.621-05	\N	88	t
+brayancardozo	0355337176377dd06793f914071389ab28ee8259092537862fa578e47fa2d581a4fd43a0fca89dc96df8f131e8c0e86bae0a53325b6d930737b1ad8b22712882	2021-03-07 21:24:25.32-05	\N	88	t
+brayancardozo	abe6d2e148802a6e660fe4aeacd2ad6bd4f566d384a9c10f9abb8ec582e0e394e8ea1c97725194fe7977d7111e1181f680edc8a588eb0036bcf89446265f66d8	2021-03-07 23:00:51.721-05	\N	88	t
+brayancardozo	20ff361bd96e2d2d01b7d74d4007070d0e2a9d30747d7147f34127080e9f3dd69a25255fe9fc47d1dd2d31eef47a5a0c6b2342e350ee6821f2f8a577cdd635c4	2021-03-07 23:27:25.121-05	\N	88	t
+brayancardozo	cb6b9b02206f2c37148da568777fbfe52da26c592d651f38b8d4731fc2b0bdbeca39b1938b6e2b2340b2533ebabfba7d3eb5fd0902f48f80b494f0217e96fb60	2021-03-09 15:01:18.984-05	\N	88	t
+brayancardozo	152634d804086fd60773c44c02659836373e1f3e57f37639fefe53da8259573fda0035cdcd45bdcc6bf71500357d43f450a899a5269cce3e698e5a1439d1f96e	2021-03-09 15:07:53.094-05	\N	88	t
+brayancardozo	d8c55689f089931e721f6ba3c59a8cc87232395a5c68194fcc4269ba2dea97f05d745e105bfa58025f9f6f6617cdac85c095721a36a4b1a4dfae268e4ff9e51d	2021-03-09 15:27:01.824-05	\N	88	t
+brayancardozo	9ee2927f053906827a06c3a02c0751fc165a93cab659c9c42541f1617feb6cda4814e072cc78bd65f1f4c3521621254143740a0db55967cb594c4997be52dc61	2021-03-09 15:27:21.739-05	\N	88	t
+brayancardozo	165864f558d2c3e39759d0717880529c8ef3bb2457de90d5d238d3ab7535b1ce1b67485975705b26083ce8a5816a6b1ea2f5503b296fa5ef9a571691657d8455	2021-03-17 21:44:53.434-05	\N	88	t
+brayancardozo	1fa90b475c3a16b65f83d373b79e0a7cf662fd4c1618bd6dbcb73cef14c83ce756972a40cf4466410c82a8595c126eeb322ab0dfe3009447ac3a1043386bc2aa	2021-03-18 00:45:12.574-05	\N	88	t
+brayancardozo	6bd49c321fcacf7055d412074ee00f9f0096cceb4becc19434ed94f3108b78898e110296c820dbad1dde84a9f92d97b3fe7032bbe5a4f70fcf5b4f0e22e83d2d	2021-03-18 00:54:34.611-05	\N	88	t
+brayancardozo	1bfb69004abff43f7aa7903b79310172f091142014c87b539dd7bdc5d7c61f1267706ac498c675b269718e76c7c2a69b5fba1e77e1452b4f8ad5fcbdcb705a99	2021-03-18 09:30:17.839-05	\N	88	t
+brayancardozo	7290dabca24fbceb55addcb1febf7410f0c417e71afb054d10f27f35432ba92861fe8dab69038cb6bbeaed492316e34d975412b344f8c0e78bb03acc93a183ff	2021-03-18 09:43:12.339-05	\N	88	t
+brayancardozo	01db307d0d3c6c191b04c7b83b122e5c77a7b69d9446d1fb71742c5991c532f0ca2e2700a9abcbdea287e51ecb9eb74e61815cdd8e8a22e022ff94ce66660d53	2021-03-26 17:42:00.134-05	\N	88	t
+\.
+
+
+--
+-- TOC entry 2264 (class 0 OID 32785)
+-- Dependencies: 193
+-- Data for Name: marca; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.marca (marcaid, marcanombre, marcafechacrea, marcafechaactualiza, marcafechaelimina, marcausuariocrea, marcausuarioactualiza, marcausuarioelimina, marcadescripcion, usuariopadreid) FROM stdin;
+5		14:37:42.553-05	\N	14:48:08.122-05	85	\N	85		85
+6		14:38:30.063-05	\N	14:48:10.606-05	85	\N	85		85
+7		14:39:00.577-05	\N	14:48:12.668-05	85	\N	85		85
+8	Ok	14:55:23.566-05	\N	14:55:58.507-05	85	\N	85		85
+9	Ok	14:56:02.97-05	\N	14:56:36.691-05	85	\N	85		85
+11	ONE 23	18:42:22.285-05	15:15:29.267-05	15:15:58.638-05	85	85	85	ONE 23	85
+16		21:36:56.815-05	\N	21:37:06.11-05	88	\N	88		85
+15		21:36:53.289-05	\N	21:37:09.431-05	88	\N	88		85
+14		21:36:43.215-05	\N	21:37:11.47-05	88	\N	88		85
+13		21:36:40.003-05	\N	21:37:13.737-05	88	\N	88		85
+17	ok	21:39:24.182-05	\N	21:39:33.228-05	88	\N	88		85
+12	ejemplo	21:35:13.222-05	21:35:29.35-05	21:39:35.465-05	88	88	88	ok	85
+10	ok	14:56:44.354-05	\N	21:39:37.828-05	85	\N	88	ok	85
+18	ok	21:40:29.962-05	\N	21:40:36.91-05	88	\N	88		85
+19	optimus	21:40:56.68-05	\N	\N	88	\N	\N		85
+21	ekos	15:18:00.244-05	15:18:23.219-05	\N	88	88	\N	2.01	85
+\.
+
+
+--
+-- TOC entry 2313 (class 0 OID 0)
+-- Dependencies: 194
+-- Name: marcaid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.marcaid_seq', 21, true);
+
+
+--
+-- TOC entry 2257 (class 0 OID 24594)
+-- Dependencies: 186
+-- Data for Name: perfil; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.perfil (perfilid, perfilnombre, perfildescripcion, usuariocrea, usuarioelimina) FROM stdin;
+2	Usuario	Usuario con privilegios definidos	\N	\N
+1	Administrador	Usuario creador, responsable de la cuenta principal, solo existe un usuario de este tipo por cuenta.\r\nEste usuario es la persona que se registra como principal.\r\nEs el usuario que se registra en el formulario de crear cuenta.\r\n	\N	\N
+3	Super Administrador	\N	\N	1
+\.
+
+
+--
+-- TOC entry 2314 (class 0 OID 0)
+-- Dependencies: 187
+-- Name: perfilid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.perfilid_seq', 3, true);
+
+
+--
+-- TOC entry 2255 (class 0 OID 16532)
+-- Dependencies: 184
+-- Data for Name: persona; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.persona (personaid, perosnanombre, personaapellido, personatelefono, personatelefonoopcional, personacorreo, tipodocumentoid, personanumerodocumento, personafechacreacion, personafechaactualizacion, personafechaeliminar, usuarioidelimina, usuarioidactualiza, notificacioncorreo, notificacionmensaje, personanombrecomercial, usuariocrea, usuariopadreid) FROM stdin;
+114	brayan	Roa				2	1080296146	2020-02-23 19:01:32.891-05	2020-02-29 11:33:16.463-05	\N	\N	88	f	f	one	\N	\N
+115	admin	\N	\N	\N	\N	1	1	2020-02-23 19:15:00.556-05	\N	\N	\N	\N	f	f	\N	\N	\N
+119	Brayan	ejeplo	\N	\N	\N	2	123	2020-08-16 18:31:33.918-05	\N	\N	\N	\N	f	f	\N	85	\N
+120	brayan	ejemplo	\N	\N	\N	2	321	2020-08-16 18:33:44.363-05	\N	\N	\N	\N	f	f	\N	85	\N
+121	brayan	ejemplo	\N	\N	\N	2	3210	2020-08-16 18:36:46.873-05	\N	\N	\N	\N	f	f	\N	85	\N
+122	Alejandro	Medina	\N	\N	\N	1	987	2020-08-16 18:55:01.689-05	\N	\N	\N	\N	f	f	\N	85	\N
+123	Ana 	Roa	\N	\N	\N	1	5555	2020-08-16 18:57:25.104-05	\N	\N	\N	\N	f	f	\N	85	\N
+124	Juan Pablo	Medina	\N	\N	\N	1	8932	2020-08-16 18:59:19.718-05	\N	\N	\N	\N	f	f	\N	85	\N
+125	Lorena	Medina	\N	\N	\N	2	1080296	2020-08-16 19:15:33.905-05	\N	\N	\N	\N	f	f	\N	85	\N
+126	Juan	Cabrera	\N	\N	\N	2	11122	2020-08-16 19:18:50.068-05	\N	\N	\N	\N	f	f	\N	85	\N
+127	Yeimi Katherine 	Ferreira	\N	\N	\N	2	55556	2020-08-16 19:25:59.022-05	\N	\N	\N	\N	f	f	\N	85	\N
+128	Camilo	TRujillo	\N	\N	\N	1	9678	2020-08-16 19:26:49.473-05	\N	\N	\N	\N	f	f	\N	85	\N
+129	Herney 	Medina	\N	\N	\N	1	9999	2020-08-16 19:59:16.53-05	\N	\N	\N	\N	f	f	\N	85	\N
+130	Ana Milena	Roa	\N	\N	\N	2	1289	2020-08-16 20:01:14.044-05	\N	\N	\N	\N	f	f	\N	85	\N
+131	Alejandra	Medina	\N	\N	\N	2	2358	2020-08-16 20:08:45.59-05	\N	\N	\N	\N	f	f	\N	85	\N
+132	brayan	Medina	\N	\N	\N	1	963	2020-08-16 20:16:41.607-05	\N	\N	\N	\N	f	f	\N	85	\N
+133	brayan 	medina	\N	\N	\N	2	1080296147	2020-08-16 20:21:16.113-05	\N	\N	\N	\N	f	f	\N	85	\N
+116	Brayan	Cardozo	3219047590	3219047590	b@gmail.com	1	1080296149	2020-02-29 10:24:43.779-05	2020-02-29 11:32:01.842-05	\N	\N	88	f	f	\N	85	\N
+\.
+
+
+--
+-- TOC entry 2315 (class 0 OID 0)
+-- Dependencies: 183
+-- Name: personaid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.personaid_seq', 133, true);
+
+
+--
+-- TOC entry 2246 (class 0 OID 16406)
+-- Dependencies: 175
+-- Data for Name: pez; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.pez (pezid, especiepez, pezdescripcion, temperatura, oxigenodisuelto, ph, amonio, estado) FROM stdin;
+1	CARPA	0	0	0	0	0	t
+2	TILAPIA	0	0	0	0	0	t
+\.
+
+
+--
+-- TOC entry 2316 (class 0 OID 0)
+-- Dependencies: 196
+-- Name: pezid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.pezid_seq', 2, true);
+
+
+--
+-- TOC entry 2281 (class 0 OID 73850)
+-- Dependencies: 210
+-- Data for Name: plantilla; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.plantilla (id, correo, password, setfrom, subject, body, tipo, estado) FROM stdin;
+1	bh-medinac@corhuila.edu.co	brayanmedina1080296146	AQUA	Notificación cuenta Aqua	<table style="max-width:600px;border-width:1px;border-style:solid;border-color:#dcdcdc" width="100%" cellspacing="0"\r\n       cellpadding="0" border="0" align="center">\r\n       <tbody>\r\n           <tr>\r\n               <td style="text-align:center">\r\n                   <figure>\r\n                       <center>\r\n                           <img width="100px"\r\n                               src="http://3.129.150.14/aqua/public/pez.png" alt="Red dot">\r\n                       </center>\r\n                   </figure>\r\n               </td>\r\n           </tr>\r\n           <tr>\r\n               <td style="padding-top:0px;padding-bottom:0px;padding-right:5%;padding-left:5%">\r\n                   <table\r\n                       style="max-width:550px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:15px;color:#210049;text-align:center"\r\n                       width="100%" cellspacing="0" cellpadding="0" border="0" align="center">\r\n                       <tbody>\r\n                           <tr>\r\n                               <td style="font-size:18px;font-weight:bold;color:#fb932c;padding-top:30px;padding-bottom:20px;padding-right:0%;padding-left:0%;text-align:center"\r\n                                   width="100%">Bienvenido</td>\r\n                           </tr>\r\n                           <tr>\r\n                               <td style="padding-top:0px;padding-bottom:15px;padding-right:0px;padding-left:0px;text-align:left"\r\n                                   width="100%">\r\n                                   <p>\r\n                                       <span style="font-size:16px">\r\n                                           <strong>@NOMBRE ¡Ya está listo tu usurio en Aqua!</strong>\r\n                                           <img goomoji="1f609" data-goomoji="1f609"\r\n                                               style="margin:0 0.2ex;vertical-align:middle;max-height:24px" alt="😉"\r\n                                               src="https://mail.google.com/mail/e/1f44c" data-image-whitelisted=""\r\n                                               class="CToWUd">\r\n                                       </span>\r\n                                   </p>\r\n                                   <ol>\r\n                                       <li>\r\n                                           <strong>\r\n                                               <span style="font-size:16px">Usuario:</span>\r\n                                           </strong>\r\n                                           <span style="font-size:16px">\r\n                                               @USUARIO\r\n                                           </span>\r\n                                       </li>\r\n                                       <li>\r\n                                           <strong>\r\n                                               <span style="font-size:16px">Contraseña:</span>\r\n                                           </strong>\r\n                                           <span style="font-size:16px">\r\n                                               @CONTRASEÑA\r\n                                           </span>\r\n                                       </li>\r\n                                   </ol>\r\n                               </td>\r\n                           </tr>\r\n                           <tr>\r\n                               <td style="padding-top:30px;padding-bottom:35px;padding-right:0%;padding-left:0%">\r\n                                   <table\r\n                                       style="max-width:300px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;font-size:10px;color:#fb932c;text-align:center;background-color:#fb932c;background-image:none;background-repeat:repeat;background-position:top left;border-width:1px;border-style:solid;border-color:#fb932c;border-radius:5px"\r\n                                       width="100%" align="center">\r\n                                       <tbody>\r\n                                           <tr>\r\n                                               <td style="font-size:18px;font-weight:bold;padding-top:15px;padding-bottom:15px;padding-right:15px;padding-left:15px;color:white;line-height:20px;text-decoration:none"\r\n                                                   width="100%">\r\n                                                   <a href="http://3.129.150.14/aqua/web/view/login.php?usuario=@USUARIO"\r\n                                                       style="color:white;text-decoration:none" target="_blank">\r\n                                                       Completar la inscripción\r\n                                                   </a></td>\r\n                                           </tr>\r\n                                       </tbody>\r\n                                   </table>\r\n                               </td>\r\n                           </tr>\r\n                           <tr>\r\n                               <td>\r\n                                   <table\r\n                                       style="max-width:570px;font-family:Helvetica Neue,Helvetica,Arial,sans-serif;border-top-width:1px;border-top-style:dotted;border-top-color:#dcdcdc;text-align:center;padding-top:20px;padding-bottom:20px;padding-right:0px;padding-left:0px"\r\n                                       width="100%" cellspacing="0" cellpadding="0" align="center">\r\n                                       <tbody>\r\n   \r\n                                       </tbody>\r\n                                   </table>\r\n                               </td>\r\n                           </tr>\r\n                       </tbody>\r\n                   </table>\r\n               </td>\r\n           </tr>\r\n       </tbody>\r\n   </table>	crearcuenta	t
+\.
+
+
+--
+-- TOC entry 2317 (class 0 OID 0)
+-- Dependencies: 212
+-- Name: predecir_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.predecir_seq', 210, true);
+
+
+--
+-- TOC entry 2282 (class 0 OID 73865)
+-- Dependencies: 211
+-- Data for Name: prediccion; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.prediccion (id, fecha, hora, temperatura_ambiente, temperatura_estanque, oxigeno, ph, conductividad_electrica, nh3, nh4, nitrito, alcalanidad, cultivo_id, fecha_inicio) FROM stdin;
+121	2020-09-03	8	25.063	26.9893	0.98100000000001	6.9631699999999	157.99	0.32486	3.6402	2.964	73.755	12	2020-09-03
+122	2020-09-03	17	33.063	27.1554	1.1471	7.53021	152.87	0.10179	1.0344	5.954	72.412	12	2020-09-03
+123	2020-09-04	8	24.808	26.7133	1.2097	6.96157	155.97	0.30997	3.7739	5.082	71.587	12	2020-09-03
+124	2020-09-04	17	31.639	27.144	1.2262	7.41854	150.7	0.059360000000001	1.0543	5.265	72.227	12	2020-09-03
+125	2020-09-05	8	23.985	26.639	1.1159	6.93382	155.91666666667	0.31854	4.0284	4.39	73.199	12	2020-09-03
+126	2020-09-05	17	32.306	27.1676	1.2596	7.29648	151.21333333333	0.08673	1.3473	5.024	73.034	12	2020-09-03
+127	2020-09-06	8	23.371	26.5614	1.2336	6.97061	154.98333333333	0.31167	3.8821	4.89	71.618	12	2020-09-03
+128	2020-09-06	17	32.799	27.2157	1.1998	7.35992	151.09666666667	0.07625	1.1588	5.136	72.484	12	2020-09-03
+129	2020-09-07	8	23.94	26.6527	1.1715	6.97696	154.84	0.32287	4.0676	4.005	72.293	12	2020-09-03
+130	2020-09-07	17	32.592	27.2048	1.2077	7.3472	150.91666666667	0.07355	1.1957	5.197	72.752	12	2020-09-03
+131	2020-09-08	8	23.849	26.613	1.1457	6.95705	154.86	0.3178	3.9516	4.531	71.692	12	2020-09-03
+132	2020-09-08	17	32.533	27.19	1.2321	7.33588	151.12	0.07644	1.2052	5.192	72.612	12	2020-09-03
+133	2020-09-09	8	23.91	26.6038	1.169	6.96979	154.84	0.31713	3.9228	4.69	71.645	12	2020-09-03
+134	2020-09-09	17	32.663	27.1846	1.182	7.36054	151.02333333333	0.07181	1.2139	5.207	72.633	12	2020-09-03
+135	2020-09-10	8	23.924	26.6017	1.1758	6.95099	154.88666666667	0.31603	3.9578	4.585	71.771	12	2020-09-03
+136	2020-09-15	8	25.063	26.9893	0.98100000000001	6.9631699999999	157.99	0.32486	3.6402	2.964	73.755	12	2020-09-15
+137	2020-09-15	17	33.063	27.1554	1.1471	7.53021	152.87	0.10179	1.0344	5.954	72.412	12	2020-09-15
+138	2020-09-16	8	24.808	26.7133	1.2097	6.96157	155.97	0.30997	3.7739	5.082	71.587	12	2020-09-15
+139	2020-09-16	17	31.639	27.144	1.2262	7.41854	150.7	0.059360000000001	1.0543	5.265	72.227	12	2020-09-15
+140	2020-09-17	8	23.985	26.639	1.1159	6.93382	155.91666666667	0.31854	4.0284	4.39	73.199	12	2020-09-15
+141	2020-09-17	17	32.306	27.1676	1.2596	7.29648	151.21333333333	0.08673	1.3473	5.024	73.034	12	2020-09-15
+142	2020-09-18	8	23.371	26.5614	1.2336	6.97061	154.98333333333	0.31167	3.8821	4.89	71.618	12	2020-09-15
+143	2020-09-18	17	32.799	27.2157	1.1998	7.35992	151.09666666667	0.07625	1.1588	5.136	72.484	12	2020-09-15
+144	2020-09-19	8	23.94	26.6527	1.1715	6.97696	154.84	0.32287	4.0676	4.005	72.293	12	2020-09-15
+145	2020-09-19	17	32.592	27.2048	1.2077	7.3472	150.91666666667	0.07355	1.1957	5.197	72.752	12	2020-09-15
+146	2020-09-20	8	23.849	26.613	1.1457	6.95705	154.86	0.3178	3.9516	4.531	71.692	12	2020-09-15
+147	2020-09-20	17	32.533	27.19	1.2321	7.33588	151.12	0.07644	1.2052	5.192	72.612	12	2020-09-15
+148	2020-09-21	8	23.91	26.6038	1.169	6.96979	154.84	0.31713	3.9228	4.69	71.645	12	2020-09-15
+149	2020-09-21	17	32.663	27.1846	1.182	7.36054	151.02333333333	0.07181	1.2139	5.207	72.633	12	2020-09-15
+150	2020-09-22	8	23.924	26.6017	1.1758	6.95099	154.88666666667	0.31603	3.9578	4.585	71.771	12	2020-09-15
+151	2020-10-20	8	25.063	26.9893	0.98100000000001	6.9631699999999	157.99	0.32486	3.6402	2.964	73.755	12	2020-10-20
+152	2020-10-20	17	33.063	27.1554	1.1471	7.53021	152.87	0.10179	1.0344	5.954	72.412	12	2020-10-20
+153	2020-10-21	8	24.808	26.7133	1.2097	6.96157	155.97	0.30997	3.7739	5.082	71.587	12	2020-10-20
+154	2020-10-21	17	31.639	27.144	1.2262	7.41854	150.7	0.059360000000001	1.0543	5.265	72.227	12	2020-10-20
+155	2020-10-22	8	23.985	26.639	1.1159	6.93382	155.91666666667	0.31854	4.0284	4.39	73.199	12	2020-10-20
+156	2020-10-22	17	32.306	27.1676	1.2596	7.29648	151.21333333333	0.08673	1.3473	5.024	73.034	12	2020-10-20
+157	2020-10-23	8	23.371	26.5614	1.2336	6.97061	154.98333333333	0.31167	3.8821	4.89	71.618	12	2020-10-20
+158	2020-10-23	17	32.799	27.2157	1.1998	7.35992	151.09666666667	0.07625	1.1588	5.136	72.484	12	2020-10-20
+159	2020-10-24	8	23.94	26.6527	1.1715	6.97696	154.84	0.32287	4.0676	4.005	72.293	12	2020-10-20
+160	2020-10-24	17	32.592	27.2048	1.2077	7.3472	150.91666666667	0.07355	1.1957	5.197	72.752	12	2020-10-20
+161	2020-10-25	8	23.849	26.613	1.1457	6.95705	154.86	0.3178	3.9516	4.531	71.692	12	2020-10-20
+162	2020-10-25	17	32.533	27.19	1.2321	7.33588	151.12	0.07644	1.2052	5.192	72.612	12	2020-10-20
+163	2020-10-26	8	23.91	26.6038	1.169	6.96979	154.84	0.31713	3.9228	4.69	71.645	12	2020-10-20
+164	2020-10-26	17	32.663	27.1846	1.182	7.36054	151.02333333333	0.07181	1.2139	5.207	72.633	12	2020-10-20
+165	2020-10-27	8	23.924	26.6017	1.1758	6.95099	154.88666666667	0.31603	3.9578	4.585	71.771	12	2020-10-20
+166	2020-11-02	8	25.063	26.9893	0.98100000000001	6.9631699999999	157.99	0.32486	3.6402	2.964	73.755	12	2020-11-02
+167	2020-11-02	17	33.063	27.1554	1.1471	7.53021	152.87	0.10179	1.0344	5.954	72.412	12	2020-11-02
+168	2020-11-03	8	24.808	26.7133	1.2097	6.96157	155.97	0.30997	3.7739	5.082	71.587	12	2020-11-02
+169	2020-11-03	17	31.639	27.144	1.2262	7.41854	150.7	0.059360000000001	1.0543	5.265	72.227	12	2020-11-02
+170	2020-11-04	8	23.985	26.639	1.1159	6.93382	155.91666666667	0.31854	4.0284	4.39	73.199	12	2020-11-02
+171	2020-11-04	17	32.306	27.1676	1.2596	7.29648	151.21333333333	0.08673	1.3473	5.024	73.034	12	2020-11-02
+172	2020-11-05	8	23.371	26.5614	1.2336	6.97061	154.98333333333	0.31167	3.8821	4.89	71.618	12	2020-11-02
+173	2020-11-05	17	32.799	27.2157	1.1998	7.35992	151.09666666667	0.07625	1.1588	5.136	72.484	12	2020-11-02
+174	2020-11-06	8	23.94	26.6527	1.1715	6.97696	154.84	0.32287	4.0676	4.005	72.293	12	2020-11-02
+175	2020-11-06	17	32.592	27.2048	1.2077	7.3472	150.91666666667	0.07355	1.1957	5.197	72.752	12	2020-11-02
+176	2020-11-07	8	23.849	26.613	1.1457	6.95705	154.86	0.3178	3.9516	4.531	71.692	12	2020-11-02
+177	2020-11-07	17	32.533	27.19	1.2321	7.33588	151.12	0.07644	1.2052	5.192	72.612	12	2020-11-02
+178	2020-11-08	8	23.91	26.6038	1.169	6.96979	154.84	0.31713	3.9228	4.69	71.645	12	2020-11-02
+179	2020-11-08	17	32.663	27.1846	1.182	7.36054	151.02333333333	0.07181	1.2139	5.207	72.633	12	2020-11-02
+180	2020-11-09	8	23.924	26.6017	1.1758	6.95099	154.88666666667	0.31603	3.9578	4.585	71.771	12	2020-11-02
+181	2020-11-11	8	25.063	26.9893	0.98100000000001	6.9631699999999	157.99	0.32486	3.6402	2.964	73.755	12	2020-11-11
+182	2020-11-11	8	25.063	26.9893	0.98100000000001	6.9631699999999	157.99	0.32486	3.6402	2.964	73.755	12	2020-11-11
+183	2020-11-11	17	33.063	27.1554	1.1471	7.53021	152.87	0.10179	1.0344	5.954	72.412	12	2020-11-11
+184	2020-11-12	8	24.808	26.7133	1.2097	6.96157	155.97	0.30997	3.7739	5.082	71.587	12	2020-11-11
+185	2020-11-11	17	33.063	27.1554	1.1471	7.53021	152.87	0.10179	1.0344	5.954	72.412	12	2020-11-11
+186	2020-11-12	17	31.639	27.144	1.2262	7.41854	150.7	0.059360000000001	1.0543	5.265	72.227	12	2020-11-11
+188	2020-11-13	8	23.985	26.639	1.1159	6.93382	155.91666666667	0.31854	4.0284	4.39	73.199	12	2020-11-11
+190	2020-11-13	17	32.306	27.1676	1.2596	7.29648	151.21333333333	0.08673	1.3473	5.024	73.034	12	2020-11-11
+192	2020-11-14	8	23.371	26.5614	1.2336	6.97061	154.98333333333	0.31167	3.8821	4.89	71.618	12	2020-11-11
+194	2020-11-14	17	32.799	27.2157	1.1998	7.35992	151.09666666667	0.07625	1.1588	5.136	72.484	12	2020-11-11
+196	2020-11-15	8	23.94	26.6527	1.1715	6.97696	154.84	0.32287	4.0676	4.005	72.293	12	2020-11-11
+198	2020-11-15	17	32.592	27.2048	1.2077	7.3472	150.91666666667	0.07355	1.1957	5.197	72.752	12	2020-11-11
+200	2020-11-16	8	23.849	26.613	1.1457	6.95705	154.86	0.3178	3.9516	4.531	71.692	12	2020-11-11
+202	2020-11-16	17	32.533	27.19	1.2321	7.33588	151.12	0.07644	1.2052	5.192	72.612	12	2020-11-11
+204	2020-11-17	8	23.91	26.6038	1.169	6.96979	154.84	0.31713	3.9228	4.69	71.645	12	2020-11-11
+206	2020-11-17	17	32.663	27.1846	1.182	7.36054	151.02333333333	0.07181	1.2139	5.207	72.633	12	2020-11-11
+208	2020-11-18	8	23.924	26.6017	1.1758	6.95099	154.88666666667	0.31603	3.9578	4.585	71.771	12	2020-11-11
+187	2020-11-12	8	24.808	26.7133	1.2097	6.96157	155.97	0.30997	3.7739	5.082	71.587	12	2020-11-11
+189	2020-11-12	17	31.639	27.144	1.2262	7.41854	150.7	0.059360000000001	1.0543	5.265	72.227	12	2020-11-11
+191	2020-11-13	8	23.985	26.639	1.1159	6.93382	155.91666666667	0.31854	4.0284	4.39	73.199	12	2020-11-11
+193	2020-11-13	17	32.306	27.1676	1.2596	7.29648	151.21333333333	0.08673	1.3473	5.024	73.034	12	2020-11-11
+195	2020-11-14	8	23.371	26.5614	1.2336	6.97061	154.98333333333	0.31167	3.8821	4.89	71.618	12	2020-11-11
+197	2020-11-14	17	32.799	27.2157	1.1998	7.35992	151.09666666667	0.07625	1.1588	5.136	72.484	12	2020-11-11
+199	2020-11-15	8	23.94	26.6527	1.1715	6.97696	154.84	0.32287	4.0676	4.005	72.293	12	2020-11-11
+201	2020-11-15	17	32.592	27.2048	1.2077	7.3472	150.91666666667	0.07355	1.1957	5.197	72.752	12	2020-11-11
+203	2020-11-16	8	23.849	26.613	1.1457	6.95705	154.86	0.3178	3.9516	4.531	71.692	12	2020-11-11
+205	2020-11-16	17	32.533	27.19	1.2321	7.33588	151.12	0.07644	1.2052	5.192	72.612	12	2020-11-11
+207	2020-11-17	8	23.91	26.6038	1.169	6.96979	154.84	0.31713	3.9228	4.69	71.645	12	2020-11-11
+209	2020-11-17	17	32.663	27.1846	1.182	7.36054	151.02333333333	0.07181	1.2139	5.207	72.633	12	2020-11-11
+210	2020-11-18	8	23.924	26.6017	1.1758	6.95099	154.88666666667	0.31603	3.9578	4.585	71.771	12	2020-11-11
+\.
+
+
+--
+-- TOC entry 2286 (class 0 OID 73911)
+-- Dependencies: 215
+-- Data for Name: rango; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rango (id, temperaturaambiente_max, temperaturaestanque_max, oxigeno_max, ph_max, conductividad_max, amonionh3_max, amonionh4_max, nitrito_max, alcalinidad_max, temperaturaambiente_min, temperaturaestanque_min, oxigeno_min, ph_min, conductividad_min, amonionh3_min, amonionh4_min, nitrito_min, alcalinidad_min, usuariopadreid, descripcion) FROM stdin;
+19	28	25	7	6	4	3	3	4	4	9	10	8	7	6	5	4	2	4	85	oki
+20	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	0	85	oki
+21	28	25	7	6	4	3	3	4	4	9	10	8	7	6	5	4	2	4	85	hola
+22	18	18	18	7	15	\N	\N	\N	\N	18	18	18	4	7	\N	\N	\N	\N	85	NEIVA
+23	28	25	7	6	4	3	3	4	4	9	10	8	7	6	5	4	2	4	85	RANGO 1
+24	28	25	7	6	\N	\N	\N	\N	\N	9	10	8	7	\N	\N	\N	\N	\N	85	CONFIGURACIÓN AAA
+25	30	\N	\N	\N	\N	\N	\N	\N	\N	10	\N	\N	\N	\N	\N	\N	\N	\N	85	EJEMPLO 1
+26	28	25	7	6	4	3	3	4	4	9	10	8	7	6	5	4	2	4	85	Rango por defecto
+27	29	25	7	4	\N	\N	\N	\N	\N	10	15	4	8	\N	\N	\N	\N	\N	85	grupo 1
+\.
+
+
+--
+-- TOC entry 2284 (class 0 OID 73902)
+-- Dependencies: 213
+-- Data for Name: rango_plantilla; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rango_plantilla (id, temperaturaambiente_max, temperaturaestanque_max, oxigeno_max, ph_max, conductividad_max, amonionh3_max, amonionh4_max, nitrito_max, alcalinidad_max, temperaturaambiente_min, temperaturaestanque_min, oxigeno_min, ph_min, conductividad_min, amonionh3_min, amonionh4_min, nitrito_min, alcalinidad_min, estado) FROM stdin;
+1	28	25	7	6	4	3	3	4	4	9	10	8	7	6	5	4	2	4	t
+\.
+
+
+--
+-- TOC entry 2287 (class 0 OID 73937)
+-- Dependencies: 216
+-- Data for Name: rango_sensor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.rango_sensor (id, rango_id, sonda_id, fecha, usuario_id, usuariopadreid) FROM stdin;
+41	25	33	2021-03-09	88	85
+42	26	37	2021-03-17	88	85
+\.
+
+
+--
+-- TOC entry 2318 (class 0 OID 0)
+-- Dependencies: 214
+-- Name: rango_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.rango_seq', 27, true);
+
+
+--
+-- TOC entry 2319 (class 0 OID 0)
+-- Dependencies: 217
+-- Name: rangosensor_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.rangosensor_seq', 42, true);
+
+
+--
+-- TOC entry 2320 (class 0 OID 0)
+-- Dependencies: 189
+-- Name: restriccionid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.restriccionid_seq', 16, true);
+
+
+--
+-- TOC entry 2259 (class 0 OID 24605)
+-- Dependencies: 188
+-- Data for Name: restriccionperfil; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.restriccionperfil (restriccionid, campo, formulario, perfilid, accion, usuariocrea) FROM stdin;
+14	panelusuario	cuenta	2	hidden-hidden	86
+\.
+
+
+--
+-- TOC entry 2247 (class 0 OID 16412)
+-- Dependencies: 176
+-- Data for Name: sensor; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.sensor (sensordescripcion, sensorcodigo, usuarioid, sensorfechamantenimiento, sensorperiodicidadmantenimiento, sensorfechacreacion, usuarioidcrea, sensorid, sensornombre, sensorestado, marcaid, sensorfechaeliminacion, sensorfechaactualiza, usuarioidactualiza, usuarioidelimina, usuariopadreid) FROM stdin;
+	0001	88	2021-03-17	0	22:14:06.474-05	88	37	X100	t	19	\N	\N	\N	\N	85
+XXX	1	\N	2020-02-22	123	\N	85	21	XXX	\N	10	20:56:52.58-05	\N	\N	85	85
+XXX	2	\N	2020-02-23	124	\N	85	22	XXX	\N	10	20:56:57.862-05	\N	\N	85	85
+XXX	3	\N	2020-02-24	125	\N	85	23	XXX	\N	10	20:57:55.479-05	\N	\N	85	85
+XXX	4	\N	2020-02-22	123	\N	85	24	XXX	\N	10	20:58:00.109-05	\N	\N	85	85
+XXX	5	\N	2020-02-23	124	\N	85	25	XXX	\N	10	20:58:02.859-05	\N	\N	85	85
+XXX	6	\N	2020-02-24	125	\N	85	26	XXX	\N	10	20:58:05.391-05	\N	\N	85	85
+XXX	7	\N	2020-02-22	123	\N	85	27	XXX	\N	10	20:58:07.922-05	\N	\N	85	85
+Sensor todo terreno	56289	85	2020-05-31	20	17:22:47.804-05	85	33	Sensor  flash	t	10	\N	17:52:21.28-05	85	85	85
+XXX	12	\N	2020-02-24	125	\N	85	32	XXX	t	19	17:45:00.374-05	21:56:14.836-05	88	88	85
+XXX	10	\N	2020-02-22	123	\N	85	30	XXX	t	19	17:48:34.252-05	21:55:53.689-05	88	88	85
+XXX	9	\N	2020-02-24	125	\N	85	29	XXX	t	19	17:49:30.68-05	21:53:33.234-05	88	88	85
+XXX	8	\N	2020-02-23	124	\N	85	28	XXX	t	19	17:52:53.572-05	21:53:19.434-05	88	88	85
+	001	88	2020-08-16	0	21:51:08.157-05	88	35	ejemplo 1	f	19	17:55:43.747-05	21:51:17.133-05	88	88	85
+	001	88	2020-08-31	0	21:48:37.855-05	88	34	Sensor 1	t	19	17:55:47.49-05	\N	\N	88	85
+XXX	11	\N	2020-02-23	124	\N	85	31	XXX	\N	10	17:55:49.914-05	\N	\N	88	85
+\.
+
+
+--
+-- TOC entry 2321 (class 0 OID 0)
+-- Dependencies: 195
+-- Name: sensorid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.sensorid_seq', 37, true);
+
+
+--
+-- TOC entry 2251 (class 0 OID 16487)
+-- Dependencies: 180
+-- Data for Name: tipodocumento; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipodocumento (tipodocumentoid, tipodocumentonombre, tipodocumento, tipodocumentoestado) FROM stdin;
+2	NIT	N  	t
+1	Cédula	CC 	t
+3	Cédula de extranjeria	CE 	t
+4	Pasaporte	PAS	t
+5	Tarjeta de identidad	TI 	t
+\.
+
+
+--
+-- TOC entry 2322 (class 0 OID 0)
+-- Dependencies: 179
+-- Name: tipodocumentoid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipodocumentoid_seq', 5, true);
+
+
+--
+-- TOC entry 2323 (class 0 OID 0)
+-- Dependencies: 207
+-- Name: tipoid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipoid_seq', 3, true);
+
+
+--
+-- TOC entry 2280 (class 0 OID 65629)
+-- Dependencies: 209
+-- Data for Name: tipolago; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.tipolago (tipolagoid, tipolagonombre, tipolagodescripcion, tipolagomaterial, usuariopadreid, usuariocrea) FROM stdin;
+16	Plastico	material industrial	\N	\N	85
+1	Geomembrana	Material de plastico'	\N	\N	\N
+2	Tierra	Lago convencional	\N	\N	\N
+3	Jaulones	Seccion delimitada por una malla	\N	\N	\N
+\.
+
+
+--
+-- TOC entry 2324 (class 0 OID 0)
+-- Dependencies: 208
+-- Name: tipolagoid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.tipolagoid_seq', 55, true);
+
+
+--
+-- TOC entry 2253 (class 0 OID 16519)
+-- Dependencies: 182
+-- Data for Name: usuario; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.usuario (usuarioid, usuarionombre, usuariocontrasenia, usuariofechaexpira, personaid, perfilid, usuariofechacreacion, usuariofechaactualizacion, usuarioidcrea, usuariofechaeliminacion, usuarioidelimina, usuarioidactualiza, usuarioestado, usuariocambioclave, usuariopadreid, correo) FROM stdin;
+86	ADMIN	1	2020-12-31	115	3	\N	2020-02-23 22:14:56.928	\N	\N	\N	86	t	f	86	\N
+85	brayan.medina	1	2020-12-01	114	1	2020-02-23 19:01:32.891-05	2020-02-29 10:06:29.531	\N	\N	\N	85	t	f	85	\N
+89	Brayan.ejeplo	\N	\N	119	1	2020-08-16 18:31:33.918-05	\N	\N	\N	\N	\N	t	t	85	\N
+90	brayan.ejemplo	\N	\N	120	1	2020-08-16 18:33:44.363-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+91	brayan.ejemplos	\N	\N	121	1	2020-08-16 18:36:46.873-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+92	Alejandro.Medina	\N	\N	122	2	2020-08-16 18:55:01.689-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+93	Ana.Roa	\N	\N	123	2	2020-08-16 18:57:25.104-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+94	Juan.Medina	\N	\N	124	2	2020-08-16 18:59:19.718-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+95	Lorena.Medina	\N	\N	125	2	2020-08-16 19:15:33.905-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@hmail.com
+96	Juan.Cabrera	\N	\N	126	2	2020-08-16 19:18:50.068-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+97	Yeimi.Ferreira	\N	\N	127	2	2020-08-16 19:25:59.022-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+98	Camilo.TRujillo	1	\N	128	2	2020-08-16 19:26:49.473-05	2020-08-16 19:50:52.105	\N	\N	\N	98	t	f	85	brayanhhmmcc@gmail.com
+99	Herney.Medina	\N	\N	129	2	2020-08-16 19:59:16.53-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+100	AnaRoa	\N	\N	130	2	2020-08-16 20:01:14.044-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+101	Alejandra.Medina	\N	\N	131	1	2020-08-16 20:08:45.59-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+102	brayan.Medina	\N	\N	132	2	2020-08-16 20:16:41.607-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+103	brayan.medinac	\N	\N	133	2	2020-08-16 20:21:16.113-05	\N	\N	\N	\N	\N	t	t	85	brayanhhmmcc@gmail.com
+88	brayancardozo	1122	\N	116	2	2020-02-29 10:24:43.779-05	2020-09-13 22:24:40.974	\N	\N	\N	88	t	f	85	brahianspmc@hotmail.com
+\.
+
+
+--
+-- TOC entry 2325 (class 0 OID 0)
+-- Dependencies: 181
+-- Name: usuarioid_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.usuarioid_seq', 103, true);
+
+
+--
+-- TOC entry 2080 (class 2606 OID 16462)
+-- Name: Ciudad_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.ciudad
+    ADD CONSTRAINT "Ciudad_pkey" PRIMARY KEY (ciudadcodigo);
+
+
+--
+-- TOC entry 2067 (class 2606 OID 16460)
+-- Name: Cultivo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.cultivo
+    ADD CONSTRAINT "Cultivo_pkey" PRIMARY KEY (cultivoid);
+
+
+--
+-- TOC entry 2082 (class 2606 OID 16458)
+-- Name: EstadoFisicoQuimico_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.estadofisicoquimico
+    ADD CONSTRAINT "EstadoFisicoQuimico_pkey" PRIMARY KEY (estadofisicoquimicoid);
+
+
+--
+-- TOC entry 2069 (class 2606 OID 16456)
+-- Name: LagoSensor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.lagosensor
+    ADD CONSTRAINT "LagoSensor_pkey" PRIMARY KEY (lagosensorid);
+
+
+--
+-- TOC entry 2074 (class 2606 OID 16452)
+-- Name: Pez_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.pez
+    ADD CONSTRAINT "Pez_pkey" PRIMARY KEY (pezid);
+
+
+--
+-- TOC entry 2076 (class 2606 OID 16450)
+-- Name: Sensor_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.sensor
+    ADD CONSTRAINT "Sensor_pkey" PRIMARY KEY (sensorid);
+
+
+--
+-- TOC entry 2114 (class 2606 OID 65637)
+-- Name: TipoLago_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.tipolago
+    ADD CONSTRAINT "TipoLago_pkey" PRIMARY KEY (tipolagoid);
+
+
+--
+-- TOC entry 2112 (class 2606 OID 65615)
+-- Name: accion_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.accion
+    ADD CONSTRAINT accion_pkey PRIMARY KEY (accionid);
+
+
+--
+-- TOC entry 2106 (class 2606 OID 41003)
+-- Name: campograficaid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.campografica
+    ADD CONSTRAINT campograficaid_pkey PRIMARY KEY (campograficaid);
+
+
+--
+-- TOC entry 2108 (class 2606 OID 41014)
+-- Name: dashboardid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.dashboard
+    ADD CONSTRAINT dashboardid_pkey PRIMARY KEY (dashboardid);
+
+
+--
+-- TOC entry 2110 (class 2606 OID 65607)
+-- Name: formulario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.formulario
+    ADD CONSTRAINT formulario_pkey PRIMARY KEY (formularioid);
+
+
+--
+-- TOC entry 2116 (class 2606 OID 73857)
+-- Name: id; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.plantilla
+    ADD CONSTRAINT id PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2122 (class 2606 OID 73941)
+-- Name: id_pk; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.rango_sensor
+    ADD CONSTRAINT id_pk PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2102 (class 2606 OID 32775)
+-- Name: lagoid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.lago
+    ADD CONSTRAINT lagoid_pkey PRIMARY KEY (lagoid);
+
+
+--
+-- TOC entry 2072 (class 2606 OID 73989)
+-- Name: lagosensor_lagoid_sensorid_key; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.lagosensor
+    ADD CONSTRAINT lagosensor_lagoid_sensorid_key UNIQUE (lagoid, sensorid);
+
+
+--
+-- TOC entry 2104 (class 2606 OID 32792)
+-- Name: marcaid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.marca
+    ADD CONSTRAINT marcaid_pkey PRIMARY KEY (marcaid);
+
+
+--
+-- TOC entry 2095 (class 2606 OID 24601)
+-- Name: perfilid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.perfil
+    ADD CONSTRAINT perfilid_pkey PRIMARY KEY (perfilid);
+
+
+--
+-- TOC entry 2091 (class 2606 OID 16540)
+-- Name: personaid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.persona
+    ADD CONSTRAINT personaid_pkey PRIMARY KEY (personaid);
+
+
+--
+-- TOC entry 2093 (class 2606 OID 73836)
+-- Name: personanumerodocumento_uni; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.persona
+    ADD CONSTRAINT personanumerodocumento_uni UNIQUE (personanumerodocumento, usuariopadreid);
+
+
+--
+-- TOC entry 2118 (class 2606 OID 73872)
+-- Name: pk_id; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.prediccion
+    ADD CONSTRAINT pk_id PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2120 (class 2606 OID 73919)
+-- Name: pk_id_parametro; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.rango
+    ADD CONSTRAINT pk_id_parametro PRIMARY KEY (id);
+
+
+--
+-- TOC entry 2098 (class 2606 OID 24613)
+-- Name: restriccionid_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.restriccionperfil
+    ADD CONSTRAINT restriccionid_pkey PRIMARY KEY (restriccionid);
+
+
+--
+-- TOC entry 2124 (class 2606 OID 73963)
+-- Name: sensor_id_unique; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.rango_sensor
+    ADD CONSTRAINT sensor_id_unique UNIQUE (sonda_id, usuariopadreid);
+
+
+--
+-- TOC entry 2084 (class 2606 OID 16495)
+-- Name: tipodocumento_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.tipodocumento
+    ADD CONSTRAINT tipodocumento_pkey PRIMARY KEY (tipodocumentoid);
+
+
+--
+-- TOC entry 2086 (class 2606 OID 16527)
+-- Name: usuario_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.usuario
+    ADD CONSTRAINT usuario_pkey PRIMARY KEY (usuarioid);
+
+
+--
+-- TOC entry 2088 (class 2606 OID 65596)
+-- Name: usuarionombre_uni; Type: CONSTRAINT; Schema: public; Owner: postgres; Tablespace: 
+--
+
+ALTER TABLE ONLY public.usuario
+    ADD CONSTRAINT usuarionombre_uni UNIQUE (usuarionombre, usuariopadreid, usuarioidcrea);
+
+
+--
+-- TOC entry 2070 (class 1259 OID 73979)
+-- Name: fki_lago; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_lago ON public.lagosensor USING btree (lagoid);
+
+
+--
+-- TOC entry 2077 (class 1259 OID 32804)
+-- Name: fki_marcaid_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_marcaid_fkey ON public.sensor USING btree (marcaid);
+
+
+--
+-- TOC entry 2096 (class 1259 OID 24619)
+-- Name: fki_perfilid; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_perfilid ON public.restriccionperfil USING btree (perfilid);
+
+
+--
+-- TOC entry 2078 (class 1259 OID 32815)
+-- Name: fki_sensorusuarioid_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_sensorusuarioid_fkey ON public.sensor USING btree (usuarioid);
+
+
+--
+-- TOC entry 2089 (class 1259 OID 16541)
+-- Name: fki_tipoDocumentoID; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX "fki_tipoDocumentoID" ON public.persona USING btree (tipodocumentoid);
+
+
+--
+-- TOC entry 2099 (class 1259 OID 73985)
+-- Name: fki_tipolago; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_tipolago ON public.lago USING btree (tipolagoid);
+
+
+--
+-- TOC entry 2100 (class 1259 OID 32781)
+-- Name: fki_usuarioid_fkey; Type: INDEX; Schema: public; Owner: postgres; Tablespace: 
+--
+
+CREATE INDEX fki_usuarioid_fkey ON public.lago USING btree (usuarioid);
+
+
+--
+-- TOC entry 2132 (class 2606 OID 73920)
+-- Name: fk_rango_usuario; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rango
+    ADD CONSTRAINT fk_rango_usuario FOREIGN KEY (usuariopadreid) REFERENCES public.usuario(usuarioid);
+
+
+--
+-- TOC entry 2128 (class 2606 OID 24588)
+-- Name: fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.login
+    ADD CONSTRAINT fkey FOREIGN KEY (usuarioid) REFERENCES public.usuario(usuarioid);
+
+
+--
+-- TOC entry 2125 (class 2606 OID 73974)
+-- Name: lago; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lagosensor
+    ADD CONSTRAINT lago FOREIGN KEY (lagoid) REFERENCES public.lago(lagoid);
+
+
+--
+-- TOC entry 2126 (class 2606 OID 32799)
+-- Name: marcaid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sensor
+    ADD CONSTRAINT marcaid_fkey FOREIGN KEY (marcaid) REFERENCES public.marca(marcaid);
+
+
+--
+-- TOC entry 2129 (class 2606 OID 24614)
+-- Name: perfilid; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.restriccionperfil
+    ADD CONSTRAINT perfilid FOREIGN KEY (perfilid) REFERENCES public.perfil(perfilid);
+
+
+--
+-- TOC entry 2134 (class 2606 OID 73955)
+-- Name: rango_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rango_sensor
+    ADD CONSTRAINT rango_id_fk FOREIGN KEY (rango_id) REFERENCES public.rango(id);
+
+
+--
+-- TOC entry 2133 (class 2606 OID 73950)
+-- Name: sensor_id_fk; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.rango_sensor
+    ADD CONSTRAINT sensor_id_fk FOREIGN KEY (sonda_id) REFERENCES public.sensor(sensorid);
+
+
+--
+-- TOC entry 2127 (class 2606 OID 32810)
+-- Name: sensorusuarioid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.sensor
+    ADD CONSTRAINT sensorusuarioid_fkey FOREIGN KEY (usuarioid) REFERENCES public.usuario(usuarioid);
+
+
+--
+-- TOC entry 2131 (class 2606 OID 73980)
+-- Name: tipolago; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lago
+    ADD CONSTRAINT tipolago FOREIGN KEY (tipolagoid) REFERENCES public.tipolago(tipolagoid);
+
+
+--
+-- TOC entry 2130 (class 2606 OID 32776)
+-- Name: usuarioid_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.lago
+    ADD CONSTRAINT usuarioid_fkey FOREIGN KEY (usuarioid) REFERENCES public.usuario(usuarioid);
+
+
+--
+-- TOC entry 2297 (class 0 OID 0)
+-- Dependencies: 6
+-- Name: SCHEMA public; Type: ACL; Schema: -; Owner: postgres
+--
+
+REVOKE ALL ON SCHEMA public FROM PUBLIC;
+REVOKE ALL ON SCHEMA public FROM postgres;
+GRANT ALL ON SCHEMA public TO postgres;
+GRANT ALL ON SCHEMA public TO PUBLIC;
+
+
+--
+-- TOC entry 2303 (class 0 OID 0)
+-- Dependencies: 213
+-- Name: TABLE rango_plantilla; Type: ACL; Schema: public; Owner: postgres
+--
+
+REVOKE ALL ON TABLE public.rango_plantilla FROM PUBLIC;
+REVOKE ALL ON TABLE public.rango_plantilla FROM postgres;
+
+
+-- Completed on 2021-04-02 19:43:15
+
+--
+-- PostgreSQL database dump complete
+--
+
