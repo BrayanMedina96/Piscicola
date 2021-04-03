@@ -7,6 +7,12 @@ $(function () {
         cargarTreeWizard()
     })
 
+    $("#btnMapa").click(function () {
+
+        window.location.assign("../view/mapa.php")
+  
+     })
+
     function cargarTreeWizard() {
 
 

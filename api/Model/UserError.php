@@ -6,12 +6,14 @@ class UserError
 
     private $error_code=array(
                                "23505"=>"23505",
-                               "23503"=>"23503"
+                               "23503"=>"23503",
+                               "42601"=>"42601",
                              );
 
     private $error=array(
                         "23505"=>"Ya existe un registro con estas características.",
-                        "23503"=>"Está siendo usado en otro registro o tabla."
+                        "23503"=>"Está siendo usado en otro registro o tabla.",
+                        "42601"=>"Error de sintaxis en la sentencia.",
                                );
 
     public function getError($code, $message) {

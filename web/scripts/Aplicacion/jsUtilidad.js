@@ -278,3 +278,12 @@ function closeLoading() {
    $('#load').modal('hide');
 }
 
+
+function ubicacion(lista) {
+     
+     var ubi= lista.lagogeolocalizacion.split(";")
+     
+     return [parseFloat(ubi[0]), parseFloat(ubi[1])];
+
+}
+

@@ -83,7 +83,7 @@
     </div>
 
 
-    <div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal" id="modal" tabindex="-1"  style="overflow-y: scroll;" role="dialog">
     <div class="modal-dialog modal-lg" role="document">
       <div class="modal-content">
         <div class="modal-header">
@@ -95,6 +95,8 @@
         <div class="modal-body">
 
           <input class="form-control" id="myInput" type="" placeholder="Buscar en la tabla:">
+          <div class="table-responsive">
+ 
           <table id="Tabla" class="table table-bordered table-striped" style="display:none;">
             <thead>
               <tr>
@@ -118,6 +120,7 @@
               </tr>
             </tfoot>
           </table>
+          </div>
 
 
         </div>

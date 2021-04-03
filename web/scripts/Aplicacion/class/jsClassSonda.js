@@ -17,6 +17,7 @@ class Sonda {
     pecesmuertos;
     importarText;
     token;
+    sensorid;
 
     guardar() {
 
@@ -36,6 +37,7 @@ class Sonda {
             "&pecesmuertos=" + this.pecesmuertos +
             "&descripcion=" + this.descripcion +
             "&cultivo=" + this.cultivo +
+            "&sensorid=" + this.sensorid +
             "&token=" + this.token +
             "&do=";
 
@@ -60,9 +62,32 @@ class Sonda {
         
         var parametro = {
             entidad: this.entidad,
-            cultivo: this.cultivo,
+            sensorid: this.sensorid,
             token: this.token,
             do: "getParametros"
+        }
+
+        return consultarAjax('GET', parametro).responseJSON;
+    }
+
+    getSondaCultivo(){
+
+        var parametro = {
+            entidad: this.entidad,
+            cultivo: this.cultivo,
+            token: this.token,
+            do: "getSondaCultivo"
+        }
+
+        return consultarAjax('GET', parametro).responseJSON;
+    }
+
+    parametrosInfo() {
+        
+        var parametro = {
+            entidad: this.entidad,
+            token: this.token,
+            do: "getParametrosInfo"
         }
 
         return consultarAjax('GET', parametro).responseJSON;
@@ -88,6 +113,7 @@ class Sonda {
             "&descripcion=" + this.descripcion +
             "&cultivo=" + this.cultivo +
             "&token=" + this.token +
+            "&sensorid=" + this.sensorid +
             "&do=";
 
         return consultarAjax('PUT', parametro).responseJSON;

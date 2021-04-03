@@ -58,6 +58,11 @@
                             <select id="ddlCultivo" class="form-control" disabled="disabled"></select>
                         </div>
 
+                        <div class="form-group">
+                            <label for="ddlSondaM">Sonda</label>
+                            <select id="ddlSondaM" class="form-control" disabled="disabled" ></select>
+                        </div>
+
                         <div class="form-row">
                             <div class="col">
                                 <div class="form-group">
@@ -145,7 +150,12 @@
                             <select id="ddlCultivoLoad" class="form-control"></select>
                         </div>
                         <div class="form-group">
+                            <label for="ddlSondaLoad">Sonda</label>
+                            <select id="ddlSondaLoad" class="form-control" ></select>
+                        </div>
+                        <div class="form-group">
                             <button id="btnSeleccionar" class="btn btn-primary" type="button">Seleccionar</button>
+                            <button id="btnRango" class="btn btn-secondary d-none" type="button">Rango</button>
                         </div>
                     </div>
 
