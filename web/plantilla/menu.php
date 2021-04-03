@@ -56,9 +56,9 @@
             <a id="mConfiguracion" class="dropdown-item go mconfiguracion" go="../view/configuracion.php"
               href="#">Configuración (S-L)</a>
             <a id="mCultivo" class="dropdown-item go mcultivo" go="../view/cultivo.php" href="#">Mi Cultivo</a>
-            <a id="mSonda" class="dropdown-item go msonda" go="../view/sonda.php" href="#">Parámetros
-              fisico-quimicos</a>
-            <a id="mSonda" class="dropdown-item go msonda" go="../view/rango.php" href="#">Rangos fisico-quimicos</a>
+            <a id="mSonda" class="dropdown-item go msonda" go="../view/sonda.php" href="#">
+              Medición</a>
+            <a id="mSonda" class="dropdown-item go msonda" go="../view/rango.php" href="#">Rangos</a>
           </div>
         </li>
         <li class="nav-item active">
@@ -69,10 +69,11 @@
           <a id="mDashboard" class="nav-link go dashboard" go="../view/dashboard.php">Dashboard<span
               class="sr-only">(current)</span></a>
         </li>
+        <!--
         <li class="nav-item active">
           <a id="mPredecir" class="nav-link go predecir" go="../view/predecir.php">Predecir<span
               class="sr-only">(current)</span></a>
-        </li>
+        </li>-->
         <li class="nav-item active">
           <a id="mSeguridad" class="nav-link go seguridad" go="../view/seguridad.php">Seguridad<span
               class="sr-only">(current)</span></a>
@@ -133,6 +134,10 @@
   <div id="panelOpcion" class="btn-group-vertical">
     <button id="btnWizard" title="wizard" class="btn_card" type="button">
       <img style="width:20px" src="../svg/settings.png">
+    </button>
+
+    <button id="btnMapa" title="Mapa" class="btn_card" type="button">
+      <img style="width:20px" src="../svg/planet-earth.png">
     </button>
 
   </div>

@@ -62,6 +62,8 @@ class Ruta
            'Sonda_GET'=>'consultar',
            'Sonda_DELETE'=>'eliminar',
            'Sonda_GETgetParametros'=>'getParametros',
+           'Sonda_GETgetParametrosInfo'=>'getParametrosInfo',
+           'Sonda_GETgetSondaCultivo'=>'getSondaCultivo',
            'Dashboard_GETvariable'=>'variable',
            'Dashboard_POST'=>'guardar',
            'Dashboard_GET'=>'consultar',

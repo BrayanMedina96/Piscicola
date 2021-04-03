@@ -353,7 +353,7 @@
     </div>
 
 
-    <div class="modal" id="modal" tabindex="-1" role="dialog">
+    <div class="modal" id="modal" tabindex="-1"  style="overflow-y: scroll;" role="dialog">
         <div class="modal-dialog" style="max-width:1600px" role="document">
             <div class="modal-content">
                 <div class="modal-header">

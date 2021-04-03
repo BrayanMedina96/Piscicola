@@ -1,6 +1,9 @@
+var error=""
+
 $(function () {
 
     consultar();
+    
 
     $("#modalCultivo").click();
 
@@ -40,6 +43,12 @@ $(function () {
             return;
         }
 
+        if($("#ddlSonda").val()=="")
+        {
+            badge("#pnMensaje", "Debe seleccionar una sonda.", "danger");
+            return;
+        }
+
         UtlCargando();
 
         var obj = new Sonda();
@@ -57,6 +66,7 @@ $(function () {
         obj.alcalinidad = $("#txtAlcalinidad").val().trim();
         obj.descripcion = $("#txtObservacion").val().trim();
         obj.pecesmuertos = $("#txtPecesMuertos").val().trim();
+        obj.sensorid=$("#ddlSondaM").val()
         obj.token = $("#txtVarUrl").val().trim();
 
         if ($("#btnEnviar").text() == "Guardar") {
@@ -142,15 +152,20 @@ $(function () {
 
     $("#ddlCultivoLoad").change(function () {
 
+         $("#ddlSondaLoad").empty()
+         $("#ddlSondaM").empty()
+         
 
         if ($(this).val().toString() != "") {
             var obj = new Sonda();
             obj.cultivo = $(this).val()
             obj.token = $("#txtVarUrl").val();
-            var result = obj.parametros();
+            var result = obj.getSondaCultivo();
+
             if (result['estado']) {
-                cargarTree(result['data'][0])
-                configurarCampos(result['data'][0])
+            
+                   cargarSonda(result['data'])
+               
             }
 
             validarRespuesta(result)
@@ -159,9 +174,69 @@ $(function () {
 
     })
 
+    $("#ddlSondaLoad").change(function () {
+
+        
+       if ($(this).val().toString() != "") {
+           var obj = new Sonda();
+           obj.sensorid = $(this).val()
+           obj.token = $("#txtVarUrl").val();
+           var result = obj.parametros();
+
+           if (result['estado']) {
+
+               if (result['data'].length == 0) {
+                   error="Debe asociar un rango a esta sonda."
+                   badge("#pnMensaje",error, "warning");
+                   $("#btnRango").removeClass("d-none")
+                   
+               } else {
+                   error=""
+                   cargarTree(result['data'][0])
+                   configurarCampos(result['data'][0])
+               }
+
+
+           }
+
+           validarRespuesta(result)
+       }
+
+
+    })
+
+    $("#btnRango").click(function(){
+        $("#btnWizard").click()
+        $("[data-nodeid=5]").click()
+        $("#btnSonda").click()
+        $("#ddlSonda").val(    $("#ddlSondaLoad").val(  )   )  
+        $("#ddlSondaLoad").val("")
+    })
+
     $("#btnSeleccionar").click(function () {
 
-        $("#ddlCultivo").val($("#ddlCultivoLoad").val())
+        if(error!="")
+        {
+            badge("#pnMensaje",error, "warning");
+            return
+        }
+
+        if($("#ddlCultivoLoad").val()=="")
+        {
+            badge("#pnMensaje", "Debe seleccionar un cultivo.", "danger");
+            return;
+        }
+
+        if($("#ddlSondaLoad").val()=="")
+        {
+            badge("#pnMensaje", "Debe seleccionar una sonda.", "danger");
+            return;
+        }
+
+        $("#ddlCultivo").val( $("#ddlCultivoLoad").val() )
+
+        $("#ddlSondaM").val( $("#ddlSondaLoad").val() )
+
         $("#pnRegistro").removeClass("d-none")
         $("#pnSeleccion").addClass("d-none")
         $("#pnCambiar").removeClass("d-none")
@@ -233,49 +308,84 @@ $(function () {
             $("#pnTempAmbiente").addClass("d-none")
             $("#txtTempAmbiente").addClass("oculto").removeClass("limpiar")
 
+        }else{
+            $("#pnTempAmbiente").removeClass("d-none")
+            $("#txtTempAmbiente").removeClass("oculto").addClass("limpiar")
         }
+
         if (result.temperaturaestanque == null) {
             $("#pnTempEstanque").addClass("d-none")
             $("#txtTempEstanque").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnTempEstanque").removeClass("d-none")
+            $("#txtTempEstanque").removeClass("oculto").addClass("limpiar")
         }
 
         if (result.oxigeno == null) {
             $("#pnOxigeno").addClass("d-none")
             $("#txtOxigeno").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnOxigeno").removeClass("d-none")
+            $("#txtOxigeno").removeClass("oculto").addClass("limpiar")
         }
 
 
         if (result.ph == null) {
             $("#pnPH").addClass("d-none")
-            $("#txtPH").addClass("oculto").removeClass("limpiar")
+            $("#txtPh").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnPH").removeClass("d-none")
+            $("#txtPh").removeClass("oculto").addClass("limpiar")
         }
 
         if (result.conductividad == null) {
             $("#pnConductividad").addClass("d-none")
             $("#txtCondElectrica").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnConductividad").removeClass("d-none")
+            $("#txtCondElectrica").removeClass("oculto").addClass("limpiar")
         }
 
         if (result.amonionh3 == null) {
             $("#pnAmonioNH3").addClass("d-none")
             $("#txtAmonioNH3").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnAmonioNH3").removeClass("d-none")
+            $("#txtAmonioNH3").removeClass("oculto").addClass("limpiar")
         }
 
         if (result.amonionh4 == null) {
             $("#pnAmonioNH4").addClass("d-none")
             $("#txtAmonioNH4").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnAmonioNH4").removeClass("d-none")
+            $("#txtAmonioNH4").removeClass("oculto").addClass("limpiar")
         }
 
         if (result.nitrito == null) {
             $("#pnNitrito").addClass("d-none")
             $("#txtNitrito").addClass("oculto").removeClass("limpiar")
+        }else{
+            $("#pnNitrito").removeClass("d-none")
+            $("#txtNitrito").removeClass("oculto").addClass("limpiar")
         }
 
         if (result.alcalinidad == null) {
             $("#pnAlcalinidad").addClass("d-none")
             $("#txtAlcalinidad").addClass("oculto").removeClass("limpiar")
-
+        }else{
+            $("#pnAlcalinidad").removeClass("d-none")
+            $("#txtAlcalinidad").removeClass("oculto").addClass("limpiar")
         }
 
+
+    }
+
+    function cargarSonda(result)
+    {
+        var obj = new Cultivo();
+        obj.cargarddl("ddlSondaLoad", result, "sensorid", "sensornombre");
+        obj.cargarddl("ddlSondaM", result, "sensorid", "sensornombre");
 
     }
 
