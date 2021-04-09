@@ -25,16 +25,17 @@
       // include "../utilidad/base64.php";
        include "../utilidad/menu.php";
        include "../view/wizard.php";
+       include "../view/info.php";
    ?>
 
-  <nav id="menu" class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
+  <nav id="menu" style=" background: linear-gradient(0.25turn, orange, orange, #FFF86A5B);" class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
 
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
       aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
       <span class="navbar-toggler-icon"></span>
     </button>
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
+    <div  class="collapse navbar-collapse" id="navbarsExampleDefault">
       <ul class="navbar-nav mr-auto">
 
         <li id="home" class="nav-item active">
@@ -138,6 +139,10 @@
 
     <button id="btnMapa" title="Mapa" class="btn_card" type="button">
       <img style="width:20px" src="../svg/planet-earth.png">
+    </button>
+
+    <button id="btnQuestion" title="Mapa" class="btn_card" type="button">
+      <img style="width:20px" src="../svg/question.png">
     </button>
 
   </div>

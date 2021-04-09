@@ -70,6 +70,34 @@
         return  $return;
     }
 
+    public function enviarCorreo($parametro)
+    {
+        $return="";
+
+           $conn=Conexion::getInstance()->cnn();
+
+           $sqlCommand ="SELECT correo,password,setfrom,subject,body FROM plantilla 
+                        WHERE tipo='Solicitud' AND estado='TRUE'";
+           $statement  = $conn->prepare($sqlCommand);
+           $statement ->execute();
+           $result = $statement -> fetchAll();
+           if(count( $result)>0)
+           {
+              $data= $result[0];
+              $body=str_replace("@tipo",$parametro['tipo'],$data['body']); 
+              $body=str_replace("@usuario",$parametro['usuario'],$body); 
+              $body=str_replace("@nombre",$nombre,$body); 
+              $body=str_replace("@telefono",$telefono,$body); 
+              $body=str_replace("@correo",$correo,$body); 
+              $body=str_replace("@descripcion",$parametro['descripcion'],$body); 
+              $body=str_replace("@urlsolicitud",$urlsolicitud,$body); 
+              
+              $return=  $this->enviar($data['correo'],$data['password'],$data['setfrom'],$correo,$data['subject'],$body);
+           }
+   
+        return  $return;
+    }
+
  }
  
  

@@ -22,6 +22,8 @@ require "Model/TipoLago.php";
 require "Model/Cultivo.php";
 require "Model/Prediccion.php";
 require "Model/Rango.php";
+require "Model/SendEmail.php";
+
 
 class Piscicultura
 {

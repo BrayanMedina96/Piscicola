@@ -42,3 +42,24 @@
     height: 100%;
     min-width: 340px;
 }
+
+.cicular {
+    height: 40px;
+    width: 40px;
+    background: white;
+    border-radius: 50%;
+    border: 1px solid #1D9AF2;
+    border-top: 2px solid #fff;
+    animation: spinner1 600ms linear infinite;
+}
+
+@keyframes spinner1 {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+#pnCircular {
+    display: flex;
+    justify-content: center;
+}
