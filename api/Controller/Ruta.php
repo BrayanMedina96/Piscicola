@@ -99,6 +99,8 @@ class Ruta
            'Rango_PUT'=>'actualizar',
            'Rango_DELETE'=>'eliminar',
            'Rango_DELETEeliminarSondaRango'=>'eliminarSondaRango',
+           'SendEmail_POST'=>'enviar',
+           
            
         );
 

@@ -8,6 +8,8 @@
      <meta name="viewport" content="width=device-width, initial-scale=1">
      <link href="../content/bootstrap.min.css" rel="stylesheet" />
      <link href="../content/bootstrap.css" rel="stylesheet" />
+     <link href="../content/aqua.css" rel="stylesheet" />
+
      <script src="../scripts/jquery-3.3.1.min.js"></script>
      <script src="../scripts/popper.min.js"></script>
      <script src="../scripts/bootstrap.min.js"></script>
@@ -22,7 +24,7 @@
         ?>
 
 
-     <nav class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
+     <nav style=" background: linear-gradient(0.25turn, orange, orange, #FFF86A5B);" class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
           <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault"
                aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
                <span class="navbar-toggler-icon"></span>
@@ -80,8 +82,8 @@
                                    required="">
                          </div>
                          <div class="form-group registrar">
-                              <input type="text" id="txtNombreComercial" class="form-control" placeholder="Nombre Comercial"
-                                   required="">
+                              <input type="text" id="txtNombreComercial" class="form-control"
+                                   placeholder="Nombre Comercial" required="">
                          </div>
                          <div class="form-group">
                               <input type="text" id="txtUsuario" class="form-control login" placeholder="Usuario"
@@ -93,14 +95,16 @@
                                    placeholder="Contraseña" required="">
                               <div class="input-group-append">
                                    <span class="input-group-text">
-                                      <img id="btnOjo" src="../svg/ojo-cerrado.png" go="no" style="width:24px">
+                                        <img id="btnOjo" src="../svg/ojo-cerrado.png" go="no" style="width:24px">
                                    </span>
                               </div>
                          </div>
 
                          <div class="form-group">
                               <div class="progress">
-                                   <div id="pnSeguridad" class="progress-bar"> <lable id="lblSeguridad"></lable> </div>
+                                   <div id="pnSeguridad" class="progress-bar">
+                                        <lable id="lblSeguridad"></lable>
+                                   </div>
                               </div>
                          </div>
 
@@ -112,6 +116,11 @@
 
                          <button id="btnEnviar" class="btn btn-lg btn-primary btn-block" type="Submit">Inicia
                               sesión</button>
+
+                         <div id="pnCircular" style="display: none;" class="form-group">
+                              <button type="button" style="font-size:10px" class="cicular"></button>
+                         </div>
+
                          <button id="btnEnviar2" type="submit" hidden></button>
                          <label id="lblTiempo" class="btn btn-lg btn-secondary  btn-block" hidden>00:00</label>
 
@@ -126,7 +135,7 @@
                <input id="txtNombreUsuario" name="txtNombreUsuario" type="hidden" value="0">
                <input id="hdCambioPass" name="hdCambioPass" type="hidden" value="0">
 
-               
+
                <input id="txtIntento" type="hidden" value="1">
                <input id="txtUser" type="hidden" value="0">
 

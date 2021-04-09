@@ -93,4 +93,9 @@ $(function () {
         }
     }
 
+
+    $("#btnQuestion").click(function(){
+       $("#pnInfo").modal()
+    })
+
 })

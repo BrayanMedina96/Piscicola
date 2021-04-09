@@ -183,10 +183,16 @@ $(function () {
             return;
         }
 
+        $("#pnCircular").show();
+        $("#btnEnviar").hide();
+
         const obj = new usuario($("#txtUsuario").val(), $("#txtPassword").val());
       
         var resul = obj.login();
 
+        $("#pnCircular").hide();
+        $("#btnEnviar").show();
+        
 
         if(resul.responseJSON["cambioPass"])
         {
