@@ -259,16 +259,16 @@ class Sonda
             $statement ->bindValue(':fecharegistro',$parametro["fecharegistro"],PDO::PARAM_STR);
             $statement ->bindValue(':horaregistro',$parametro["horaregistro"],PDO::PARAM_STR);
 
-            $statement ->bindValue(':temperaturaambiente',$parametro["temperaturaambiente"]==""?NULL:$parametro["temperaturaambiente"],PDO::PARAM_INT);
-            $statement ->bindValue(':temperaturaestanque',$parametro['temperaturaestanque']==""?NULL:$parametro["temperaturaestanque"],PDO::PARAM_INT);
-            $statement ->bindValue(':oxigenodisuelto',$parametro["oxigenodisuelto"]==""?NULL:$parametro["oxigenodisuelto"],PDO::PARAM_INT);
-            $statement ->bindValue(':ph',$parametro["ph"]==""?NULL:$parametro["ph"],PDO::PARAM_INT);
-            $statement ->bindValue(':conductividadelectrica',$parametro["conductividadelectrica"]==""?NULL:$parametro["conductividadelectrica"],PDO::PARAM_INT);
-            $statement ->bindValue(':amonionh3',$parametro['amonionh3']==""?NULL:$parametro["amonionh3"],PDO::PARAM_INT);
-            $statement ->bindValue(':amonionh4',$parametro['amonionh4']==""?NULL:$parametro["amonionh4"],PDO::PARAM_INT);
-            $statement ->bindValue(':nitrito',$parametro['nitrito']==""?NULL:$parametro["nitrito"],PDO::PARAM_INT);
-            $statement ->bindValue(':alcalinidad',$parametro['alcalinidad']==""?NULL:$parametro["alcalinidad"],PDO::PARAM_INT);
-            $statement ->bindValue(':pecesmuertos',$parametro['pecesmuertos']==""?NULL:$parametro["pecesmuertos"],PDO::PARAM_INT);
+            $statement ->bindValue(':temperaturaambiente',$parametro["temperaturaambiente"]==""?0:$parametro["temperaturaambiente"],PDO::PARAM_INT);
+            $statement ->bindValue(':temperaturaestanque',$parametro['temperaturaestanque']==""?0:$parametro["temperaturaestanque"],PDO::PARAM_INT);
+            $statement ->bindValue(':oxigenodisuelto',$parametro["oxigenodisuelto"]==""?0:$parametro["oxigenodisuelto"],PDO::PARAM_INT);
+            $statement ->bindValue(':ph',$parametro["ph"]==""?0:$parametro["ph"],PDO::PARAM_INT);
+            $statement ->bindValue(':conductividadelectrica',$parametro["conductividadelectrica"]==""?0:$parametro["conductividadelectrica"],PDO::PARAM_INT);
+            $statement ->bindValue(':amonionh3',$parametro['amonionh3']==""?0:$parametro["amonionh3"],PDO::PARAM_INT);
+            $statement ->bindValue(':amonionh4',$parametro['amonionh4']==""?0:$parametro["amonionh4"],PDO::PARAM_INT);
+            $statement ->bindValue(':nitrito',$parametro['nitrito']==""?0:$parametro["nitrito"],PDO::PARAM_INT);
+            $statement ->bindValue(':alcalinidad',$parametro['alcalinidad']==""?0:$parametro["alcalinidad"],PDO::PARAM_INT);
+            $statement ->bindValue(':pecesmuertos',$parametro['pecesmuertos']==""?0:$parametro["pecesmuertos"],PDO::PARAM_INT);
             $statement ->bindValue(':descripcion',$parametro['descripcion'],PDO::PARAM_STR);
             $statement ->bindValue(':cultivoid',$parametro['cultivo'],PDO::PARAM_INT);
             $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);

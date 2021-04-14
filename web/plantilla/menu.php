@@ -17,6 +17,9 @@
 <script src="../scripts/Aplicacion/wizard.js"></script>
 <script src="../scripts/Aplicacion/jsLocalStorage.js"></script>
 
+<script src="../scripts/Aplicacion/class/jsCorreo.js"></script>
+<script src="../scripts/Aplicacion/jsInfo.js"></script>
+
 
 <form action="../plantilla/menu.php" method="get">
 
@@ -70,8 +73,8 @@
           <a id="mDashboard" class="nav-link go dashboard" go="../view/dashboard.php">Dashboard<span
               class="sr-only">(current)</span></a>
         </li>
-        <!--
-        <li class="nav-item active">
+        
+       <!-- <li class="nav-item active">
           <a id="mPredecir" class="nav-link go predecir" go="../view/predecir.php">Predecir<span
               class="sr-only">(current)</span></a>
         </li>-->
@@ -141,7 +144,7 @@
       <img style="width:20px" src="../svg/planet-earth.png">
     </button>
 
-    <button id="btnQuestion" title="Mapa" class="btn_card" type="button">
+    <button id="btnQuestion" title="Información" class="btn_card" type="button">
       <img style="width:20px" src="../svg/question.png">
     </button>
 

@@ -1,5 +1,6 @@
 <?php
 
+require "Config/Config.php";
 require "Model/UserError.php";
 require "Model/Base64.php";
 require "Model/Conexion.php";

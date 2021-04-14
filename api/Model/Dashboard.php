@@ -24,6 +24,8 @@ class Dashboard
 
     public function consultarSonda($parametro)
     {
+        $result=['estado'=>true,'mensaje'=>'','data'=>null,'prediccion'=>null];
+
         $fechaInicio=$parametro["fechaInicio"];
         $fechaFinal=$parametro["fechaFinal"];
 
@@ -35,33 +37,35 @@ class Dashboard
            $fechaFinal=$this->ultimoDiaMes();
            
         }
-/*
-        $objBase64 = new Base64($parametro["token"]);
 
-        $objUsuario = new Usuario();
-        $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
-*/
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand = "SELECT estadofisicoquimicoid, fecharegistro, oxigenodisuelto, ph, cultivoid, 
         horaregistro, temperaturaambiente, temperaturaestanque, conductividadelectrica, 
         amonionh3, amonionh4, nitrito, alcalinidad, descripcion, pecesmuertos, 
         usuarioid
-        FROM estadofisicoquimico WHERE usuariopadreid=:usuariopadreid AND  fecharegistro BETWEEN   :fechaInicio  AND  :fechaFinal  
-        ORDER BY fecharegistro ASC
-        ;";
+        FROM estadofisicoquimico 
+        WHERE lagoid=:lagoid
+        AND  fecharegistro BETWEEN :fechaInicio AND :fechaFinal  
+        ORDER BY fecharegistro ASC;";
+
 
         $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+        $statement ->bindValue(':lagoid',$parametro['lagoid'],PDO::PARAM_INT);
         $statement ->bindValue(':fechaInicio',$fechaInicio,PDO::PARAM_STR);
         $statement ->bindValue(':fechaFinal',$fechaFinal,PDO::PARAM_STR);
 
         $statement->execute();              
-        $resultado= $statement->fetchAll();
+        $result['data']= $statement->fetchAll();
 
+        $objPrediccion=new Prediccion();
+        $result['prediccion']=$objPrediccion->consultar($parametro, $result['data'])['data'];
+        
         Conexion::cerrar($conn);
 
-        return $resultado;
+        return  $result;
+
+
     }
 
     public function guardar($parametro)

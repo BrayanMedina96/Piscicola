@@ -9,6 +9,7 @@ class Dashboard {
     tipografica;
     fechaInicio;
     fechaFinal;
+    lagoid;
 
     guardar() {
 
@@ -60,6 +61,7 @@ class Dashboard {
             token: this.token,
             fechaInicio:this.fechaInicio,
             fechaFinal:this.fechaFinal,
+            lagoid:this.lagoid,
             do: "consultarSonda"
         }
 

@@ -1,7 +1,5 @@
 <?php
 
-include ("Config/Config.php");
-
 class Conexion 
 {
 
@@ -11,7 +9,6 @@ class Conexion
     private $user;
     private $dbname;
     private $password;
-
 
     public function __construct()
     {
