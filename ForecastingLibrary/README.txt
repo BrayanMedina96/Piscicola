@@ -1,0 +1,3 @@
+--- pip install pandas
+--- pip install xlrd
+--- pip install xlrd==1.2.0

@@ -18,6 +18,7 @@
     <script src='../scripts/Chart.js'></script>
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
     <script src='../scripts/Aplicacion/jsUtilidad.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassLago.js'></script>
     <script src='../scripts/Aplicacion/class/jsClassDashboard.js'></script>
     <script src='../scripts/Aplicacion/jsDashboard.js'></script>
 
@@ -39,6 +40,10 @@
                     </div>
                     <div class="card-body">
 
+                        <div class="form-group">
+                            <label for="ddlLago">Lago</label>
+                            <select id="ddlLago" class="form-control"></select>
+                        </div>
                         <div class="input-group mb-3">
 
                             <div class="input-group-append">
@@ -62,7 +67,7 @@
                         </div>
                         <div class="form-group">
 
-                            <a  id="btnBuscar" id="btnBuscar" type="button" class="btn btn-default">
+                            <a id="btnBuscar" id="btnBuscar" type="button" class="btn btn-default">
                                 <img src="../svg/lupa.png" width="30px">Consultar
                             </a>
 
@@ -107,7 +112,7 @@
                         <img width="24px" src="../svg/pen.png" /> Crear
                     </a>
 
-                    <div id="miCreacion" style="height:400px;overflow: auto;" >
+                    <div id="miCreacion" style="height:400px;overflow: auto;">
 
                     </div>
 

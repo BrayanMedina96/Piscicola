@@ -63,7 +63,7 @@
                   </div>
 
                   <div class="form-group">
-                    <button id="btnEnviarSolicitud" class="btn btn-primary" type="button">Guardar</button>
+                    <button id="btnEnviarSolicitud" class="btn btn-primary" type="button">Enviar</button>
                     <button id="btnLimpiarSolicitud" class="btn btn-secondary" type="button">Limpiar</button>
 
                   </div>
@@ -84,21 +84,8 @@
 
 
           </div>
-          <!-- <div class="col-md-3">
-            <div class="form-group">
-              <div class="card">
-                <div class="card-header"></div>
-                <div class="card-body">
-
-
-
-                </div>
-
-              </div>
-            </div>
-          </div>-->
+        
         </div>
-
 
       </div>
 

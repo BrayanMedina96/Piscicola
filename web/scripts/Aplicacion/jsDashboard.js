@@ -3,18 +3,20 @@ var myChart = null;
 $(function () {
 
     $("#txtImportar").val("0");
-  /*  n = new Date();
-    //Año
-    y = n.getFullYear();
-    //Mes
-    m = n.getMonth() + 1;
-    //Día
-    d = n.getDate();
-    fecha = y + "/" + m + "/" + d;
-    $("#txtFechaInicial").val(fecha);
-    $("#txtFechaFinal").val(fecha);
-*/
+  
     miDashboard();
+    lago();
+
+    function lago() {
+
+        var obj = new Lago();
+        obj.token = $("#txtVarUrl").val();
+        var result = obj.consultar()
+        if (result['estado']) {
+            obj.cargarddl("ddlLago", result['data']);
+        }
+
+    }
 
     $("#txtFechaInicial").datepicker({
         onSelect: function (fd, d, calendar) {
@@ -252,14 +254,40 @@ function grafica(params) {
     obj.token = $("#txtVarUrl").val();
     obj.fechaInicio=$("#txtFechaInicial").val();
     obj.fechaFinal=$("#txtFechaFinal").val();
+    obj.lagoid=$("#ddlLago").val();
    
     $("#txtGrafica").val(params);
 
-    preparar(obj.consultarSonda().responseJSON, $("#" + params).attr("go"), $("#" + params).attr("title"), params);
+    var result=obj.consultarSonda().responseJSON
+
+    if(result['estado'])
+    {
+        preparar(result, $("#" + params).attr("go"), $("#" + params).attr("title"), params);
+    }
+ 
+    validarRespuesta(result)
+
+
+
+
 }
 
 
-function preparar(response, campo, title, elemen) {
+function preparar(result, campo, title, elemen) {
+
+
+    var response=result['data']
+    var prediccion=result['prediccion']
+
+    if(response.length==0)
+    {
+        badge("#pnMensaje","El Lago no tiene mediciones registradas.", "warning");
+    }
+    if(prediccion==null)
+    {
+        badge("#pnMensaje","El Lago no tiene predicciones para este rango de fechas." , "warning");
+    }
+    
 
     var objGrafica = {
         "label": "",
@@ -285,8 +313,14 @@ function preparar(response, campo, title, elemen) {
         for (const key in response) {
             label.push(response[key][x[index]]);
         }
+        if(label.length==0){
+            for (const key in prediccion) {
+                label.push(prediccion[key][x[index]]);
+            }
+        }
     }
 
+    //DATA NORMAL
     var primera = true;
 
     for (let index = 0; index < y.length; index++) {
@@ -315,8 +349,47 @@ function preparar(response, campo, title, elemen) {
                 }
 
             }
-
+             
             objGrafica.data.push(response[key][y[index]]);
+
+        }
+ 
+        data.push(objGrafica);
+    }
+
+   
+    //PREDICCION 
+    primera = true;
+    for (let index = 0; index < y.length; index++) {
+        primera = true;
+
+        objGrafica = {
+            "label": "",
+            "data": Array(),
+            "borderColor": "",
+            "borderDash": [5, 5],
+            "backgroundColor": ""
+        };
+
+
+        for (const key in prediccion) {
+
+            if (primera) {
+                primera = false;
+                objGrafica.label = y[index];
+                if (tipoGrafica == "bar") //|| tipoGrafica=="doughnut" || tipoGrafica=="pie" || tipoGrafica=="polarArea"
+                {
+                    objGrafica.backgroundColor = color(Math.floor((Math.random() * 9) + 1)) //"rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; //  color(Math.floor((Math.random() * 9) + 1));
+                }
+                if (tipoGrafica == "line") //|| tipoGrafica=="radar"
+                {
+                    objGrafica.borderColor =  color( y[index] ); // "rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; // color(Math.floor((Math.random() * 9) + 1));
+                }
+
+            }
+        
+
+            objGrafica.data.push(prediccion[key][y[index]]);
 
         }
  
@@ -328,8 +401,8 @@ function preparar(response, campo, title, elemen) {
     }
 
 
-
     graficar(label, data, tipoGrafica, title);
+
     tabl(x,y,response,title);
     
     $("#txtImportar").val("1");
@@ -392,7 +465,6 @@ function graficar(label, dataSet, tipoGrafica, titulo) {
 function tabl(x,y,result,titulo) {
     
     
-
     var columna=[ {"data":x[1] } ];
 
     $("#tbEncabezado").html("");
@@ -473,3 +545,19 @@ function download(text, name, type) {
     a.href = URL.createObjectURL(file);
     a.download = name;
   }
+
+  function validarRespuesta(respuesta)
+{
+    if(respuesta['estado'])
+    {
+        if(respuesta['mensaje']!="")
+        {
+            badge("#pnMensaje", respuesta['mensaje'], "success");
+            $("#btnLimpiar").click();
+        }
+       
+    }else{
+        badge("#pnMensaje",respuesta['mensaje'], "danger");
+        console.log("ERROR:",respuesta)
+    }
+}

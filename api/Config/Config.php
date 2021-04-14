@@ -11,4 +11,6 @@ if (!defined('DATABASE')) define('DATABASE','piscicola');
 
 if (!defined('PORT')) define('PORT',5432);
 
+if (!defined('URL')) define('URL','http://localhost:8000/Piscicultura/web/view/home.php');
+
 ?>

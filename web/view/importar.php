@@ -88,10 +88,10 @@
                             <img width="24px" src="../svg/lake.png" /> Lago
                         </a>
                         <a id="btnSensor" go="Sensor" class="list-group-item list-group-item-action opcion">
-                            <img width="24px" src="../svg/sensor.png" /> Sensor
+                            <img width="24px" src="../svg/sensor.png" /> Sonda
                         </a>
                         <a id="btnSondeo" go="Sondeo" class="list-group-item list-group-item-action opcion">
-                            <img width="24px" src="../svg/variable-graphic.png" /> Sondeo
+                            <img width="24px" src="../svg/variable-graphic.png" /> Medición
                         </a>
                     </div>
 
