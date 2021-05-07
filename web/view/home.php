@@ -55,7 +55,7 @@
         <div class="col-md-4">
           <h2>PH</h2>
           <p>El pH del agua puede variar entr 0 y 14. Cuando el ph de una sustancia es mayor de 7, es una sustancia básica. Cuando el pH de una sustancia está por debajo de 7, es una sustancia ácida
-           </p><img class="img-rounded" width="100px" src="../svg/ph.png">
+           </p><img class="img-rounded" width="100px" src="../svg/imgph.png">
           
         </div>
         <div class="col-md-4">
