@@ -32,7 +32,6 @@ class Dashboard
         if($fechaInicio=="")
         {
 
-            
            $fechaInicio=$this->primerDiaMes();
            $fechaFinal=$this->ultimoDiaMes();
            
@@ -59,7 +58,7 @@ class Dashboard
         $result['data']= $statement->fetchAll();
 
         $objPrediccion=new Prediccion();
-        $result['prediccion']=$objPrediccion->consultar($parametro, $result['data'])['data'];
+        $result['prediccion']=$objPrediccion->consultar($parametro, $result['data'],$fechaInicio)['data'];
         
         Conexion::cerrar($conn);
 

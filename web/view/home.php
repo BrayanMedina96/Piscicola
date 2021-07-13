@@ -21,23 +21,28 @@
 
     <div class="jumbotron">
       <div class="container">
+
+         
+         <!--
         <h1 class="display-3">Bienvenido  </h1>
         <p>
+
+         
           <em>PISC.NET</em>  This is a template for a simple marketing or informational website. It includes a large callout called a
           jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.
-         
-       <!--  <img class="img-rounded" width="30px" src="../svg/pie-chart.png">
+        
+         <img class="img-rounded" width="30px" src="../svg/pie-chart.png">
          +
          <img class="img-rounded" width="30px" src="../svg/pescado.png">
          +
          <img class="img-rounded" width="30px" src="../svg/investigacion.png">
          +
          <img class="img-rounded" width="30px" src="../svg/ordenador.png">
-         =-->
+         =
          <img class="img-rounded" width="40px" src="../svg/idea.png">
 
          </p>
-
+             -->
         
       </div>
     </div>
