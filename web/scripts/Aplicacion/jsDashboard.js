@@ -310,14 +310,28 @@ function preparar(result, campo, title, elemen) {
 
     //PREPARA LABELS
     for (let index = 1; index < x.length; index++) {
-        for (const key in response) {
-            label.push(response[key][x[index]]);
-        }
-        if(label.length==0){
+
+        /*for (const key in response) {
+            var result=response[ parseInt(key) ][x[index]]; 
+            label.push( result );
+        }*/
+
+        
+            
+            
+                for (const key in prediccion) {
+                    label.push(prediccion[ parseInt(key) ][x[index]]);
+                }
+            
+            
+        
+
+        /*if(label.length==0){
             for (const key in prediccion) {
-                label.push(prediccion[key][x[index]]);
+                label.push(prediccion[ parseInt(key) ][x[index]]);
             }
-        }
+        }*/
+
     }
 
     //DATA NORMAL
@@ -389,7 +403,7 @@ function preparar(result, campo, title, elemen) {
             }
         
 
-            objGrafica.data.push(prediccion[key][y[index]]);
+            objGrafica.data.push(prediccion[ parseInt(key)  ][y[index]]);
 
         }
  

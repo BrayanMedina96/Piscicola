@@ -21,23 +21,28 @@
 
     <div class="jumbotron">
       <div class="container">
+
+         
+         <!--
         <h1 class="display-3">Bienvenido  </h1>
         <p>
+
+         
           <em>PISC.NET</em>  This is a template for a simple marketing or informational website. It includes a large callout called a
           jumbotron and three supporting pieces of content. Use it as a starting point to create something more unique.
-         
-       <!--  <img class="img-rounded" width="30px" src="../svg/pie-chart.png">
+        
+         <img class="img-rounded" width="30px" src="../svg/pie-chart.png">
          +
          <img class="img-rounded" width="30px" src="../svg/pescado.png">
          +
          <img class="img-rounded" width="30px" src="../svg/investigacion.png">
          +
          <img class="img-rounded" width="30px" src="../svg/ordenador.png">
-         =-->
+         =
          <img class="img-rounded" width="40px" src="../svg/idea.png">
 
          </p>
-
+             -->
         
       </div>
     </div>
@@ -55,7 +60,7 @@
         <div class="col-md-4">
           <h2>PH</h2>
           <p>El pH del agua puede variar entr 0 y 14. Cuando el ph de una sustancia es mayor de 7, es una sustancia básica. Cuando el pH de una sustancia está por debajo de 7, es una sustancia ácida
-           </p><img class="img-rounded" width="100px" src="../svg/ph.png">
+           </p><img class="img-rounded" width="100px" src="../svg/imgph.png">
           
         </div>
         <div class="col-md-4">

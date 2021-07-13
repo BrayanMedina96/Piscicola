@@ -3,14 +3,18 @@ import scipy.io
 import json
 from Forecasting import *
 import pandas as pd
+import psycopg2
 
+conexion = psycopg2.connect(host="localhost", database="piscicola", user="postgres", password="admin")
+cur = conexion.cursor()
+cur.execute( "SELECT horaregistro, temperaturaambiente, temperaturaestanque, oxigenodisuelto,ph, conductividadelectrica, amonionh3, amonionh4, nitrito, alcalinidad FROM temporal_data ")
+rows =cur.fetchall()
+result=[]
 
-df = pd.read_excel("C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/data.xlsx", sheet_name='Hoja1',  header=None)
-
-X1=np.array([df.iloc[0].values,
-df.iloc[1].values,
-df.iloc[2].values,
-df.iloc[3].values])
+for row in rows:
+        result.append(np.asarray(row))
+        
+X1=np.array(result)
 
 X_pred=predTotal(X1,15)
 data=[]

@@ -9,8 +9,8 @@
           require("../plantilla/menu.php");
      ?>
 
-    <script type="text/javascript" src="../Scripts/DataTable/datatables.min.js"></script>
-    <link rel="stylesheet" type="text/css" href="../Scripts/DataTable/datatables.min.css" />
+    <script type="text/javascript" src="../scripts/DataTable/datatables.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="../scripts/DataTable/datatables.min.css" />
 
 
     <script src="../scripts/Aplicacion/jsAjax.js"></script>
