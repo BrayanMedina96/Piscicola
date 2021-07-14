@@ -70,6 +70,18 @@ class Sonda {
         return consultarAjax('GET', parametro).responseJSON;
     }
 
+    parametrosLago() {
+        
+        var parametro = {
+            entidad: this.entidad,
+            cultivoid: this.sensorid,
+            token: this.token,
+            do: "getParametrosLago"
+        }
+
+        return consultarAjax('GET', parametro).responseJSON;
+    }
+
     getSondaCultivo(){
 
         var parametro = {

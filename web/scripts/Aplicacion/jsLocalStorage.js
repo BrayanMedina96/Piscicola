@@ -47,6 +47,11 @@ function b64_to_utf8(str) {
 
 function dataUser(data)
 {
+    var intro=existe("intro");
+    if(data.intro=="" && intro==null){
+        $("#btnWizard").click();
+        setData("intro","1")
+    }
 
    $("#txtUserPadre").val(data.userPadre)
    $("#txtPersonaidMenu").val(data.personaid)

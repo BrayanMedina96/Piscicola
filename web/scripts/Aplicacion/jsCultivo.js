@@ -123,6 +123,22 @@ $(function () {
 
     });
 
+    $("#btnAgregarLago").click(function(){
+
+        $("#pnVistaModal").modal({
+            backdrop: 'static'
+          });
+
+        $("#ifVistaModal").attr('src', `../view/lago.php?menu=1`).show();
+
+    })
+
+    $("#pnVistaModal").on('hidden.bs.modal', function () {
+        
+        lago();
+
+    });
+
     function lago() {
 
         var obj = new Lago();

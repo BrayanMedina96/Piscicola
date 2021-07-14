@@ -14,11 +14,13 @@ class Cultivo
             
              $sqlCommand = "SELECT cultivo.cultivoid, cultivo.pezid, cultivo.fechainicio, cultivo.fechafinalizacion, cultivo.usuarioidcrea, 
              cultivo.cantidadpezmuerto, cultivo.fechacreacion, cultivo.lagoid ,lago.lagonombre,pez.especiepez,
-             CONCAT('Lago: ',lago.lagonombre,' - Pez: ',pez.especiepez) AS nombre
+             CONCAT('Lago: ',lago.lagonombre,' - Pez: ',pez.especiepez) AS nombre,
+             rango_sensor.id AS rango
              FROM cultivo
              INNER JOIN lago ON cultivo.lagoid=lago.lagoid
              INNER JOIN pez ON cultivo.pezid=pez.pezid
-             WHERE cultivo.usuariopadreid=:usuariopadreid AND elimina IS  NULL;";
+             LEFT JOIN rango_sensor ON lago.lagoid=rango_sensor.lago_id
+             WHERE cultivo.usuariopadreid=:usuariopadreid AND cultivo.estado='TRUE' AND elimina IS  NULL;";
 
              $statement  = $conn->prepare($sqlCommand); 
              $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);

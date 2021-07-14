@@ -19,7 +19,7 @@
     <script src="../scripts/Aplicacion/jsPersonaUsuario.js"></script>
     <script src='../scripts/Aplicacion/class/jsClassSeguridad.js'></script>
     <script src='../scripts/Aplicacion/jsTipoDocumento.js'></script>
-    <script src="../scripts/Aplicacion/jsLogin.js"></script>
+    <script src="../scripts/Aplicacion/jsLoginUsuario.js"></script>
 
     <script src="../scripts/Aplicacion/jsCrearUsuario.js"></script>
 
@@ -47,16 +47,16 @@
                         </div>
 
                         <div class="form-group">
-                            <label for="txtNumeroDocumento">Numero de documento</label>
+                            <label for="txtNumeroDocumento">Número de documento</label>
                             <input type="text" id="txtNumeroDocumento" class="form-control"
-                                placeholder="Numero Documento" required="">
+                                placeholder="Número Documento" required="">
                         </div>
                         <div class="form-group">
-                            <label for="txtNombre">Nombre</label>
+                            <label for="txtNombre">Nombres</label>
                             <input type="text" id="txtNombre" class="form-control" placeholder="Nombre" required="">
                         </div>
                         <div class="form-group">
-                            <label for="txtApelldio">Apellido</label>
+                            <label for="txtApelldio">Apellidos</label>
                             <input type="text" id="txtApelldio" class="form-control" placeholder="Apellido" required="">
                         </div>
 

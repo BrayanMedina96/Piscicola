@@ -41,22 +41,30 @@
                     <div class="card-body">
                       
                         <div class="form-group">
-                            <label for="ddlLago">Lago</label>
+                          <label for="ddlLago">Lago</label>
+                          <div class="input-group mb-3">
                             <select id="ddlLago" class="form-control"></select>
+                            <div class="input-group-append">
+                              <span class="input-group-text btn-success" id="btnAgregarLago">
+                                <strong>+</strong>
+                              </span>
+                            </div>
+                          </div>
                         </div>
+
                         <div class="form-group">
                             <label for="ddlEspecie">Especie</label>
                             <select id="ddlEspecie" class="form-control"></select>
                         </div>
                         <div class="form-group">
-                            <label for="txtFechaInicio">Fecha inicio</label>
+                            <label for="txtFechaInicio">Fecha de inicio</label>
                             <input type="text"  id="txtFechaInicio" class="form-control limpiar">
                         </div>
                         <div class="form-group">
-                            <label for="txtFechaFinaliza">Fecha finalización</label>
+                            <label for="txtFechaFinaliza">Fecha de finalización</label>
                             <input type="text"  id="txtFechaFinaliza" class="form-control limpiar">
                         </div>
-
+                        
                         <div class="form-group">
                             <button id="btnEnviar" class="btn btn-primary"
                                 type="button">Guardar</button>

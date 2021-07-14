@@ -58,7 +58,7 @@
                             <select id="ddlCultivo" class="form-control" disabled="disabled"></select>
                         </div>
 
-                        <div class="form-group">
+                        <div class="form-group d-none">
                             <label for="ddlSondaM">Sonda</label>
                             <select id="ddlSondaM" class="form-control" disabled="disabled" ></select>
                         </div>
@@ -91,7 +91,7 @@
                         </div>
 
                         <div id="pnOxigeno" class="form-group">
-                            <label for="txtOxigeno">Oxigeno disuelto</label>
+                            <label for="txtOxigeno">Oxígeno disuelto</label>
                             <input type="number" class="form-control limpiar" id="txtOxigeno" >
                         </div>
 
@@ -101,7 +101,7 @@
                         </div>
 
                         <div id="pnConductividad" class="form-group">
-                            <label for="txtCondElectrica">Conductividad Electrica</label>
+                            <label for="txtCondElectrica">Conductividad eléctrica </label>
                             <input type="number" class="form-control limpiar" id="txtCondElectrica" >
                         </div>
 
@@ -149,13 +149,13 @@
                             <label for="ddlCultivoLoad">Cultivo</label>
                             <select id="ddlCultivoLoad" class="form-control"></select>
                         </div>
-                        <div class="form-group">
+                        <div style="display: none" class="form-group">
                             <label for="ddlSondaLoad">Sonda</label>
                             <select id="ddlSondaLoad" class="form-control" ></select>
                         </div>
                         <div class="form-group">
                             <button id="btnSeleccionar" class="btn btn-primary" type="button">Seleccionar</button>
-                            <button id="btnRango" class="btn btn-secondary d-none" type="button">Rango</button>
+                            <button id="btnRango" class="btn btn-info d-none" type="button">Asociar a un rango</button>
                         </div>
                     </div>
 
@@ -232,9 +232,9 @@
                                 <th>Hora</th>
                                 <th>T. Ambiente</th>
                                 <th>T. estanque</th>
-                                <th>Oxigeno</th>
+                                <th>Oxígeno</th>
                                 <th>PH</th>
-                                <th>C. Electrica</th>
+                                <th>C. Eléctrica </th>
                                 <th>NH3</th>
                                 <th>NH4</th>
                                 <th>Nitrito</th>

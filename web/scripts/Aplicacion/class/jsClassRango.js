@@ -104,6 +104,18 @@ class Rango {
 
     }
 
+    consultarLago() {
+
+        var parametro = {
+            entidad: this.entidad,
+            token: this.token,
+            do: "consultarLago"
+        }
+
+        return consultarAjax('GET', parametro).responseJSON;
+
+    }
+
     eliminar()
     {
         var parametro =
@@ -135,6 +147,18 @@ class Rango {
             "&sondaID=" + this.sondaID +
             "&token=" + this.token +
             "&do=rangoSensor";
+
+        return consultarAjax('POST', parametro).responseJSON;
+    }
+
+    rangoLago(){
+
+        var parametro =
+            "?entidad=" + this.entidad +
+            "&rangoID=" + this.id +
+            "&sondaID=" + this.sondaID +
+            "&token=" + this.token +
+            "&do=rangoLago";
 
         return consultarAjax('POST', parametro).responseJSON;
     }

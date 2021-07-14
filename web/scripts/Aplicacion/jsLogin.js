@@ -2,7 +2,7 @@ var totalTime;
 
 $(function () {
 
-    limpiarStorage()
+    limpiarStorage();
 
     $("#hdCambioPass").val("0");
 

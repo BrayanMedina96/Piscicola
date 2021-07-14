@@ -29,6 +29,7 @@
        include "../utilidad/menu.php";
        include "../view/wizard.php";
        include "../view/info.php";
+       include "../view/vistamodal.php";
    ?>
 
   <nav id="menu" style=" background: linear-gradient(0.25turn, orange, orange, #FFF86A5B);" class="navbar navbar-expand-md navbar-dark fixed-top bg-secondary">
@@ -55,7 +56,7 @@
             <a id="mUsuario" class="dropdown-item go musuario" go="../view/usuario.php">Usuario</a>
             <a id="mTipoLago" class="dropdown-item go mtipolago" go="../view/tipoLago.php" href="#">Tipos de lago</a>
             <a id="mLago" class="dropdown-item go mlago" go="../view/lago.php">Lago</a>
-            <a id="mMarca" class="dropdown-item go mmarca" go="../view/marca.php">Marcas de sonda</a>
+            <a id="mMarca" class="dropdown-item go mmarca d-none" go="../view/marca.php">Marcas de sonda</a>
             <a id="mSensor" class="dropdown-item go msensor" go="../view/sensor.php">Sonda</a>
             <a id="mConfiguracion" class="dropdown-item go mconfiguracion" go="../view/configuracion.php"
               href="#">Configuración (S-L)</a>
@@ -130,7 +131,6 @@
         <button id="btnGo" type="submit" hidden></button>
 
 
-
       </div>
     </div>
   </nav>
@@ -181,10 +181,10 @@
     }
 
     if (existe("user")) {
-      dataUser(getDataBase("user"))
+      dataUser(getDataBase("user"));
 
     } else {
-      $("#btnSalir").click()
+     // $("#btnSalir").click()
     }
 
   })
@@ -208,5 +208,7 @@
     $("#txtSalir").val("salir");
     $("#btnGo").click();
   });
+
+  $("#ifVistaModal").attr("height",screen.height/2);
 
 </script>

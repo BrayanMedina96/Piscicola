@@ -160,6 +160,21 @@ $(function () {
 
     });
 
+    $("#btnAgregarTipoLAgo").click(function(){
+       
+        $("#pnVistaModal").modal({
+            backdrop: 'static'
+          });
+        $("#ifVistaModal").attr('src', `../view/tipoLago.php?menu=1`).show();
+
+    });
+
+    $("#pnVistaModal").on('hidden.bs.modal', function () {
+        
+        material();
+
+    });
+
     function material() {
         var obj = new Material();
         obj.token = $("#txtVarUrl").val();

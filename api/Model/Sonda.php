@@ -138,6 +138,55 @@ class Sonda
  
     }
 
+    public function getParametrosLago($parametro)
+    {
+       
+        $result=['estado'=>true,'mensaje'=>'','data'=>null,'sonda'=>null];
+        $conn=Conexion::getInstance()->cnn();
+
+        try {
+
+
+                $sqlCommand = "SELECT lago.lagonombre,'' as sensornombre,rango.descripcion AS configuracion,tipolago.tipolagonombre,
+                cultivo.fechainicio,cultivo.fechafinalizacion,
+                
+                rango.temperaturaambiente_max+rango.temperaturaambiente_min AS temperaturaambiente,
+                rango.temperaturaestanque_max+rango.temperaturaestanque_min AS temperaturaestanque,
+                rango.oxigeno_max+rango.oxigeno_min AS oxigeno, 
+                rango.ph_max+rango.ph_min AS ph,
+                rango.conductividad_max+rango.conductividad_min AS conductividad,
+                rango.amonionh3_max+rango.amonionh3_min AS amonionh3, 
+                rango.amonionh4_max+rango.amonionh4_min AS amonionh4,
+                rango.nitrito_max+rango.nitrito_min AS nitrito, 
+                rango.alcalinidad_max+rango.alcalinidad_min AS alcalinidad 
+                    
+                FROM cultivo
+                INNER JOIN lago ON cultivo.lagoid=lago.lagoid
+                INNER JOIN rango_sensor ON lago.lagoid=rango_sensor.lago_id
+                INNER JOIN rango ON   rango_sensor.rango_id =rango.id
+                INNER JOIN tipolago ON  lago.tipolagoid= tipolago.tipolagoid
+                WHERE cultivo.cultivoid=:cultivoid";
+
+                $statement  = $conn->prepare($sqlCommand); 
+        
+                $statement ->bindValue(':cultivoid',$parametro["cultivoid"],PDO::PARAM_INT);
+
+                $statement->execute();              
+                $result['data']= $statement->fetchAll();
+
+            
+        }catch (PDOException  $Exception) {
+
+           $result['estado']=false;
+           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+       }
+       finally{
+          Conexion::cerrar($conn);
+       }
+
+        return $result;
+ 
+    }
     
 
     public function getSondaCultivo($parametro)
@@ -251,9 +300,9 @@ class Sonda
                 descripcion,
                 cultivoid,
                 usuarioid,
-                usuariopadreid,sensorid,lagoid) VALUES ( CAST(:fecharegistro AS Date), CAST(:horaregistro AS TIME),:temperaturaambiente,:temperaturaestanque
+                usuariopadreid,lagoid) VALUES ( CAST(:fecharegistro AS Date), CAST(:horaregistro AS TIME),:temperaturaambiente,:temperaturaestanque
                 ,:oxigenodisuelto,:ph,:conductividadelectrica,:amonionh3,:amonionh4,:nitrito,:alcalinidad,:pecesmuertos
-                ,:descripcion,:cultivoid,:usuarioid,:usuariopadreid,:sensorid,:lagoid )';
+                ,:descripcion,:cultivoid,:usuarioid,:usuariopadreid,:lagoid )'; 
     
             $statement  = $conn->prepare($sqlCommand);
             $statement ->bindValue(':fecharegistro',$parametro["fecharegistro"],PDO::PARAM_STR);
@@ -273,7 +322,7 @@ class Sonda
             $statement ->bindValue(':cultivoid',$parametro['cultivo'],PDO::PARAM_INT);
             $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
             $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-            $statement ->bindValue(':sensorid',$parametro['sensorid'],PDO::PARAM_INT);
+           // $statement ->bindValue(':sensorid',$parametro['sensorid'],PDO::PARAM_INT);
             $statement ->bindValue(':lagoid', $lagoId ,PDO::PARAM_INT);
             
             $statement ->execute();

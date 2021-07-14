@@ -103,6 +103,43 @@ class Rango
         return $result;
     }
 
+    public function consultarLago($parametro)
+    {
+       
+        $result=['estado'=>true,'mensaje'=>'','data'=>null];
+        $conn=Conexion::getInstance()->cnn();
+
+        try {
+            
+            $sqlCommand ="SELECT rango_sensor.id, lago.lagonombre as sensornombre , rango.temperaturaambiente_max, rango.temperaturaestanque_max, rango.oxigeno_max, 
+            rango.ph_max, rango.conductividad_max, rango.amonionh3_max, rango.amonionh4_max, rango.nitrito_max, 
+            rango.alcalinidad_max, rango.temperaturaambiente_min, rango.temperaturaestanque_min, 
+            rango.oxigeno_min, rango.ph_min, rango.conductividad_min, rango.amonionh3_min, rango.amonionh4_min, 
+            rango.nitrito_min, rango.alcalinidad_min, rango.descripcion FROM rango_sensor
+            INNER JOIN  rango ON  rango_sensor.rango_id=rango.id
+            INNER JOIN  lago ON  rango_sensor.lago_id= lago.lagoid
+            WHERE rango_sensor.usuariopadreid=:usuariopadreid";
+
+
+            $statement  = $conn->prepare($sqlCommand); 
+
+            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+
+            $statement->execute();              
+            $result['data']= $statement->fetchAll();
+
+        } catch (PDOException  $Exception) {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+        }finally{
+            Conexion::cerrar($conn);
+        }
+
+        return $result;
+
+    }
+    
+
     public function guardar($parametro)
     {
          
@@ -178,6 +215,48 @@ class Rango
             
             $sqlCommand ='INSERT INTO rango_sensor(
                           rango_id, sonda_id, fecha, usuario_id,usuariopadreid)
+                         VALUES (:rango_id,:sonda_id,NOW(),:usuario_id,:usuariopadreid);';
+    
+            $statement  = $conn->prepare($sqlCommand);
+
+            $statement ->bindValue(':rango_id',$parametro["rangoID"],PDO::PARAM_INT);
+            $statement ->bindValue(':sonda_id',$parametro["sondaID"],PDO::PARAM_STR);
+            
+            $statement ->bindValue(':usuario_id',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
+            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+            
+            $statement ->execute();
+    
+            
+        } catch (PDOException  $Exception) {
+
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+            
+        }catch(Exception $Exception)
+        {
+            $result['estado']=false;
+            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+            
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+        
+       return   $result;
+    }
+
+    public function rangoLago($parametro)
+    {
+        $result=['estado'=>true,'mensaje'=>'Registro guardado.','data'=>null];
+
+        $conn=Conexion::getInstance()->cnn();
+
+        try 
+        {
+            
+            $sqlCommand ='INSERT INTO rango_sensor(
+                          rango_id, lago_id, fecha, usuario_id,usuariopadreid)
                          VALUES (:rango_id,:sonda_id,NOW(),:usuario_id,:usuariopadreid);';
     
             $statement  = $conn->prepare($sqlCommand);
