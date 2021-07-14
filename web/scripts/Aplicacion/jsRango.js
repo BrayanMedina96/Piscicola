@@ -1,7 +1,31 @@
 $(function(){
 
-    $(":checkbox").prop("checked",true)
-    limpiar()
+    $(":checkbox").prop("checked",true);
+    limpiar();
+    loadRango();
+
+    $("#myInputSonda").on("keyup", function() 
+    {
+          var value = $(this).val().toLowerCase();
+
+          $("#tdResultado tr").filter(function() 
+           {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+
+           });
+    });
+
+    $("#myInputLago").on("keyup", function() 
+    {
+          var value = $(this).val().toLowerCase();
+
+          $("#tdResultadoLago tr").filter(function() 
+           {
+              $(this).toggle($(this).text().toLowerCase().indexOf(value) > -1);
+
+           });
+    });
+
 
     $("#btnRecomendado").click(function(){
         var obj = new Rango();
@@ -71,7 +95,23 @@ $(function(){
             $("#btnSonda").click()
         }
 
-        
+    })
+
+    $("#btnEnviarLagoRago").click(function(){
+
+        var obj = new Rango();
+        obj.id=$("#ddlRangoLago").val();
+        obj.sondaID=$("#ddlLago").val();
+        obj.token = $("#txtVarUrl").val();
+        var result=obj.rangoLago();
+
+        validarRespuesta(result);
+
+        if(result['estado'])
+        {
+            loadRangoLago();
+        }
+
     })
 
     $("#btnConfiguracion").click(function () {
@@ -343,6 +383,28 @@ $(function(){
 
     });
 
+    $('#TablaLago tbody').on('click', 'tr .eliminar', function () {
+
+        var table = $('#TablaLago').DataTable();
+        var data = table.row($(this).parents("tr")).data();
+        var si = confirm("Está seguro de eliminar el registro");
+        if (si) {
+
+            var obj = new Rango();
+            obj.id = data.id;
+            obj.token = $("#txtVarUrl").val();
+            var result=  obj.eliminarSondaRango();
+            if(result['estado'])
+            {
+                $(this).parents("tr").remove()
+            }
+         
+            validarRespuesta(result)
+
+        }
+
+    });
+
     function loadCheck(data)
     {
         if(data.temperaturaambiente_min==null && data.temperaturaambiente_max==null)
@@ -435,13 +497,23 @@ $(function(){
     })
 
     $("#btnSonda").click(function(){
-        $("#modalSonda").modal()
-        loadSensor()
-        loadRango()
+        $("#modalSonda").modal();
+        loadSensor();
+        //loadRango();
+    })
+
+    $("#btnLago").click(function(){
+        $("#modalLago").modal();
+         loadLago();
+         loadRangoLago();
     })
 
     $("#btnCerrarModalSonda").click(function(){
-        $("#modalSonda").modal("hide")
+        $("#modalSonda").modal("hide");
+    })
+
+    $("#btnCerrarModalLago").click(function(){
+        $("#modalLago").modal("hide");
     })
 
     function loadSensor()
@@ -464,8 +536,113 @@ $(function(){
          
         if(result['estado'])
         {
-            obj.cargarddl("ddlRango",result["data"])
+            obj.cargarddl("ddlRango",result["data"]);
+            obj.cargarddl("ddlRangoLago",result["data"]);
         }
+        
+    }
+
+    function loadLago()
+    {
+        var obj = new Lago();
+        obj.token = $("#txtVarUrl").val();
+        var result = obj.consultar()
+        if (result['estado']) {
+            obj.cargarddl("ddlLago", result['data']);
+        }
+
+        validarRespuesta(result)
+    }
+
+    function loadRangoLago()
+    {
+        var obj = new Rango();
+        obj.token = $("#txtVarUrl").val();
+        var result = obj.consultarLago();
+
+        validarRespuesta(result)
+
+        if(result['estado'])
+        {
+            
+            var columna = [{
+                "targets": -1,
+                "data": null,
+                "defaultContent": ""
+            },
+            {
+                "data":"sensornombre"
+            },
+            {
+                "data": "descripcion"
+            },
+            {
+                "data": "temperaturaambiente_min"
+            },
+            {
+                "data": "temperaturaambiente_max"
+            },
+            {
+                "data": "temperaturaestanque_min"
+            },
+            {
+                "data": "temperaturaestanque_max"
+            },
+            {
+                "data": "oxigeno_min"
+            },
+            {
+                "data": "oxigeno_max"
+            },
+            {
+                "data": "ph_min"
+            },
+            {
+                "data": "ph_max"
+            },
+            {
+                "data": "conductividad_min"
+            },
+            {
+                "data": "conductividad_max"
+            },
+            {
+                "data": "amonionh3_min"
+            },
+            {
+                "data": "amonionh3_max"
+            },
+            {
+                "data": "amonionh4_min"
+            },
+            {
+                "data": "amonionh4_max"
+            },
+            {
+                "data": "nitrito_min"
+            },
+            {
+                "data": "nitrito_max"
+            },
+            {
+                "data": "alcalinidad_min"
+            },
+            {
+                "data": "alcalinidad_max"
+            },
+            {
+                "targets": -1,
+                "data": null,
+                "defaultContent": "<img class='eliminar'  src='../svg/delete.png'></img>"
+            }
+        ]
+
+          tabla("TablaLago", result['data'], columna, "");
+            
+
+        }
+         
+        
         
     }
 

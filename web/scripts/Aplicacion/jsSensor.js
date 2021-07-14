@@ -21,7 +21,8 @@ $(function () {
 
         var obj = new Marca();
         obj.token=$("#txtVarUrl").val();
-        obj.cargarMarca("ddlMarca", obj.consultar()['data']);
+        obj.cargarMarca("ddlMarca", [{marcaid:"1",marcanombre:"UNICA"}] );
+        //obj.consultar()['data']
     }
 
     $("#btnEnviar").click(function () {

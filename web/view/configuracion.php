@@ -51,7 +51,7 @@
 
 
             <div class="form-group">
-              <label for="txtFechaInstala">Fecha instalacón</label>
+              <label for="txtFechaInstala">Fecha de instalación</label>
               <input type="text" class="form-control limpiar" id="txtFechaInstala">
             </div>
             <div class="form-group">

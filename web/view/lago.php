@@ -28,8 +28,6 @@
 <body class="bg-light">
 
 
-
-
   <hr>
   <div class="py-5 container">
     <div class="row">
@@ -77,10 +75,23 @@
               <label for="txtProfundidad">Profundidad <em>(cm)</em></label>
               <input type="number" class="form-control limpiar" id="txtProfundidad">
             </div>
-            <div class="form-group">
+           <!-- <div class="form-group">
               <label for="ddlTipoLago">Tipo</label>
               <select id="ddlTipoLago" class="form-control"></select>
+            </div>-->
+            <div class="form-group">
+              <label for="ddlTipoLago">Tipo</label>
+              <div class="input-group mb-3">
+                <select id="ddlTipoLago" class="form-control"></select>
+                <div class="input-group-append">
+                  <span class="input-group-text btn-success" id="btnAgregarTipoLAgo">
+                    <strong>+</strong>
+                  </span>
+                </div>
+              </div>
             </div>
+
+
             <div class="form-group">
               <button id="btnEnviar" class="btn btn-primary" type="button">Guardar</button>
               <button id="btnLimpiar" class="btn btn-secondary" type="button">Limpiar</button>

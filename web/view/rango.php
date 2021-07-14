@@ -19,6 +19,7 @@
     <script src='../scripts/Aplicacion/class/jsClassSensor.js'></script>
     <script src='../scripts/Aplicacion/class/jsClassRango.js'></script>
     <script src='../scripts/Aplicacion/jsRango.js'></script>
+    <script src='../scripts/Aplicacion/class/jsClassLago.js'></script>
 
 
 </head>
@@ -115,7 +116,7 @@
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
-                                <label for="txtOxigenoMin">Oxigeno disuelto mínima</label>
+                                <label for="txtOxigenoMin">Oxígeno disuelto mínima</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">
@@ -133,7 +134,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 apellido">
-                                <label for="txtOxigenoMax">Oxigeno disuelto máxima</label>
+                                <label for="txtOxigenoMax">Oxígeno disuelto máxima</label>
                                 <input type="number" class="form-control limpiar number required" id="txtOxigenoMax">
                             </div>
 
@@ -168,7 +169,7 @@
                         <div class="row">
 
                             <div class="col-md-6 mb-3">
-                                <label for="txtConductividadMin">Conductividad Electrica mínima</label>
+                                <label for="txtConductividadMin">Conductividad eléctrica  mínima</label>
                                 <div class="input-group">
                                     <div class="input-group-prepend">
                                         <span class="input-group-text">
@@ -187,7 +188,7 @@
                             </div>
 
                             <div class="col-md-6 mb-3 apellido">
-                                <label for="txtConductividadMax">Conductividad Electrica máxima</label>
+                                <label for="txtConductividadMax">Conductividad eléctrica  máxima</label>
                                 <input type="number" class="form-control limpiar number required"
                                     id="txtConductividadMax">
                             </div>
@@ -331,7 +332,15 @@
                 <div class="form-group">
                     <div class="list-group">
                         <a id="btnSonda" class="list-group-item list-group-item-action">
-                            <img width="18px" src="../svg/sensor.png" /> Sonda
+                            <img width="18px" src="../svg/sensor.png" /> Asociar a una sonda
+                        </a>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <div class="list-group">
+                        <a id="btnLago" class="list-group-item list-group-item-action">
+                            <img width="18px" src="../svg/lake.png" /> Asociar a un lago
                         </a>
                     </div>
                 </div>
@@ -375,11 +384,11 @@
 
                                     <th colspan="2" class="text-center">Temperatura estanque</th>
 
-                                    <th colspan="2" class="text-center">Oxigeno disuelto</th>
+                                    <th colspan="2" class="text-center">Oxígeno disuelto</th>
 
                                     <th colspan="2" class="text-center">PH</th>
 
-                                    <th colspan="2" class="text-center">C. Electrica</th>
+                                    <th colspan="2" class="text-center">C. Eléctrica </th>
 
                                     <th colspan="2" class="text-center">NH3</th>
 
@@ -500,11 +509,11 @@
 
                                     <th colspan="2" class="text-center">Temperatura estanque</th>
 
-                                    <th colspan="2" class="text-center">Oxigeno disuelto</th>
+                                    <th colspan="2" class="text-center">Oxígeno disuelto</th>
 
                                     <th colspan="2" class="text-center">PH</th>
 
-                                    <th colspan="2" class="text-center">C. Electrica</th>
+                                    <th colspan="2" class="text-center">C. Eléctrica </th>
 
                                     <th colspan="2" class="text-center">NH3</th>
 
@@ -551,6 +560,130 @@
                                 </tr>
                             </thead>
                             <tbody id="tdResultado"></tbody>
+                            <tfoot>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </tfoot>
+                        </table>
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="modal" id="modalLago" tabindex="-1" style="overflow-y: scroll;" role="dialog">
+        <div class="modal-dialog" style="max-width:1000px" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Lagos</h5>
+                    <button id="btnCerrarModalLago" type="button" class="close" data-dismiss="modalLago"
+                        aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+
+                    <div class="form-group">
+                        <label for="ddlLago">Lago</label>
+                        <select id="ddlLago" class="form-control" required="">
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="ddlRangoLago">Rango</label>
+                        <select id="ddlRangoLago" class="form-control" required="">
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+
+                        <button id="btnEnviarLagoRago" class="btn btn-primary" type="button">Guardar</button>
+
+                    </div>
+
+                    <input class="form-control" id="myInputLago" type="" placeholder="Buscar en la tabla:">
+                    <div class="table-responsive">
+                        <table id="TablaLago" class="table table-bordered table-striped" style="display:none;">
+                            <thead>
+                                <tr>
+                                    <th></th>
+                                    <th></th>
+                                    <th></th>
+                                    <th colspan="2" class="text-center">Temperatura ambiente</th>
+
+                                    <th colspan="2" class="text-center">Temperatura estanque</th>
+
+                                    <th colspan="2" class="text-center">Oxígeno disuelto</th>
+
+                                    <th colspan="2" class="text-center">PH</th>
+
+                                    <th colspan="2" class="text-center">C. Electrica</th>
+
+                                    <th colspan="2" class="text-center">NH3</th>
+
+                                    <th colspan="2" class="text-center">NH4</th>
+
+                                    <th colspan="2" class="text-center">Nitrito</th>
+
+                                    <th colspan="2" class="text-center">Alcalinidad</th>
+
+                                    <th></th>
+                                </tr>
+                                <tr>
+                                    <th></th>
+                                    <th>Lago</th>
+                                    <th>Rango</th>
+                                    <!--T. ambiente-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--T. estanque-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--Oxigeno disuelto-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--PH-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--C. Electrica-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--NH3-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--NH4-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--Nitrito-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <!--Alcalinidad-->
+                                    <th>Mínima</th>
+                                    <th>Máxima</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody id="tdResultadoLago"></tbody>
                             <tfoot>
                                 <tr>
                                     <th></th>

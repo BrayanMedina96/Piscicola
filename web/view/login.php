@@ -72,7 +72,7 @@
 
                          <div class="form-group registrar">
                               <input type="text" id="txtNumeroDocumento" class="form-control"
-                                   placeholder="Numero Documento" required="">
+                                   placeholder="Número Documento" required="">
                          </div>
                          <div class="form-group registrar">
                               <input type="text" id="txtNombre" class="form-control" placeholder="Nombre" required="">

@@ -92,7 +92,8 @@ class Usuario
                                      persona.perosnanombre,
                                      persona.personaapellido,
                                      persona.personatelefono,
-                                     usuario.correo
+                                     usuario.correo,
+                                     usuario.intro
                                     FROM public.usuario 
                                     INNER JOIN public.persona ON usuario.personaid=persona.personaid 
 
@@ -114,6 +115,8 @@ class Usuario
                 $token = Usuario::token();
                 Usuario::guardarToken($row["usuarioid"], $row["usuarionombre"], $token);
 
+                Usuario::setIntro($row["usuarioid"]);
+
                 $variable = '{"usuario":"'.$row['usuarionombre'].
                 '","token":"'.$token.
                 '","usuarioid":"'.$row['usuarioid'].
@@ -126,6 +129,7 @@ class Usuario
                 '","correo":"'.$row['correo'].
                 '","personatelefono":"'.$row['personatelefono'].
                 '","usuariocontrasenia":"'.$row['usuariocontrasenia'].
+                '","intro":"'.$row['intro'].
                 '","nombre":"'.$row['nombre'].'"}';
 
                 $estado=$row['usuarioestado'];
@@ -377,6 +381,31 @@ class Usuario
             $statement ->bindValue(':usuarioid',$usuarioid,PDO::PARAM_STR);
             $statement ->bindValue(':loginusuario',$usuario,PDO::PARAM_STR);
             $statement ->bindValue(':logintoken',$logintoken,PDO::PARAM_STR);
+            
+            $statement ->execute();
+    
+            
+        } catch (Exception $Exception) {
+            $result=$Exception->getMessage();
+        }
+        finally{
+            Conexion::cerrar($conn);
+        }
+
+        
+    }
+
+    private static function  setIntro($usuarioid)
+    {
+        $conn=Conexion::getInstance()->cnn();
+        
+        try 
+        {
+            
+            $sqlCommand ="UPDATE usuario SET intro='TRUE' WHERE usuarioid=:usuarioid;";
+    
+            $statement  = $conn->prepare($sqlCommand);
+            $statement ->bindValue(':usuarioid',$usuarioid,PDO::PARAM_STR);
             
             $statement ->execute();
     

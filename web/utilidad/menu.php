@@ -10,9 +10,15 @@
             
       }
 
-      if (isset($_GET['txtVarUrl']) != "") {
+      /*if (isset($_GET['txtVarUrl']) != "") {
 
             header('Location:'.$_GET['txtUrl'].'?MC='.$_GET['txtVarUrl']);
+            die();
+      }*/
+
+      if (isset($_GET['txtVarUrl']) != "") {
+
+            header('Location:'.$_GET['txtUrl']);
             die();
       }
 

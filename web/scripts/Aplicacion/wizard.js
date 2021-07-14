@@ -18,16 +18,20 @@ $(function () {
 
         var myTree = [{
             text: `Configuración`,
-            nodes: [{
+            nodes: [
+                {
+                    text: `Bienvenido`,
+                },
+                {
                     text: `Tipo Lago`,
                 },
                 {
                     text: `Lago`,
                 },
-                {
+                /*{
                     text: `Marcas de sondas`,
 
-                },
+                },*/
                 {
                     text: `Sonda`,
 
@@ -66,15 +70,18 @@ $(function () {
 
     function selectNode(key) {
         switch (key) {
+            case "Bienvenido":
+                $("#ifTipoLago").attr('src', `../view/bienvenido.php`).show();
+            break;
             case "Tipo Lago":
                 $("#ifTipoLago").attr('src', `../view/tipoLago.php?menu=1&${url}`).show();
                 break;
             case "Lago":
                 $("#ifTipoLago").attr('src', `../view/lago.php?menu=1&${url}`).show();
                 break;
-            case "Marcas de sondas":
+            /*case "Marcas de sondas":
                 $("#ifTipoLago").attr('src', `../view/marca.php?menu=1&${url}`).show();
-                break;
+                break;*/
             case "Sonda":
                 $("#ifTipoLago").attr('src', `../view/sensor.php?menu=1&${url}`).show();
                 break;

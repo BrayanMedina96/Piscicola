@@ -85,10 +85,11 @@ function badge(elem, mensaje, tipo) {
 
    $(elem).append(alert);
 
-   $("#badgeID").fadeOut(8000);
+   $("#badgeID").fadeOut(20000);
+
    setTimeout(function () {
       $("#badgeID").remove();
-   }, 5000 * 3);
+   }, 5000 * 5);
 
    /*var alert="";
    alert+="<span id='badgeID' class='badge badge-"+tipo+"'>"+mensaje+"</span>";

@@ -52,13 +52,13 @@
               <textarea type="text" class="form-control limpiar" id="txtDescripcion"></textarea>
             </div>
 
-            <div class="form-group">
+            <div class="form-group d-none">
               <label for="ddlMarca">Marca</label>
               <select id="ddlMarca" class="form-control limpiarddl"></select>
             </div>
 
             <div class="form-group">
-              <label for="txtFecha">Fecha mantenimiento</label>
+              <label for="txtFecha">Fecha de mantenimiento</label>
               <input type="text" class="form-control limpiar" id="txtFecha">
             </div>
             <div class="form-group">

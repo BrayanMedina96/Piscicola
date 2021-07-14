@@ -1,10 +1,12 @@
-var error=""
+var error="";
+var dataSourceCultivo=[];
+var rango=null;
+var tipoModal="";
 
 $(function () {
 
     consultar();
     
-
     $("#modalCultivo").click();
 
     $("#btnLimpiar").click();
@@ -88,7 +90,6 @@ $(function () {
 
     })
 
-
     $("#btnLimpiar").click(function () {
 
         $("#btnEnviar").addClass("btn-primary");
@@ -149,14 +150,32 @@ $(function () {
 
     });
 
-
     $("#ddlCultivoLoad").change(function () {
 
-         $("#ddlSondaLoad").empty()
-         $("#ddlSondaM").empty()
+         $("#ddlSondaLoad").empty();
+         $("#ddlSondaM").empty();
+         
+        var result= dataSourceCultivo.filter(b=>{
+             return ( b.cultivoid==$(this).val() )
+         });
+
+         if(result.length>0)
+         {
+            if(result[0].rango==null)
+            {
+                error="Debe asociar un rango.";
+                badge("#pnMensaje",error, "warning");
+                $("#btnRango").removeClass("d-none");
+                rango=null;
+                
+            }else{
+                error="";
+                rango=result[0].rango;
+            }
+         }
          
 
-        if ($(this).val().toString() != "") {
+        /*if ($(this).val().toString() != "") {
             var obj = new Sonda();
             obj.cultivo = $(this).val()
             obj.token = $("#txtVarUrl").val();
@@ -164,19 +183,18 @@ $(function () {
 
             if (result['estado']) {
             
-                   cargarSonda(result['data'])
+                  // cargarSonda(result['data'])
                
             }
 
             validarRespuesta(result)
-        }
+        }*/
 
 
     })
 
     $("#ddlSondaLoad").change(function () {
 
-        
        if ($(this).val().toString() != "") {
            var obj = new Sonda();
            obj.sensorid = $(this).val()
@@ -186,7 +204,7 @@ $(function () {
            if (result['estado']) {
 
                if (result['data'].length == 0) {
-                   error="Debe asociar un rango a esta sonda."
+                   error="Debe asociar un rango."
                    badge("#pnMensaje",error, "warning");
                    $("#btnRango").removeClass("d-none")
                    
@@ -201,13 +219,22 @@ $(function () {
 
            validarRespuesta(result)
        }
-
-
     })
 
     $("#btnRango").click(function(){
+
+        tipoModal="rango";
+        $("#pnVistaModal").modal({
+            backdrop: 'static'
+          });
+
+        $("#ifVistaModal").attr('src', `../view/rango.php?menu=1`).show();
+
+        /*
         $("#btnWizard").click()
         $("[data-nodeid=5]").click()
+        */
+
         $("#btnSonda").click()
         $("#ddlSonda").val(    $("#ddlSondaLoad").val(  )   )  
         $("#ddlSondaLoad").val("")
@@ -215,6 +242,7 @@ $(function () {
 
     $("#btnSeleccionar").click(function () {
 
+    
         if(error!="")
         {
             badge("#pnMensaje",error, "warning");
@@ -227,15 +255,17 @@ $(function () {
             return;
         }
 
-        if($("#ddlSondaLoad").val()=="")
+        cargarRangos( $("#ddlCultivoLoad").val() );
+
+        /*if($("#ddlSondaLoad").val()=="")
         {
             badge("#pnMensaje", "Debe seleccionar una sonda.", "danger");
             return;
-        }
+        }*/
 
         $("#ddlCultivo").val( $("#ddlCultivoLoad").val() )
 
-        $("#ddlSondaM").val( $("#ddlSondaLoad").val() )
+       // $("#ddlSondaM").val( $("#ddlSondaLoad").val() )
 
         $("#pnRegistro").removeClass("d-none")
         $("#pnSeleccion").addClass("d-none")
@@ -246,13 +276,40 @@ $(function () {
 
     $("#btnCambiar").click(function () {
 
-        $(".d-none").removeClass("d-none")
-        $(".oculto").addClass("limpiar").removeClass("oculto")
-        $("#pnRegistro").addClass("d-none")
-        $("#pnSeleccion").removeClass("d-none")
-        $("#pnCambiar").addClass("d-none")
+        $(".d-none").removeClass("d-none");
+        $(".oculto").addClass("limpiar").removeClass("oculto");
+        $("#pnRegistro").addClass("d-none");
+        $("#pnSeleccion").removeClass("d-none");
+        $("#pnCambiar").addClass("d-none");
+        $("#btnRango").addClass("d-none");
 
     })
+
+    function cargarRangos(id)
+    {
+        var obj = new Sonda();
+        obj.sensorid = id;
+        obj.token = $("#txtVarUrl").val();
+        var result = obj.parametrosLago();
+
+        if (result['estado']) {
+
+            if (result['data'].length == 0) {
+                error="Debe asociar un rango."
+                badge("#pnMensaje",error, "warning");
+                $("#btnRango").removeClass("d-none")
+                
+            } else {
+                error=""
+                cargarTree(result['data'][0])
+                configurarCampos(result['data'][0])
+            }
+
+
+        }
+
+        validarRespuesta(result)
+    }
 
     function cargarTree(result) {
 
@@ -267,7 +324,7 @@ $(function () {
                     }]
                 },
                 {
-                    text: `Configuración`,
+                    text: `Rango`,
                     nodes: [{
                         text: result.configuracion.toLowerCase(),
 
@@ -398,11 +455,39 @@ $(function () {
         if (result['estado']) {
             obj.cargarddl("ddlCultivo", result['data'], "cultivoid", "nombre");
             obj.cargarddl("ddlCultivoLoad", result['data'], "cultivoid", "nombre");
+            dataSourceCultivo=result['data'];
+        }
+
+        if(dataSourceCultivo.length==0)
+        {
+
+            $("#pnVistaModal").modal({
+                backdrop: 'static'
+              });
+
+            $("#ifVistaModal").attr('src', `../view/cultivo.php?menu=1`).show();
+
         }
 
         validarRespuesta(result)
 
     }
+
+    $("#pnVistaModal").on('hidden.bs.modal', function () {
+        
+        if(tipoModal=="rango")
+        {
+            var id=$("#ddlCultivoLoad").val();
+            consultar();
+            $(`#ddlCultivoLoad option[value='${id}']`).prop('selected',true);
+
+           $("#ddlCultivoLoad").change();
+            $("#btnSeleccionar").click();
+        }else{
+            consultar();
+        }
+    });
+
 
     function consultarRegistro() {
 
@@ -490,12 +575,5 @@ $(function () {
             console.log("ERROR:", respuesta)
         }
     }
-
-
-
-
-
-
-
 
 })
