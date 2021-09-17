@@ -488,14 +488,14 @@ class Sonda
                 pecesmuertos,
                 descripcion,
                 cultivoid,
-                usuarioid) VALUES '.$value;
+                usuarioid2) VALUES '.$value;
         
                 $statement  = $conn->prepare($sqlCommand);
                 $statement ->execute();
                     
 
         } catch (Exception $e) {
-            $result= ["data" => $e->getMessage() ] . $sqlCommand;
+            $result= ["data" => $e->getMessage() .$sqlCommand ];
         }
         finally{
             Conexion::cerrar($conn);
@@ -536,7 +536,7 @@ class Sonda
                 $one="";
             }
 
-            $value.= "  (". $text.",". $usuario .")  ".$one;
+            $value.= "  (". $text.", 17,". $usuario .")  ".$one;
         }
 
         return $value;

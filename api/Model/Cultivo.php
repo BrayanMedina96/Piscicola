@@ -69,7 +69,7 @@ class Cultivo
         }
 
        
-        return $resultado;
+        return $result;
 
     }
 

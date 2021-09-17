@@ -14,7 +14,9 @@ class Prediccion
 
             $conn=Conexion::getInstance()->cnn();
             $dataPrediccion=$this->getData($parametro,$fechaInicio);
+            $result['data']=$dataPrediccion;// $dataPrediccion;
 
+            /*
             if (count($dataPrediccion)>0) {
 
                 $result['data']= $dataPrediccion;
@@ -158,14 +160,14 @@ class Prediccion
                 }
 
 
-               // $sqlCommand = "DELETE FROM temporal_data WHERE id=:id;";
+                 $sqlCommand = "DELETE FROM temporal_data WHERE id=:id;";
                 $statement = $conn -> prepare($sqlCommand);
                 $statement -> bindValue(':id',$id, PDO::PARAM_INT);
                 $statement -> execute();
 
                 $result['data']=$this->getData($parametro,$fechaInicio);// json_decode($output)->data ;// $this->getData($parametro);
-                
-            }
+                */
+            
 
 
         }catch (PDOException  $Exception) {
@@ -197,12 +199,12 @@ class Prediccion
         prediccion.fecha AS fecharegistro,
         prediccion.lagoid
         FROM prediccion 
-        WHERE fecha_inicio = (SELECT fecha FROM prediccion WHERE fecha=CAST(:fecha_inicio AS DATE) limit 1) 
-        AND lagoid=:lagoid";
+       -- WHERE fecha_inicio = (SELECT fecha FROM prediccion WHERE fecha=CAST(:fecha_inicio AS DATE) limit 1) 
+       WHERE lagoid=43";
 
         $statement  = $conn->prepare($sqlCommand);
-        $statement ->bindValue(':lagoid',  $parametro['lagoid'] ,PDO::PARAM_STR);
-        $statement ->bindValue(':fecha_inicio', $fechaInicio ,PDO::PARAM_STR);
+       // $statement ->bindValue(':lagoid',  $parametro['lagoid'] ,PDO::PARAM_STR);
+      //  $statement ->bindValue(':fecha_inicio', $fechaInicio ,PDO::PARAM_STR);
         $statement->execute();   
         $resultado= $statement->fetchAll();
 
@@ -211,7 +213,4 @@ class Prediccion
         return $resultado;
     }
 
-}    
-
-
-?>
+}

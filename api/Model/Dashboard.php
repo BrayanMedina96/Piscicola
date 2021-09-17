@@ -58,7 +58,7 @@ class Dashboard
         $result['data']= $statement->fetchAll();
 
         $objPrediccion=new Prediccion();
-        $result['prediccion']=$objPrediccion->consultar($parametro, $result['data'],$fechaInicio)['data'];
+        $result['prediccion']= $objPrediccion->consultar($parametro, $result['data'],$fechaInicio)['data'];
         
         Conexion::cerrar($conn);
 
