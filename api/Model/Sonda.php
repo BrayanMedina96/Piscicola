@@ -6,32 +6,29 @@ class Sonda
 
     public function consultar($parametro)
     {
-       
-        $result=['estado'=>true,'mensaje'=>'','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
 
-            $fecha="";
-            $dia=[];
+            $fecha = "";
+            $dia = [];
 
-            if($parametro["fecharegistro"]!="")
-            {
-               $dia=explode("-", $parametro["fecharegistro"] );
+            if ($parametro["fecharegistro"] != "") {
+                $dia = explode("-", $parametro["fecharegistro"]);
 
-               if(count($dia)>1)
-               {
-                 $fecha=" AND fecharegistro BETWEEN :fechaInicial AND :fechaFinal ";
-                }else{
-                $fecha=" AND fecharegistro=:fecharegistro ";
-               }
-
+                if (count($dia) > 1) {
+                    $fecha = " AND fecharegistro BETWEEN :fechaInicial AND :fechaFinal ";
+                } else {
+                    $fecha = " AND fecharegistro=:fecharegistro ";
+                }
             }
 
-            $hora=$parametro["horaregistro"]==""?"": "AND horaregistro=CAST(:horaregistro AS TIME)";
+            $hora = $parametro["horaregistro"] == "" ? "" : "AND horaregistro=CAST(:horaregistro AS TIME)";
 
-        
+
             $sqlCommand = "SELECT estadofisicoquimico.estadofisicoquimicoid, estadofisicoquimico.fecharegistro,
             estadofisicoquimico.oxigenodisuelto, estadofisicoquimico.ph, estadofisicoquimico.cultivoid,
             CAST(estadofisicoquimico.horaregistro AS TIME) AS horaregistro, estadofisicoquimico.temperaturaambiente,
@@ -47,53 +44,46 @@ class Sonda
             WHERE estadofisicoquimico.usuariopadreid=:usuariopadreid AND estadofisicoquimico.cultivoid=:cultivoid  AND fechaelimina IS NULL  $fecha   $hora
            ORDER BY fecharegistro DESC , horaregistro DESC;";
 
-           $statement  = $conn->prepare($sqlCommand); 
-           $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-           $statement ->bindValue(':cultivoid',$parametro["cultivo"],PDO::PARAM_INT);
+            $statement  = $conn->prepare($sqlCommand);
+            $statement->bindValue(':usuariopadreid', $this->usuario[0]['usuariopadreid'], PDO::PARAM_INT);
+            $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
 
-          if($parametro["fecharegistro"]!="")
-         {
-            if(count($dia)>1)
-            {
-                $statement ->bindValue(':fechaInicial',$dia[0],PDO::PARAM_STR);
-                $statement ->bindValue(':fechaFinal',$dia[1],PDO::PARAM_STR);
-
-            }else{
-                $statement ->bindValue(':fecharegistro',$parametro["fecharegistro"],PDO::PARAM_STR);
+            if ($parametro["fecharegistro"] != "") {
+                if (count($dia) > 1) {
+                    $statement->bindValue(':fechaInicial', $dia[0], PDO::PARAM_STR);
+                    $statement->bindValue(':fechaFinal', $dia[1], PDO::PARAM_STR);
+                } else {
+                    $statement->bindValue(':fecharegistro', $parametro["fecharegistro"], PDO::PARAM_STR);
+                }
             }
-         }
-       
-        if($hora!="")
-        {
-            $statement ->bindValue(':horaregistro',$parametro["horaregistro"],PDO::PARAM_STR);
+
+            if ($hora != "") {
+                $statement->bindValue(':horaregistro', $parametro["horaregistro"], PDO::PARAM_STR);
+            }
+
+            $statement->execute();
+            $result['data'] = $statement->fetchAll();
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
         }
 
-        $statement->execute();              
-        $result['data']= $statement->fetchAll();
-
-    }catch (PDOException  $Exception) {
-
-        $result['estado']=false;
-        $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-    }
-    finally{
-       Conexion::cerrar($conn);
-    }
-
-     return $result;
-
+        return $result;
     }
 
     public function getParametros($parametro)
     {
-       
-        $result=['estado'=>true,'mensaje'=>'','data'=>null,'sonda'=>null];
-        $conn=Conexion::getInstance()->cnn();
+
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null, 'sonda' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
 
-                $sqlCommand = "SELECT lago.lagonombre, sensor.sensornombre,rango.descripcion AS configuracion,tipolago.tipolagonombre,
+            $sqlCommand = "SELECT lago.lagonombre, sensor.sensornombre,rango.descripcion AS configuracion,tipolago.tipolagonombre,
                 cultivo.fechainicio,cultivo.fechafinalizacion,
                 
                 rango.temperaturaambiente_max+rango.temperaturaambiente_min AS temperaturaambiente,
@@ -116,38 +106,34 @@ class Sonda
                 INNER JOIN tipolago ON  lago.tipolagoid= tipolago.tipolagoid
                 WHERE sensor.sensorid=:sensorid";
 
-                $statement  = $conn->prepare($sqlCommand); 
-        
-                $statement ->bindValue(':sensorid',$parametro["sensorid"],PDO::PARAM_INT);
+            $statement  = $conn->prepare($sqlCommand);
 
-    
-                $statement->execute();              
-                $result['data']= $statement->fetchAll();
+            $statement->bindValue(':sensorid', $parametro["sensorid"], PDO::PARAM_INT);
 
-            
-        }catch (PDOException  $Exception) {
 
-           $result['estado']=false;
-           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-       }
-       finally{
-          Conexion::cerrar($conn);
-       }
+            $statement->execute();
+            $result['data'] = $statement->fetchAll();
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
+        }
 
         return $result;
- 
     }
 
     public function getParametrosLago($parametro)
     {
-       
-        $result=['estado'=>true,'mensaje'=>'','data'=>null,'sonda'=>null];
-        $conn=Conexion::getInstance()->cnn();
+
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null, 'sonda' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
 
-                $sqlCommand = "SELECT lago.lagonombre,'' as sensornombre,rango.descripcion AS configuracion,tipolago.tipolagonombre,
+            $sqlCommand = "SELECT lago.lagonombre,'' as sensornombre,rango.descripcion AS configuracion,tipolago.tipolagonombre,
                 cultivo.fechainicio,cultivo.fechafinalizacion,
                 
                 rango.temperaturaambiente_max+rango.temperaturaambiente_min AS temperaturaambiente,
@@ -167,124 +153,170 @@ class Sonda
                 INNER JOIN tipolago ON  lago.tipolagoid= tipolago.tipolagoid
                 WHERE cultivo.cultivoid=:cultivoid";
 
-                $statement  = $conn->prepare($sqlCommand); 
-        
-                $statement ->bindValue(':cultivoid',$parametro["cultivoid"],PDO::PARAM_INT);
+            $statement  = $conn->prepare($sqlCommand);
 
-                $statement->execute();              
-                $result['data']= $statement->fetchAll();
+            $statement->bindValue(':cultivoid', $parametro["cultivoid"], PDO::PARAM_INT);
 
-            
-        }catch (PDOException  $Exception) {
+            $statement->execute();
+            $result['data'] = $statement->fetchAll();
+        } catch (PDOException  $Exception) {
 
-           $result['estado']=false;
-           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-       }
-       finally{
-          Conexion::cerrar($conn);
-       }
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
+        }
 
         return $result;
- 
     }
-    
+
 
     public function getSondaCultivo($parametro)
     {
 
-        $result=['estado'=>true,'mensaje'=>'','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
 
-                $sqlCommand = "SELECT sensor.sensornombre,sensor.sensorid FROM cultivo
+            $sqlCommand = "SELECT sensor.sensornombre,sensor.sensorid FROM cultivo
                 INNER JOIN lago ON cultivo.lagoid=lago.lagoid
                 INNER JOIN lagosensor ON lago.lagoid=lagosensor.lagoid
                 INNER JOIN sensor ON lagosensor.sensorid=sensor.sensorid
                 WHERE cultivo.cultivoid=:cultivoid";
 
-                $statement  = $conn->prepare($sqlCommand); 
-        
-                $statement ->bindValue(':cultivoid',$parametro["cultivo"],PDO::PARAM_INT);
+            $statement  = $conn->prepare($sqlCommand);
 
-    
-                $statement->execute();              
-                $result['data']= $statement->fetchAll();
+            $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
 
-        }catch (PDOException  $Exception) {
 
-           $result['estado']=false;
-           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-       }
-       finally{
-          Conexion::cerrar($conn);
-       }
+            $statement->execute();
+            $result['data'] = $statement->fetchAll();
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
+        }
 
         return $result;
-        
+    }
 
+
+    public function getVariable($parametro)
+    {
+
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
+
+        try {
+
+            $sqlCommand = "SELECT * FROM public.estadofisicoquimico WHERE cultivoid=:cultivoid
+                ORDER BY fecharegistro limit 1";
+
+            $statement  = $conn->prepare($sqlCommand);
+
+            $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
+
+
+            $statement->execute();
+            $result['data'] = $statement->fetchAll();
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
+        }
+
+        return $result;
+    }
+
+
+    public function getParametrosInfo2($parametro)
+    {
+        /*mensaje */
+        $mensaje = '';
+        $mensaje .= "<figure>
+         <center>
+             <img src='https://aqualog.southcentralus.cloudapp.azure.com/Aqua/web/svg/pez.png' alt='Red dot' width='100px'>
+         </center>
+        </figure>";
+        $mensaje .= "El Lago <strong>Granja experimental CORHUILA</strong> ; esta presetando variaciones en los rangos permisibles. <br> Los valores actuales de las variables fisicoquímicas son los siguientes :";
+        $mensaje .= "<br> <table style='width: 100%; border-collapse: collapse;border: 1px solid black;' class='table h5'>";
+        $mensaje .= "<tr style='background-color:#efebea;'> <td style='border: 1px solid black;font-size:18px;font-weight:bold;color:#fb932c;'>Variable</td>  <td style='border: 1px solid black;font-size:18px;font-weight:bold;color:#fb932c;'>Valor</td> </tr>";
+        $mensaje .= "<tr> <td style='border: 1px solid black;color: #210049;'>T.Amb</td>  <td style='border: 1px solid black;color: #210049;'>23 </td> </tr>";
+        $mensaje .= "<tr style='background-color:#efebea;'> <td style='border: 1px solid black;color: #210049;'>T.Est</td>  <td style='border: 1px solid black;color: #210049;'>25</td> </tr>";
+        $mensaje .= "<tr> <td style='border: 1px solid black;color: #210049;'>O.D</td>  <td style='border: 1px solid black;color: #210049;'>1</td> </tr>";
+        $mensaje .= "<tr style='background-color:#efebea;'> <td style='border: 1px solid black;color: #210049;'>pH</td>  <td style='border: 1px solid black;color: #210049;'>7.4</td> </tr>";
+        $mensaje .= "</table>";
+
+        $correo = new Correo();
+        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'brayanmedinacardozo@gmail.com', 'Alerta de variables', $mensaje);
+        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'af-nunezc@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'julian.quimbayo@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'alvaro.alarcon@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'ivan.alarcon@corhuila.edu.co', 'Alerta de variables', $mensaje);
     }
 
     public function getParametrosInfo($parametro)
     {
-       
-        $result=['estado'=>true,'mensaje'=>'','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
 
-               $sqlCommand = "SELECT *
+            $sqlCommand = "SELECT *
                FROM lago 
                LEFT JOIN cultivo ON lago.lagoid=cultivo.lagoid
                LEFT JOIN tipolago ON  lago.tipolagoid= tipolago.tipolagoid
                LEFT JOIN pez ON cultivo.pezid =  pez.pezid
                WHERE lago.usuariopadreid=:usuarioid";
 
-                $statement  = $conn->prepare($sqlCommand); 
-        
-                $statement ->bindValue(':usuarioid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+            $statement  = $conn->prepare($sqlCommand);
 
-                $statement->execute();   
-                $resultado=$statement->fetchAll();
-                $data=[];
+            $statement->bindValue(':usuarioid', $this->usuario[0]['usuariopadreid'], PDO::PARAM_INT);
 
-                foreach ($resultado as $row) 
-                {
-                     $parametro=[ 'cultivo'=>$row['cultivoid'] ];
-                     
-                     array_push( $data,['data'=>$row ,'sonda'=>$this->getSondaCultivo( $parametro) ] );
-                }
-                
-                
-                $result['data']= $data;  //$statement->fetchAll();
+            $statement->execute();
+            $resultado = $statement->fetchAll();
+            $data = [];
 
-        }catch (PDOException  $Exception) {
+            foreach ($resultado as $row) {
+                $parametro = ['cultivo' => $row['cultivoid']];
 
-           $result['estado']=false;
-           $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-       }
-       finally{
-          Conexion::cerrar($conn);
-       }
+                array_push($data, ['data' => $row, 'sonda' => $this->getSondaCultivo($parametro), 'variable' => $this->getVariable($parametro)]);
+            }
+
+
+            $result['data'] = $data;  //$statement->fetchAll();
+
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
+        }
 
         return $result;
- 
     }
 
-    
+
     public function guardar($parametro)
     {
-         
-        $result=['estado'=>true,'mensaje'=>'Registro guardado.','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+
+        $result = ['estado' => true, 'mensaje' => 'Registro guardado.', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
-            $lagoId= $this->getLago($parametro['sensorid'])['data'][0]['lagoid'];
-            
-            $sqlCommand ='INSERT INTO estadofisicoquimico(
+            $lagoId = $this->getLago($parametro['sensorid'])['data'][0]['lagoid'];
+
+            $sqlCommand = 'INSERT INTO estadofisicoquimico(
                 fecharegistro,
                 horaregistro,
                 temperaturaambiente,
@@ -302,109 +334,99 @@ class Sonda
                 usuarioid,
                 usuariopadreid,lagoid) VALUES ( CAST(:fecharegistro AS Date), CAST(:horaregistro AS TIME),:temperaturaambiente,:temperaturaestanque
                 ,:oxigenodisuelto,:ph,:conductividadelectrica,:amonionh3,:amonionh4,:nitrito,:alcalinidad,:pecesmuertos
-                ,:descripcion,:cultivoid,:usuarioid,:usuariopadreid,:lagoid )'; 
-    
+                ,:descripcion,:cultivoid,:usuarioid,:usuariopadreid,:lagoid )';
+
             $statement  = $conn->prepare($sqlCommand);
-            $statement ->bindValue(':fecharegistro',$parametro["fecharegistro"],PDO::PARAM_STR);
-            $statement ->bindValue(':horaregistro',$parametro["horaregistro"],PDO::PARAM_STR);
+            $statement->bindValue(':fecharegistro', $parametro["fecharegistro"], PDO::PARAM_STR);
+            $statement->bindValue(':horaregistro', $parametro["horaregistro"], PDO::PARAM_STR);
 
-            $statement ->bindValue(':temperaturaambiente',$parametro["temperaturaambiente"]==""?0:$parametro["temperaturaambiente"],PDO::PARAM_INT);
-            $statement ->bindValue(':temperaturaestanque',$parametro['temperaturaestanque']==""?0:$parametro["temperaturaestanque"],PDO::PARAM_INT);
-            $statement ->bindValue(':oxigenodisuelto',$parametro["oxigenodisuelto"]==""?0:$parametro["oxigenodisuelto"],PDO::PARAM_INT);
-            $statement ->bindValue(':ph',$parametro["ph"]==""?0:$parametro["ph"],PDO::PARAM_INT);
-            $statement ->bindValue(':conductividadelectrica',$parametro["conductividadelectrica"]==""?0:$parametro["conductividadelectrica"],PDO::PARAM_INT);
-            $statement ->bindValue(':amonionh3',$parametro['amonionh3']==""?0:$parametro["amonionh3"],PDO::PARAM_INT);
-            $statement ->bindValue(':amonionh4',$parametro['amonionh4']==""?0:$parametro["amonionh4"],PDO::PARAM_INT);
-            $statement ->bindValue(':nitrito',$parametro['nitrito']==""?0:$parametro["nitrito"],PDO::PARAM_INT);
-            $statement ->bindValue(':alcalinidad',$parametro['alcalinidad']==""?0:$parametro["alcalinidad"],PDO::PARAM_INT);
-            $statement ->bindValue(':pecesmuertos',$parametro['pecesmuertos']==""?0:$parametro["pecesmuertos"],PDO::PARAM_INT);
-            $statement ->bindValue(':descripcion',$parametro['descripcion'],PDO::PARAM_STR);
-            $statement ->bindValue(':cultivoid',$parametro['cultivo'],PDO::PARAM_INT);
-            $statement ->bindValue(':usuarioid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
-            $statement ->bindValue(':usuariopadreid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
-           // $statement ->bindValue(':sensorid',$parametro['sensorid'],PDO::PARAM_INT);
-            $statement ->bindValue(':lagoid', $lagoId ,PDO::PARAM_INT);
-            
-            $statement ->execute();
-    
-            
-        }catch (PDOException  $Exception) {
+            $statement->bindValue(':temperaturaambiente', $parametro["temperaturaambiente"] == "" ? 0 : $parametro["temperaturaambiente"], PDO::PARAM_INT);
+            $statement->bindValue(':temperaturaestanque', $parametro['temperaturaestanque'] == "" ? 0 : $parametro["temperaturaestanque"], PDO::PARAM_INT);
+            $statement->bindValue(':oxigenodisuelto', $parametro["oxigenodisuelto"] == "" ? 0 : $parametro["oxigenodisuelto"], PDO::PARAM_INT);
+            $statement->bindValue(':ph', $parametro["ph"] == "" ? 0 : $parametro["ph"], PDO::PARAM_INT);
+            $statement->bindValue(':conductividadelectrica', $parametro["conductividadelectrica"] == "" ? 0 : $parametro["conductividadelectrica"], PDO::PARAM_INT);
+            $statement->bindValue(':amonionh3', $parametro['amonionh3'] == "" ? 0 : $parametro["amonionh3"], PDO::PARAM_INT);
+            $statement->bindValue(':amonionh4', $parametro['amonionh4'] == "" ? 0 : $parametro["amonionh4"], PDO::PARAM_INT);
+            $statement->bindValue(':nitrito', $parametro['nitrito'] == "" ? 0 : $parametro["nitrito"], PDO::PARAM_INT);
+            $statement->bindValue(':alcalinidad', $parametro['alcalinidad'] == "" ? 0 : $parametro["alcalinidad"], PDO::PARAM_INT);
+            $statement->bindValue(':pecesmuertos', $parametro['pecesmuertos'] == "" ? 0 : $parametro["pecesmuertos"], PDO::PARAM_INT);
+            $statement->bindValue(':descripcion', $parametro['descripcion'], PDO::PARAM_STR);
+            $statement->bindValue(':cultivoid', $parametro['cultivo'], PDO::PARAM_INT);
+            $statement->bindValue(':usuarioid', $this->usuario[0]['usuarioid'], PDO::PARAM_INT);
+            $statement->bindValue(':usuariopadreid', $this->usuario[0]['usuariopadreid'], PDO::PARAM_INT);
+            // $statement ->bindValue(':sensorid',$parametro['sensorid'],PDO::PARAM_INT);
+            $statement->bindValue(':lagoid', $lagoId, PDO::PARAM_INT);
 
-            $result['estado']=false;
-            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
+            $statement->execute();
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
         }
-        finally{
-           Conexion::cerrar($conn);
-        }
- 
-         return $result;
 
+        return $result;
     }
 
     private function getLago($sensorid)
     {
-        $result=['estado'=>true,'mensaje'=>'','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+        $result = ['estado' => true, 'mensaje' => '', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
-            $sqlCommand ='select lagoid from lagosensor where sensorid=:sensorid' ;
-  
+            $sqlCommand = 'select lagoid from lagosensor where sensorid=:sensorid';
+
             $statement  = $conn->prepare($sqlCommand);
-            $statement ->bindValue(':sensorid',$sensorid,PDO::PARAM_INT);
-            $statement ->execute();
-            $result['data']= $statement->fetchAll();
-          
-          }catch (PDOException  $Exception) {
-  
-              $result['estado']=false;
-              $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-          }
-          finally{
+            $statement->bindValue(':sensorid', $sensorid, PDO::PARAM_INT);
+            $statement->execute();
+            $result['data'] = $statement->fetchAll();
+        } catch (PDOException  $Exception) {
+
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
             Conexion::cerrar($conn);
-          }
-  
-          return $result;
-        
+        }
+
+        return $result;
     }
 
     public function eliminar($parametro)
     {
 
-        $result=['estado'=>true,'mensaje'=>'Registro eliminado.','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+        $result = ['estado' => true, 'mensaje' => 'Registro eliminado.', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
 
-          $sqlCommand ='DELETE FROM estadofisicoquimico
-                      WHERE estadofisicoquimicoid=:estadofisicoquimicoid' ;
+            $sqlCommand = 'DELETE FROM estadofisicoquimico
+                      WHERE estadofisicoquimicoid=:estadofisicoquimicoid';
 
-          $statement  = $conn->prepare($sqlCommand);
-          $statement ->bindValue(':estadofisicoquimicoid',$parametro["id"],PDO::PARAM_INT);
-          $statement ->execute();
-        
-        }catch (PDOException  $Exception) {
+            $statement  = $conn->prepare($sqlCommand);
+            $statement->bindValue(':estadofisicoquimicoid', $parametro["id"], PDO::PARAM_INT);
+            $statement->execute();
+        } catch (PDOException  $Exception) {
 
-           $result['estado']=false;
-            $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-        }
-        finally{
-          Conexion::cerrar($conn);
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
         }
 
         return $result;
-
     }
 
     public function actualizar($parametro)
     {
 
-        $result=['estado'=>true,'mensaje'=>'Registro actualizado.','data'=>null];
-        $conn=Conexion::getInstance()->cnn();
+        $result = ['estado' => true, 'mensaje' => 'Registro actualizado.', 'data' => null];
+        $conn = Conexion::getInstance()->cnn();
 
         try {
-            
-            $sqlCommand ='UPDATE  estadofisicoquimico SET
+
+            $sqlCommand = 'UPDATE  estadofisicoquimico SET
                 fecharegistro=CAST(:fecharegistro AS DATE),
                 horaregistro=CAST(:horaregistro AS TIME),
                 temperaturaambiente=:temperaturaambiente,
@@ -422,56 +444,52 @@ class Sonda
                 usuarioactulizaid=:usuarioactulizaid,
                 fechaactualiza=NOW()
                 WHERE estadofisicoquimicoid=:estadofisicoquimicoid;';
-    
+
             $statement  = $conn->prepare($sqlCommand);
-            $statement ->bindValue(':fecharegistro',$parametro["fecharegistro"],PDO::PARAM_STR);
-            $statement ->bindValue(':horaregistro',$parametro["horaregistro"],PDO::PARAM_STR);
-            $statement ->bindValue(':temperaturaambiente',$parametro["temperaturaambiente"],PDO::PARAM_INT);
-            $statement ->bindValue(':temperaturaestanque',$parametro['temperaturaestanque'],PDO::PARAM_INT);
-            $statement ->bindValue(':oxigenodisuelto',$parametro["oxigenodisuelto"],PDO::PARAM_INT);
-            $statement ->bindValue(':ph',$parametro["ph"],PDO::PARAM_INT);
-            $statement ->bindValue(':conductividadelectrica',$parametro["conductividadelectrica"],PDO::PARAM_INT);
-            $statement ->bindValue(':amonionh3',$parametro['amonionh3'],PDO::PARAM_INT);
-            $statement ->bindValue(':amonionh4',$parametro['amonionh4'],PDO::PARAM_INT);
-            $statement ->bindValue(':nitrito',$parametro['nitrito'],PDO::PARAM_INT);
-            $statement ->bindValue(':alcalinidad',$parametro['alcalinidad'],PDO::PARAM_INT);
-            $statement ->bindValue(':pecesmuertos',$parametro['pecesmuertos'],PDO::PARAM_INT);
-            $statement ->bindValue(':descripcion',$parametro['descripcion'],PDO::PARAM_STR);
-            $statement ->bindValue(':cultivoid',$parametro['cultivo'],PDO::PARAM_INT);
-            $statement ->bindValue(':usuarioactulizaid',$this->usuario[0]['usuarioid'],PDO::PARAM_INT);
-            $statement ->bindValue(':estadofisicoquimicoid',$parametro['id'],PDO::PARAM_INT);
-            
-            $statement ->execute();
-    
-            
-        }catch (PDOException  $Exception) {
+            $statement->bindValue(':fecharegistro', $parametro["fecharegistro"], PDO::PARAM_STR);
+            $statement->bindValue(':horaregistro', $parametro["horaregistro"], PDO::PARAM_STR);
+            $statement->bindValue(':temperaturaambiente', $parametro["temperaturaambiente"], PDO::PARAM_INT);
+            $statement->bindValue(':temperaturaestanque', $parametro['temperaturaestanque'], PDO::PARAM_INT);
+            $statement->bindValue(':oxigenodisuelto', $parametro["oxigenodisuelto"], PDO::PARAM_INT);
+            $statement->bindValue(':ph', $parametro["ph"], PDO::PARAM_INT);
+            $statement->bindValue(':conductividadelectrica', $parametro["conductividadelectrica"], PDO::PARAM_INT);
+            $statement->bindValue(':amonionh3', $parametro['amonionh3'], PDO::PARAM_INT);
+            $statement->bindValue(':amonionh4', $parametro['amonionh4'], PDO::PARAM_INT);
+            $statement->bindValue(':nitrito', $parametro['nitrito'], PDO::PARAM_INT);
+            $statement->bindValue(':alcalinidad', $parametro['alcalinidad'], PDO::PARAM_INT);
+            $statement->bindValue(':pecesmuertos', $parametro['pecesmuertos'], PDO::PARAM_INT);
+            $statement->bindValue(':descripcion', $parametro['descripcion'], PDO::PARAM_STR);
+            $statement->bindValue(':cultivoid', $parametro['cultivo'], PDO::PARAM_INT);
+            $statement->bindValue(':usuarioactulizaid', $this->usuario[0]['usuarioid'], PDO::PARAM_INT);
+            $statement->bindValue(':estadofisicoquimicoid', $parametro['id'], PDO::PARAM_INT);
 
-            $result['estado']=false;
-             $result['mensaje']= UserError::getInstance()->getError($Exception->getCode(),$Exception->getMessage());
-         }
-         finally{
-           Conexion::cerrar($conn);
-         }
- 
-         return $result;
+            $statement->execute();
+        } catch (PDOException  $Exception) {
 
+            $result['estado'] = false;
+            $result['mensaje'] = UserError::getInstance()->getError($Exception->getCode(), $Exception->getMessage());
+        } finally {
+            Conexion::cerrar($conn);
+        }
+
+        return $result;
     }
 
 
     public function importar($parametro)
     {
         $result = true;
-        $conn=Conexion::getInstance()->cnn();
+        $conn = Conexion::getInstance()->cnn();
 
         try {
-            
-            $objBase64=new Base64($parametro["token"]);
-            
-            $objUsuario=new Usuario();
-            $resulUsuairio=$objUsuario->consultarUsuarioToken( $objBase64->decodeUsuario()["token"] );
-    
-            $obj=new Sonda();
-            $value=$obj->prepararDato( $parametro['importarText'],$resulUsuairio[0]['usuarioid'] );
+
+            $objBase64 = new Base64($parametro["token"]);
+
+            $objUsuario = new Usuario();
+            $resulUsuairio = $objUsuario->consultarUsuarioToken($objBase64->decodeUsuario()["token"]);
+
+            $obj = new Sonda();
+            $value = $obj->prepararDato($parametro['importarText'], $resulUsuairio[0]['usuarioid']);
 
             $sqlCommand = 'INSERT INTO estadofisicoquimico(
                 fecharegistro,
@@ -488,61 +506,49 @@ class Sonda
                 pecesmuertos,
                 descripcion,
                 cultivoid,
-                usuarioid2) VALUES '.$value;
-        
-                $statement  = $conn->prepare($sqlCommand);
-                $statement ->execute();
-                    
+                usuarioid2) VALUES ' . $value;
 
+            $statement  = $conn->prepare($sqlCommand);
+            $statement->execute();
         } catch (Exception $e) {
-            $result= ["data" => $e->getMessage() .$sqlCommand ];
-        }
-        finally{
+            $result = ["data" => $e->getMessage() . $sqlCommand];
+        } finally {
             Conexion::cerrar($conn);
         }
 
-      
+
         return $result;
     }
 
 
-     public function prepararDato($importarText,$usuario)
-     {
-        $datos = explode('|',$importarText);
-        $value="";
-        
-        for ($i = 0; $i < count($datos); $i++) 
-        {
+    public function prepararDato($importarText, $usuario)
+    {
+        $datos = explode('|', $importarText);
+        $value = "";
+
+        for ($i = 0; $i < count($datos); $i++) {
             $linea = explode(";", $datos[$i]);
             $text = "";
-            $primera="";
-            $one="";
+            $primera = "";
+            $one = "";
 
-            for ($j = 0; $j < count($linea); $j++) 
-            {
-                $text.= $primera."'".str_replace(",",".",$linea[$j])."'";
-                if($primera=="")
-                {
-                    $primera=",";
+            for ($j = 0; $j < count($linea); $j++) {
+                $text .= $primera . "'" . str_replace(",", ".", $linea[$j]) . "'";
+                if ($primera == "") {
+                    $primera = ",";
                 }
             }
-             
-            if($one=="")
-            {
-                $one=",";
+
+            if ($one == "") {
+                $one = ",";
             }
-            if($i==count($datos)-1)
-            {
-                $one="";
+            if ($i == count($datos) - 1) {
+                $one = "";
             }
 
-            $value.= "  (". $text.", 17,". $usuario .")  ".$one;
+            $value .= "  (" . $text . ", 17," . $usuario . ")  " . $one;
         }
 
         return $value;
-     }
-
-    
+    }
 }
-
-?>

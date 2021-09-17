@@ -106,6 +106,17 @@ class Sonda {
         return consultarAjax('GET', parametro).responseJSON;
     }
 
+    enviarCorreo() {
+        
+        var parametro = {
+            entidad: this.entidad,
+            token: this.token,
+            do: "getParametrosInfo2"
+        }
+
+        return consultarAjax('GET', parametro).responseJSON;
+    }
+
 
     actualizar() {
         var parametro =

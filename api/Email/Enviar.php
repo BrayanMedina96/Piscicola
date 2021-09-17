@@ -13,7 +13,7 @@
  {
     public function enviar($username,$password,$setfrom,$enviara,$subject,$body)
     {
-       var_dump([$username,$password,$setfrom,$enviara,$subject]);
+       
         $mail = new PHPMailer;
         $mail->isSMTP();
         
