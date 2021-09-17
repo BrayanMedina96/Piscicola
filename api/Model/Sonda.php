@@ -473,7 +473,7 @@ class Sonda
             $obj=new Sonda();
             $value=$obj->prepararDato( $parametro['importarText'],$resulUsuairio[0]['usuarioid'] );
 
-          echo  $sqlCommand = 'INSERT INTO estadofisicoquimico(
+            $sqlCommand = 'INSERT INTO estadofisicoquimico(
                 fecharegistro,
                 horaregistro,
                 temperaturaambiente,
@@ -495,7 +495,7 @@ class Sonda
                     
 
         } catch (Exception $e) {
-            $result= ["data" => $e->getMessage() ];
+            $result= ["data" => $e->getMessage() ] . $sqlCommand;
         }
         finally{
             Conexion::cerrar($conn);

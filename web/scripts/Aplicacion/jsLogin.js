@@ -118,7 +118,7 @@ $(function () {
         {
             var nombre=$("#txtNombre").val().split(" ");
             var apellido=$("#txtApelldio").val().split(" ");
-            $("#txtUsuario").val(nombre[0]+"."+apellido[0]);
+           // $("#txtUsuario").val(nombre[0]+"."+apellido[0]);
         }
        
     })

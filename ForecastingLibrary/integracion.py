@@ -5,7 +5,7 @@ from Forecasting import *
 import pandas as pd
 import psycopg2
 
-conexion = psycopg2.connect(host="localhost", database="postgres", user="aqua", password="aqua123*2021")
+conexion = psycopg2.connect(host="localhost", database="postgres", user="postgres", password="postgres")
 cur = conexion.cursor()
 cur.execute( "SELECT horaregistro, temperaturaambiente, temperaturaestanque, oxigenodisuelto,ph, conductividadelectrica, amonionh3, amonionh4, nitrito, alcalinidad FROM temporal_data ")
 rows =cur.fetchall()

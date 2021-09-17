@@ -56,6 +56,13 @@ function cargarPerfil()
 {
     var obj=new Seguridad();
     obj.token=$("#txtVarUrl").val();
-    obj.cargarddl("ddlPerfil",obj.consultarPerfil().responseJSON,"perfilid","perfilnombre" );
+    obj.funcion=getRespuesta;
+    obj.consultarPerfil();
+    
 }
 
+function getRespuesta(response)
+{
+    var obj=new Seguridad();
+    obj.cargarddl("ddlPerfil",response,"perfilid","perfilnombre" );
+}

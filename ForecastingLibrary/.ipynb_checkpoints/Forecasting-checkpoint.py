@@ -27,8 +27,8 @@ def predTempEst(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelTempEst.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler1.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelTempEst.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler1.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -48,8 +48,8 @@ def predOD(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelOD.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler4.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelOD.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler4.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -69,8 +69,8 @@ def predPH(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelPH.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler2.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelPH.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler2.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -90,8 +90,8 @@ def predCondElec(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelCondElec.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler1.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelCondElec.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler1.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -111,8 +111,8 @@ def predNH3(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelNH3.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler4.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelNH3.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler4.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -132,8 +132,8 @@ def predNH4(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelNH4.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler4.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelNH4.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler4.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -153,8 +153,8 @@ def predNit(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelNit.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler2.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelNit.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler2.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -174,8 +174,8 @@ def predAlk(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelAlk.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler3.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelAlk.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler3.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado
@@ -195,8 +195,8 @@ def predTempAmb(X):
         X_pred[0]=8
     X_pred=X_pred.reshape(-1,1).transpose()
     #Carga modelo de regresión y de estandarización
-    regressor = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelTempAmb.sav', 'rb'))
-    scaler = pickle.load(open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler4.sav','rb'))
+    regressor = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/modelTempAmb.sav', 'rb'))
+    scaler = pickle.load(open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler4.sav','rb'))
     #Predice la medición para la ventana especificada en parámetro v
     y_pred=regressor.predict(scaler.transform(X_pred))
     #Entrega resultado

@@ -114,7 +114,7 @@ class Prediccion
                 }
         
             
-                $command = 'python C:\Users\PCBRAYAN\Desktop\CORHUILA\ForecastingLibrary\integracion.py'; 
+                $command = 'py C:\laragon\www\Piscicola\ForecastingLibrary\integracion.py'; 
                 $output = Shell_exec($command);
                 $dia=0;
                 $contdor=0;
@@ -158,7 +158,7 @@ class Prediccion
                 }
 
 
-                $sqlCommand = "DELETE FROM temporal_data WHERE id=:id;";
+               // $sqlCommand = "DELETE FROM temporal_data WHERE id=:id;";
                 $statement = $conn -> prepare($sqlCommand);
                 $statement -> bindValue(':id',$id, PDO::PARAM_INT);
                 $statement -> execute();

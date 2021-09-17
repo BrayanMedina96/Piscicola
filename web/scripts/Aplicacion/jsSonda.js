@@ -70,15 +70,16 @@ $(function () {
         obj.pecesmuertos = $("#txtPecesMuertos").val().trim();
         obj.sensorid=$("#ddlSondaM").val()
         obj.token = $("#txtVarUrl").val().trim();
+        obj.funcion=validarRespuesta;
 
         if ($("#btnEnviar").text() == "Guardar") {
             var result = obj.guardar();
-            validarRespuesta(result)
+           // validarRespuesta(result)
 
         } else {
             obj.id = $("#txtID").val().trim();
             var result = obj.actualizar();
-            validarRespuesta(result)
+          //  validarRespuesta(result)
 
         }
     })

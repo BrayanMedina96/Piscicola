@@ -18,6 +18,7 @@ class Sonda {
     importarText;
     token;
     sensorid;
+    funcion=null;
 
     guardar() {
 
@@ -41,7 +42,7 @@ class Sonda {
             "&token=" + this.token +
             "&do=";
 
-        return consultarAjax('POST', parametro).responseJSON;
+        return functionAjax('POST', parametro,this.funcion);
 
     }
 

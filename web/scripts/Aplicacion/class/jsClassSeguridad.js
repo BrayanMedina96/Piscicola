@@ -9,6 +9,8 @@ class Seguridad {
     perfilid;
     accion;
     id;
+    funcion;
+    
 
     consultar() {
 
@@ -73,7 +75,7 @@ class Seguridad {
             do:"getPerfil"
          }
         
-          return consultarAjax('GET',parametro) ;
+          return functionAjax('GET',parametro,this.funcion) ;
     }
 
     consultarFormulario()

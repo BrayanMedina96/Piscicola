@@ -154,8 +154,8 @@ $(function () {
         $("#btnEnviar").attr("class", "btn btn-primary");
 
         $(".was-validated").removeClass('was-validated');
-        $(":text").removeAttr('required');
-        $(":text").val('');
+        $(".limpiar").removeAttr('required');
+        $(".limpiar").val(' ');
 
 
     });

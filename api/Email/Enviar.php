@@ -13,11 +13,12 @@
  {
     public function enviar($username,$password,$setfrom,$enviara,$subject,$body)
     {
+       var_dump([$username,$password,$setfrom,$enviara,$subject]);
         $mail = new PHPMailer;
         $mail->isSMTP();
         
         $mail->Host ='smtp.gmail.com';
-        $mail->Port = 587;
+        $mail->Port =587;//465;// 587;
        
         $mail->SMTPAuth = true;
         $mail->isHTML(true);

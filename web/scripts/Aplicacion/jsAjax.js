@@ -30,3 +30,33 @@ function consultarAjax(tipo, parametro) {
     });
 
 }
+
+
+
+function functionAjax(tipo, parametro, funcion) {
+    var dat = "";
+    if (tipo == "POST" || tipo == "PUT" || tipo == "DELETE") {
+        dat = parametro;
+    }
+
+    $.ajax({
+        type: tipo,
+        url: sw + "/" + proyecto + "/" + api + "/" + dat,
+        data: parametro,
+        contentType: "application/json; charset=utf-8",
+        dataType: 'json',
+        async: true,
+        beforeSend: function () {
+            $('#load').modal();
+        },
+        complete: function () {
+            $('#load').modal('hide');
+        },
+        success: funcion,
+        failure: function (response) {
+            funcion(response);
+        }
+
+    });
+
+}

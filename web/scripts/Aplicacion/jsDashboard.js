@@ -3,7 +3,7 @@ var myChart = null;
 $(function () {
 
     $("#txtImportar").val("0");
-  
+
     miDashboard();
     lago();
 
@@ -24,7 +24,7 @@ $(function () {
         }
     })
 
-    
+
     $("#txtFechaFinal").datepicker({
         onSelect: function (fd, d, calendar) {
             calendar.hide()
@@ -112,11 +112,11 @@ $(function () {
     })
 
     $("#btnBuscar").click(function () {
-        
+
 
         grafica($("#txtGrafica").val());
-     
-        
+
+
     })
 
 
@@ -124,7 +124,7 @@ $(function () {
 
 function miDashboard() {
 
-     
+
     var obj = new Dashboard();
     obj.token = $("#txtVarUrl").val();
     var result = obj.consultar().responseJSON;
@@ -218,7 +218,7 @@ function color(valor) {
         case "pecesmuertos":
             color = paletaColor.Negro;
             break;
-            
+
         default:
             break;
     }
@@ -252,19 +252,18 @@ function grafica(params) {
 
     var obj = new Dashboard();
     obj.token = $("#txtVarUrl").val();
-    obj.fechaInicio=$("#txtFechaInicial").val();
-    obj.fechaFinal=$("#txtFechaFinal").val();
-    obj.lagoid=$("#ddlLago").val();
-   
+    obj.fechaInicio = $("#txtFechaInicial").val();
+    obj.fechaFinal = $("#txtFechaFinal").val();
+    obj.lagoid = $("#ddlLago").val();
+
     $("#txtGrafica").val(params);
 
-    var result=obj.consultarSonda().responseJSON
+    var result = obj.consultarSonda().responseJSON
 
-    if(result['estado'])
-    {
+    if (result['estado']) {
         preparar(result, $("#" + params).attr("go"), $("#" + params).attr("title"), params);
     }
- 
+
     validarRespuesta(result)
 
 
@@ -276,18 +275,16 @@ function grafica(params) {
 function preparar(result, campo, title, elemen) {
 
 
-    var response=result['data']
-    var prediccion=result['prediccion']
+    var response = result['data']
+    var prediccion = result['prediccion']
 
-    if(response.length==0)
-    {
-        badge("#pnMensaje","El Lago no tiene mediciones registradas.", "warning");
+    if (response.length == 0) {
+        badge("#pnMensaje", "El Lago no tiene mediciones registradas.", "warning");
     }
-    if(prediccion==null)
-    {
-        badge("#pnMensaje","El Lago no tiene predicciones para este rango de fechas." , "warning");
+    if (prediccion == null) {
+        badge("#pnMensaje", "El Lago no tiene predicciones para este rango de fechas.", "warning");
     }
-    
+
 
     var objGrafica = {
         "label": "",
@@ -300,7 +297,7 @@ function preparar(result, campo, title, elemen) {
     var x = n[0].split(":");
     var y = n[1].split(":")[1].split(",");
 
-    
+
 
     var label = [];
     var data = [];
@@ -316,15 +313,24 @@ function preparar(result, campo, title, elemen) {
             label.push( result );
         }*/
 
-        
-            
-            
-                for (const key in prediccion) {
-                    label.push(prediccion[ parseInt(key) ][x[index]]);
-                }
-            
-            
-        
+
+        if (prediccion !=  null) {
+            for (const key in prediccion) {
+                label.push(prediccion[parseInt(key)][x[index]]);
+            }
+
+        } else {
+            for (const key in response) {
+                var result = response[parseInt(key)][x[index]];
+                label.push(result);
+            }
+        }
+
+
+
+
+
+
 
         /*if(label.length==0){
             for (const key in prediccion) {
@@ -359,19 +365,19 @@ function preparar(result, campo, title, elemen) {
                 }
                 if (tipoGrafica == "line") //|| tipoGrafica=="radar"
                 {
-                    objGrafica.borderColor =  color( y[index] ); // "rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; // color(Math.floor((Math.random() * 9) + 1));
+                    objGrafica.borderColor = color(y[index]); // "rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; // color(Math.floor((Math.random() * 9) + 1));
                 }
 
             }
-             
+
             objGrafica.data.push(response[key][y[index]]);
 
         }
- 
+
         data.push(objGrafica);
     }
 
-   
+
     //PREDICCION 
     primera = true;
     for (let index = 0; index < y.length; index++) {
@@ -397,16 +403,16 @@ function preparar(result, campo, title, elemen) {
                 }
                 if (tipoGrafica == "line") //|| tipoGrafica=="radar"
                 {
-                    objGrafica.borderColor =  color( y[index] ); // "rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; // color(Math.floor((Math.random() * 9) + 1));
+                    objGrafica.borderColor = color(y[index]); // "rgba("+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+","+Math.floor(Math.random() * 255)+",1)"; // color(Math.floor((Math.random() * 9) + 1));
                 }
 
             }
-        
 
-            objGrafica.data.push(prediccion[ parseInt(key)  ][y[index]]);
+
+            objGrafica.data.push(prediccion[parseInt(key)][y[index]]);
 
         }
- 
+
         data.push(objGrafica);
     }
 
@@ -417,8 +423,8 @@ function preparar(result, campo, title, elemen) {
 
     graficar(label, data, tipoGrafica, title);
 
-    tabl(x,y,response,title);
-    
+    tabl(x, y, response, title);
+
     $("#txtImportar").val("1");
 
 }
@@ -439,7 +445,6 @@ function eliminarGrafica(params) {
 
 
 function graficar(label, dataSet, tipoGrafica, titulo) {
-
 
 
     var ctx = document.getElementById('myChart').getContext('2d');
@@ -471,59 +476,58 @@ function graficar(label, dataSet, tipoGrafica, titulo) {
     });
 
 
-    
+
 
 
 }
 
-function tabl(x,y,result,titulo) {
-    
-    
-    var columna=[ {"data":x[1] } ];
+function tabl(x, y, result, titulo) {
+
+
+
+    var columna = [{ "data": x[1] }];
 
     $("#tbEncabezado").html("");
 
-    $("#tbEncabezado").append("<th>"+x[1]+"</th>")
+    $("#tbEncabezado").append("<th>" + x[1] + "</th>")
 
-    var encabezado=1;
+    var encabezado = 1;
 
-    for (let index = 0; index < y.length; index++) 
-    {
+    for (let index = 0; index < y.length; index++) {
 
-        $("#tbEncabezado").append("<th>"+y[index]+"</th>")
-        columna.push({"data":y[index]});
+        $("#tbEncabezado").append("<th>" + y[index] + "</th>")
+        columna.push({ "data": y[index] });
 
         encabezado++;
-        
+
     }
 
-   
 
-    tabla("Tabla", result, columna,{});
 
-    var fila="";
-    
+    tabla("Tabla", result, columna, {});
+
+    var fila = "";
+
     $('#Tabla #tdResultado tr').each(function () {
 
-        
-        var separador=";";
-        
+
+        var separador = ";";
+
         for (let index = 0; index < encabezado; index++) {
 
-            if(index==encabezado-1)
-            {
-            
-                separador=" \n";
+            if (index == encabezado - 1) {
+
+                separador = " \n";
             }
 
-            fila=fila+$(this).find("td").eq(index).html()+separador;
-            
+            fila = fila + $(this).find("td").eq(index).html() + separador;
+
         }
-        
-        
+
+
     });
 
-    download(fila,titulo, 'text/plain');
+    download(fila, titulo, 'text/plain');
 
 }
 
@@ -538,9 +542,8 @@ function limpiar() {
 
 download_img = function (el) {
 
-    
-    if($("#txtImportar").val()=="0")
-    {
+
+    if ($("#txtImportar").val() == "0") {
         $("#pnMensaje").html("");
         $("#pnMensaje").html(modal("Alerta", "No hay información para exportar.", "modal-sm"));
         $("#myModal").modal();
@@ -555,23 +558,20 @@ download_img = function (el) {
 
 function download(text, name, type) {
     var a = document.getElementById("a");
-    var file = new Blob([text], {type: type});
+    var file = new Blob([text], { type: type });
     a.href = URL.createObjectURL(file);
     a.download = name;
-  }
+}
 
-  function validarRespuesta(respuesta)
-{
-    if(respuesta['estado'])
-    {
-        if(respuesta['mensaje']!="")
-        {
+function validarRespuesta(respuesta) {
+    if (respuesta['estado']) {
+        if (respuesta['mensaje'] != "") {
             badge("#pnMensaje", respuesta['mensaje'], "success");
             $("#btnLimpiar").click();
         }
-       
-    }else{
-        badge("#pnMensaje",respuesta['mensaje'], "danger");
-        console.log("ERROR:",respuesta)
+
+    } else {
+        badge("#pnMensaje", respuesta['mensaje'], "danger");
+        console.log("ERROR:", respuesta)
     }
 }

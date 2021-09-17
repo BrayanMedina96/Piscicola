@@ -87,29 +87,29 @@ workbook.close()
 #Save Models
 regressor.fit(scaler.fit_transform(X),y)
 if var==10:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelTempEst.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelTempEst.sav', 'wb'))
 elif var==11:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelOD.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelOD.sav', 'wb'))
 elif var==12:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelPH.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelPH.sav', 'wb'))
 elif var==13:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelCondElec.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelCondElec.sav', 'wb'))
 elif var==14:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelNH3.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelNH3.sav', 'wb'))
 elif var==15:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelNH4.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelNH4.sav', 'wb'))
 elif var==16:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelNit.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelNit.sav', 'wb'))
 elif var==17:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelAlk.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelAlk.sav', 'wb'))
 elif var==9:
-    pickle.dump(regressor, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/modelTempAmb.sav', 'wb'))
+    pickle.dump(regressor, open('C:/laragon/www/Piscicola/ForecastingLibrary/modelTempAmb.sav', 'wb'))
     
 if ant==0:
-    pickle.dump(scaler, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler1.sav', 'wb'))
+    pickle.dump(scaler, open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler1.sav', 'wb'))
 elif ant==1:
-    pickle.dump(scaler, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler2.sav', 'wb'))
+    pickle.dump(scaler, open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler2.sav', 'wb'))
 elif ant==2:
-    pickle.dump(scaler, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler3.sav', 'wb'))
+    pickle.dump(scaler, open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler3.sav', 'wb'))
 elif ant==3:
-    pickle.dump(scaler, open('C:/Users/PCBRAYAN/Desktop/CORHUILA/ForecastingLibrary/scaler4.sav', 'wb'))
+    pickle.dump(scaler, open('C:/laragon/www/Piscicola/ForecastingLibrary/scaler4.sav', 'wb'))
