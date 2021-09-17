@@ -315,30 +315,45 @@ function preparar(result, campo, title, elemen) {
 
 
         if (prediccion != null) {
-            for (const key in prediccion) {
+            if (prediccion.length > 0) {
+                for (const key in prediccion) {
 
-                var result = prediccion[parseInt(key)][x[index] == "horaregistro" ? "hora" : x[index]];
-                label.push(result);
-              
-               /* var t = label.filter((b) => {
-                    return (b == result)
-                });
-                if (t.length == 0) {
+                    var result = prediccion[parseInt(key)][x[index] == "horaregistro" ? "hora" : x[index]];
                     label.push(result);
-                }*/
 
+                    /* var t = label.filter((b) => {
+                         return (b == result)
+                     });
+                     if (t.length == 0) {
+                         label.push(result);
+                     }*/
+
+                }
+            } else {
+                for (const key in response) {
+                    var result = response[parseInt(key)][x[index]];
+                    label.push(result);
+                    /* var t = label.filter((b) => {
+                         return (b == result)
+                     });
+                     if (t.length == 0) {
+                         label.push(result);
+                     }*/
+
+                }
             }
+
 
         } else {
             for (const key in response) {
                 var result = response[parseInt(key)][x[index]];
                 label.push(result);
-               /* var t = label.filter((b) => {
-                    return (b == result)
-                });
-                if (t.length == 0) {
-                    label.push(result);
-                }*/
+                /* var t = label.filter((b) => {
+                     return (b == result)
+                 });
+                 if (t.length == 0) {
+                     label.push(result);
+                 }*/
 
             }
         }
