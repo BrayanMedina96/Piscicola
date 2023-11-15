@@ -11,7 +11,7 @@ class TipoDocumento
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand  = 'SELECT tipodocumentoid, tipodocumentonombre, tipodocumento, tipodocumentoestado
-                        FROM public.tipodocumento WHERE tipodocumentoestado=TRUE;';
+                        FROM tipodocumento WHERE tipodocumentoestado=TRUE;';
         $statement  = $conn->prepare($sqlCommand); 
         $statement->execute();              
         $resultado= $statement->fetchAll();
@@ -47,7 +47,3 @@ class TipoDocumento
     
     
 }
-
-
-
-?>
