@@ -120,7 +120,7 @@ class PersonaUsuario
 */
 
             $sqlCommand = ' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento)
-                VALUES (:nombre,:apellido,:tipodocumento,:numerodocumento);';
+                VALUES ( :nombre, :apellido, :tipodocumento, :numerodocumento);';
 
             // $sqlCommand = 'SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
 
