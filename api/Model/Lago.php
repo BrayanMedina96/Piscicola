@@ -19,10 +19,12 @@ class Lago
            lago.usuarioelimina, lago.usuarioid, lago.importado,lago.tipolagoid,tipolago.tipolagonombre
            FROM lago 
            INNER JOIN tipolago ON lago.tipolagoid=tipolago.tipolagoid 
-           WHERE lago.usuariopadreid=:usuarioid AND  lago.lagofechaelimar IS  NULL;';
+          ';
+
+          // WHERE lago.usuariopadreid=:usuarioid AND  lago.lagofechaelimar IS  NULL;
 
            $statement  = $conn->prepare($sqlCommand); 
-           $statement ->bindValue(':usuarioid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
+          // $statement ->bindValue(':usuarioid',$this->usuario[0]['usuariopadreid'],PDO::PARAM_INT);
            $statement->execute();              
            $result['data']= $statement->fetchAll();
 
