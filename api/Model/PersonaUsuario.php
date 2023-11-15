@@ -119,8 +119,8 @@ class PersonaUsuario
             } else {
 */
 
-            $sqlCommand = ' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
-                VALUES (:nombre,:apellido,:tipodocumento,:numerodocumento,NOW(),0);';
+            $sqlCommand = ' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion)
+                VALUES (:nombre,:apellido,:tipodocumento,:numerodocumento,NOW());';
 
             // $sqlCommand = 'SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
 
