@@ -195,7 +195,7 @@ class Usuario
         try 
         {
             
-            $sqlCommand ='INSERT INTO public."Usuario"("usuarioNombre", "usuarioContrasenia", "personaID", "perfilID", "usuarioFechaCreacion", "usuarioIDCrea")
+            $sqlCommand ='INSERT INTO Usuario (usuarioNombre, usuarioContrasenia, personaID, perfilID, usuarioFechaCreacion, usuarioIDCrea)
                                                VALUES (:usuarioNombre,:usuarioContrasenia,:personaID,:perfilID,NOW(),:usuarioIDCrea);';
     
             $statement  = $conn->prepare($sqlCommand);
