@@ -141,7 +141,7 @@ class PersonaUsuario
             $result["response"] = "ok";
             // }
         } catch (Exception $Exception) {
-            $result = ["error" => $Exception->getMessage()];
+            $result = ["error" => $Exception->getMessage(), 'sql' => $statement->queryString];
         } finally {
             Conexion::cerrar($conn);
         }
