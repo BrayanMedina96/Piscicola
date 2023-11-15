@@ -135,7 +135,6 @@ function doMarcador(key) {
 
 
 
-
                 markers.push(marker);
 
 
@@ -173,10 +172,10 @@ function info(key) {
 
         var t = key.variable.data[0];
         mensaje += "<table class='table h5'>";
-        mensaje += `<tr> <td>T.Amb</td>  <td> ${setInterval(timeValues(t).temperaturaambiente, 3000)}</td> </tr>`;
-        mensaje += `<tr> <td>T.Est</td>  <td>${setInterval(timeValues(t).temperaturaestanque, 3000)}</td> </tr>`;
-        mensaje += `<tr> <td>O.D</td>  <td>${setInterval(timeValues(t).oxigenodisuelto, 3000)}</td> </tr>`;
-        mensaje += `<tr> <td>pH</td>  <td>${setInterval(timeValues(t).ph, 3000)}</td> </tr>`;
+        mensaje += `<tr> <td>T.Amb</td>  <td> ${t.temperaturaambiente}</td> </tr>`;
+        mensaje += `<tr> <td>T.Est</td>  <td>${t.temperaturaestanque}</td> </tr>`;
+        mensaje += `<tr> <td>O.D</td>  <td>${t.oxigenodisuelto}</td> </tr>`;
+        mensaje += `<tr> <td>pH</td>  <td>${t.ph}</td> </tr>`;
         mensaje += "</table>";
 
     }
