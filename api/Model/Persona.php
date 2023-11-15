@@ -39,10 +39,10 @@ class Persona
        
         $conn=Conexion::getInstance()->cnn();
 
-        $sqlCommand = 'SELECT "personaID", "perosnaNombre", "personaApellido", "personaTelefono",
-        "personaTelefonoOpcional", "personaCorreo", "tipoDocumentoID", "personaNumeroDocumento", "personaFechaCreacion",
-        "personaFechaActualizacion"
-        FROM public."Persona";';
+        $sqlCommand = 'SELECT personaID, perosnaNombre, personaApellido, personaTelefono,
+        personaTelefonoOpcional, personaCorreo, tipoDocumentoID, personaNumeroDocumento, personaFechaCreacion,
+        personaFechaActualizacion
+         FROM Persona;';
         $statement = $conn->prepare($sqlCommand);
         $statement->execute();
         $resultado= $statement->fetchAll();
@@ -100,7 +100,7 @@ class Persona
         try 
         {
             
-            $sqlCommand ='INSERT INTO public."Persona"("perosnaNombre", "personaApellido", "personaTelefono", "personaTelefonoOpcional", "personaCorreo", "tipoDocumentoID", "personaNumeroDocumento", "personaFechaCreacion")
+            $sqlCommand ='INSERT INTO Persona (perosnaNombre, personaApellido, personaTelefono, personaTelefonoOpcional, personaCorreo, tipoDocumentoID, personaNumeroDocumento, personaFechaCreacion)
                                                                VALUES (:perosnaNombre, :personaApellido, :personaTelefono,:personaTelefonoOpcional,:personaCorreo,:tipoDocumentoID,:personaNumeroDocumento,NOW());';
     
             $statement  = $conn->prepare($sqlCommand);
