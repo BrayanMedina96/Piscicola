@@ -10,10 +10,12 @@ class Dashboard
         $conn=Conexion::getInstance()->cnn();
 
         $sqlCommand = 'SELECT dashboardid, nombre, x, y, usuarioid,filtro,tipografica
-                       FROM dashboard WHERE usuariopadreid=:usuariopadreid;';
+                       FROM dashboard ';
+
+                       //WHERE usuariopadreid=:usuariopadreid;
 
         $statement  = $conn->prepare($sqlCommand); 
-        $statement ->bindValue(':usuariopadreid', $this->usuario[0]['usuariopadreid'] ,PDO::PARAM_INT);
+       // $statement ->bindValue(':usuariopadreid', $this->usuario[0]['usuariopadreid'] ,PDO::PARAM_INT);
         $statement->execute();              
         $resultado= $statement->fetchAll();
 
@@ -216,5 +218,3 @@ class Dashboard
 
 
 }
-
-?>
