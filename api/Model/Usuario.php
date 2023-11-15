@@ -158,15 +158,15 @@ class Usuario
             }
 
 
-          //  $cambioPass = Usuario::cambioPassword($parametro["usuario"]);
+            //  $cambioPass = Usuario::cambioPassword($parametro["usuario"]);
 
 
 
-           /* if ($variable == "" && count($cambioPass["data"]) > 0) {
+            /* if ($variable == "" && count($cambioPass["data"]) > 0) {
                 $variable = '{"token":"' . $cambioPass["data"]["token"] . '"}';
             }*/
 
-           /* $existe = "";
+            /* $existe = "";
             $existeUsuario = $this->consultarNombre($parametro["usuario"]);
             if (count($existeUsuario) > 0) {
                 $existe = 1;
@@ -177,7 +177,7 @@ class Usuario
             Conexion::cerrar($conn);
         }
 
-        return array('data' => base64_encode($variable), 'estado' =>  $estado, 'cambioPass' => $cambioPass["estado"], 'dataCambioPass' => $cambioPass["data"], 'existe' => $existe);
+        return array('data' => base64_encode($variable), 'estado' =>  $estado, 'cambioPass' => $cambioPass["estado"], 'dataCambioPass' => $cambioPass["data"], 'existe' => 1); //$existe
     }
 
     public function consultarNombre($nombre)
