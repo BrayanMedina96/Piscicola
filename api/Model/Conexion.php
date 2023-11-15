@@ -25,7 +25,7 @@ class Conexion
 
        try
        {
-          $stringCnn="pgsql:dbname=$this->dbname;host=$this->servidor";
+          $stringCnn="mysql:dbname=$this->dbname;host=$this->servidor";
           $conexion =new PDO($stringCnn,$this->user, $this->password);
           $conexion->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
           $conexion->setAttribute(PDO::ATTR_EMULATE_PREPARES, false);

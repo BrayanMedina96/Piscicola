@@ -1,16 +1,16 @@
 <?php
 
-if (!defined('SERVER')) define('SERVER','localhost');
+if (!defined('SERVER')) define('SERVER','31.220.50.101');
 
-if (!defined('USER')) define('USER','postgres');
+if (!defined('USER')) define('USER','piscicola');
 
 
-if (!defined('PASSWORD')) define('PASSWORD','postgres');
+if (!defined('PASSWORD')) define('PASSWORD','p1sc1c0la123@*');
 
-if (!defined('DATABASE')) define('DATABASE','postgres');
+if (!defined('DATABASE')) define('DATABASE','piscicola');
 
-if (!defined('PORT')) define('PORT',5432);
+if (!defined('PORT')) define('PORT',3306);
 
-if (!defined('URL')) define('URL','http://localhost:8000/Piscicultura/web/view/home.php');
+if (!defined('URL')) define('URL','https://santanacloud.com/backend/Piscicola/web/view/home.php');
 
 ?>
