@@ -125,16 +125,23 @@ class PersonaUsuario
             // $sqlCommand = 'SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
 
             $statement  = $conn->prepare($sqlCommand);
+            /*
             $statement->bindParam(':nombre', $parametro["nombre"], PDO::PARAM_STR);
             $statement->bindParam(':apellido', $parametro["apellido"], PDO::PARAM_STR);
             $statement->bindParam(':numerodocumento', $parametro["numeroDocumento"], PDO::PARAM_STR);
             $statement->bindParam(':tipoDocumento', $parametro["tipoDocumento"], PDO::PARAM_INT);
+            */
             //$statement->bindValue(':usuario', $parametro["usuario"], PDO::PARAM_STR);
             //$statement->bindValue(':contrasenia', $parametro["contrasenia"], PDO::PARAM_STR);
             // $statement->bindValue(':nombrecomercial', $parametro["nombreComercial"], PDO::PARAM_STR);
 
 
-            $statement->execute();
+            $statement->execute(array(
+                ':nombre' => $parametro["nombre"],
+                ':apellido' => $parametro["apellido"],
+                ':numerodocumento' => $parametro["numeroDocumento"],
+                ':tipoDocumento' => $parametro["tipoDocumento"],
+            ));
             //$result= $statement->fetchAll()[0]["personausuario"];
 
             $result["mensaje"] = "Se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.";
