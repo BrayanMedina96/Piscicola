@@ -66,6 +66,8 @@ function dibujar() {
     obj.token = $("#txtVarUrl").val();
     var result = obj.parametrosInfo();
 
+    console.log(result);
+
     if (result['estado']) {
 
 
