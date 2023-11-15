@@ -158,19 +158,19 @@ class Usuario
             }
 
 
-            $cambioPass = Usuario::cambioPassword($parametro["usuario"]);
+          //  $cambioPass = Usuario::cambioPassword($parametro["usuario"]);
 
 
 
-            if ($variable == "" && count($cambioPass["data"]) > 0) {
+           /* if ($variable == "" && count($cambioPass["data"]) > 0) {
                 $variable = '{"token":"' . $cambioPass["data"]["token"] . '"}';
-            }
+            }*/
 
-            $existe = "";
+           /* $existe = "";
             $existeUsuario = $this->consultarNombre($parametro["usuario"]);
             if (count($existeUsuario) > 0) {
                 $existe = 1;
-            }
+            }*/
         } catch (\Throwable $th) {
             throw $th;
         } finally {
