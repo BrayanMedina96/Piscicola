@@ -170,7 +170,7 @@ class PersonaUsuario
 */
 
             $sqlCommand = ' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
-                                  VALUES (:nombre,:apellido,:tipodocumento,CAST(:numerodocumento AS TEXT),NOW(),0)';
+                                  VALUES (:nombre,:apellido,:tipodocumento,:numerodocumento,NOW(),0) ';
 
             //  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ),:correo )';
 
@@ -187,6 +187,7 @@ class PersonaUsuario
             $result["mensaje"] = "Usuario se ha creado correctamente.";
             $result["response"] = "ok";
 
+
             /*if($parametro["correo"]!="")
                    {
                        $correo=new Correo();
@@ -196,6 +197,7 @@ class PersonaUsuario
             // }
         } catch (Exception $Exception) {
             $result["error"] = $Exception->getMessage() . '-' . $Exception->getLine();
+            $result["sql"] = $statement->queryString;
         } finally {
             Conexion::cerrar($conn);
         }
