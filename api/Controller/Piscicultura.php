@@ -50,7 +50,7 @@ class Piscicultura
                 
                 $objBase64 = new Base64($obj["token"]);
                 $objUsuario = new Usuario();
-              //  $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
+                $resulUsuairio = $objUsuario -> consultarUsuarioToken($objBase64 -> decodeUsuario()["token"]);
     
             }
          

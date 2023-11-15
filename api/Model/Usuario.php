@@ -45,7 +45,8 @@ class Usuario
         $conn = Conexion::getInstance()->cnn();
 
         try {
-            $sqlCommand = 'SELECT usuario.usuarioid, usuario.usuarionombre, usuario.usuariocontrasenia,
+
+            /* $sqlCommand = 'SELECT usuario.usuarioid, usuario.usuarionombre, usuario.usuariocontrasenia,
             usuario.usuarioestado,
                 usuario.usuariofechaexpira,
                 usuario.personaid,
@@ -57,9 +58,21 @@ class Usuario
                 FROM public.usuario 
                 INNER JOIN public.login ON usuario.usuarioid = login.usuarioid 
                 WHERE login.loginestado = true AND login.logintoken =:token;
-            ';
+            ';*/
+            $sqlCommand = "SELECT usuario.usuarioid, usuario.usuarionombre, usuario.usuariocontrasenia,
+            usuario.usuarioestado,
+                usuario.usuariofechaexpira,
+                usuario.personaid,
+                usuario.perfilid,
+                usuario.usuarioFechacreacion,
+                usuario.usuariofechaactualizacion,
+                usuarioidcrea, 
+                usuario.usuariopadreid
+                FROM usuario ";
+
+
             $statement = $conn->prepare($sqlCommand);
-            $statement->bindValue(':token', $token, PDO::PARAM_STR);
+            // $statement->bindValue(':token', $token, PDO::PARAM_STR);
             $statement->execute();
             $resultado = $statement->fetchAll();
         } catch (\Throwable $th) {
