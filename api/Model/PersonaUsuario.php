@@ -187,7 +187,11 @@ class PersonaUsuario
             }
             else{
             
-                  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ),:correo )';
+
+                   $sqlCommand =' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
+                                  VALUES (nombre,apellido,tipodocumento,numerodocumento,NOW(),padreid)';
+
+                  //  $sqlCommand ='SELECT crearpersonausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario, CAST( :usuarioPadre AS SMALLINT ),CAST( :perfil AS SMALLINT ),:correo )';
     
                    $statement  = $conn->prepare($sqlCommand);
                    $statement ->bindParam(':nombre',$parametro["nombre"],PDO::PARAM_STR);
@@ -202,12 +206,12 @@ class PersonaUsuario
                    $result["mensaje"]="Usuario se ha creado correctamente.";
                    $result["response"]="ok";
 
-                   if($parametro["correo"]!="")
+                   /*if($parametro["correo"]!="")
                    {
                        $correo=new Correo();
                        $rs= $correo->notificacionCuenta($parametro["correo"],$parametro["usuario"],$parametro["nombre"]);
                        $result["mensaje"]= $result["mensaje"]." ".$rs;
-                   }
+                   }*/
 
                }
     
@@ -290,7 +294,3 @@ class PersonaUsuario
     
     
 }
-
-
-
-?>
