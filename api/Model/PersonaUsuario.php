@@ -119,17 +119,18 @@ class PersonaUsuario
             } else {
 */
 
-            $sqlCommand = "INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento) VALUES ( :nombre, :apellido, :tipodocumento, :numerodocumento) ";
+            $sqlCommand = "INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento) 
+            VALUES ( '" . $parametro["nombre"] . "', '" . $parametro["apellido"] . "', '" . $parametro["tipoDocumento"] . "', '" . $parametro["numeroDocumento"] . "') ";
 
             // $sqlCommand = 'SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
 
             $statement  = $conn->prepare($sqlCommand);
-
+            /*
             $statement->bindParam(':nombre', $parametro["nombre"], PDO::PARAM_STR);
             $statement->bindParam(':apellido', $parametro["apellido"], PDO::PARAM_STR);
             $statement->bindParam(':numerodocumento', $parametro["numeroDocumento"], PDO::PARAM_STR);
             $statement->bindParam(':tipoDocumento', $parametro["tipoDocumento"], PDO::PARAM_INT);
-
+*/
             //$statement->bindValue(':usuario', $parametro["usuario"], PDO::PARAM_STR);
             //$statement->bindValue(':contrasenia', $parametro["contrasenia"], PDO::PARAM_STR);
             // $statement->bindValue(':nombrecomercial', $parametro["nombreComercial"], PDO::PARAM_STR);
