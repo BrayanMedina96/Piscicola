@@ -143,14 +143,15 @@ class Usuario
                     '","usuarioid":"' . $row['usuarioid'] .
                     '","personaid":"' . $row['personaid'] .
                     '","estado":"' . $row['usuarioestado'] .
-                    '","nombreComercial":"' . $row['personanombrecomercial'] .
-                    '","userPadre":"' . $row['userpadre'] .
+                    // '","nombreComercial":"' . $row['personanombrecomercial'] .
+                    //  '","userPadre":"' . $row['userpadre'] .
                     '","personaapellido":"' . $row['personaapellido'] .
                     '","perosnanombre":"' . $row['perosnanombre'] .
                     '","correo":"' . $row['correo'] .
                     '","personatelefono":"' . $row['personatelefono'] .
                     '","usuariocontrasenia":"' . $row['usuariocontrasenia'] .
-                    '","intro":"' . $row['intro'] .
+                    // '","intro":"' . $row['intro'] .
+
                     '","nombre":"' . $row['nombre'] . '"}';
 
                 $estado = $row['usuarioestado'];
