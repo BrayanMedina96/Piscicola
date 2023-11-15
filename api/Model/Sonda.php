@@ -184,11 +184,11 @@ class Sonda
                 INNER JOIN lago ON cultivo.lagoid=lago.lagoid
                 INNER JOIN lagosensor ON lago.lagoid=lagosensor.lagoid
                 INNER JOIN sensor ON lagosensor.sensorid=sensor.sensorid
-                WHERE cultivo.cultivoid=:cultivoid";
+                WHERE cultivo.cultivoid=" . $parametro["cultivo"];
 
             $statement  = $conn->prepare($sqlCommand);
 
-            $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
+            // $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
 
 
             $statement->execute();
@@ -213,12 +213,12 @@ class Sonda
 
         try {
 
-            $sqlCommand = "SELECT * FROM public.estadofisicoquimico WHERE cultivoid=:cultivoid
+            $sqlCommand = "SELECT * FROM estadofisicoquimico WHERE cultivoid= " . $parametro["cultivo"] . "
                 ORDER BY fecharegistro limit 1";
 
             $statement  = $conn->prepare($sqlCommand);
 
-            $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
+            // $statement->bindValue(':cultivoid', $parametro["cultivo"], PDO::PARAM_INT);
 
 
             $statement->execute();
@@ -255,10 +255,10 @@ class Sonda
 
         $correo = new Correo();
         $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'brayanmedinacardozo@gmail.com', 'Alerta de variables', $mensaje);
-        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'af-nunezc@corhuila.edu.co', 'Alerta de variables', $mensaje);
-        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'julian.quimbayo@corhuila.edu.co', 'Alerta de variables', $mensaje);
-        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'alvaro.alarcon@corhuila.edu.co', 'Alerta de variables', $mensaje);
-        $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'ivan.alarcon@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        //  $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'af-nunezc@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        //  $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'julian.quimbayo@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        //  $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'alvaro.alarcon@corhuila.edu.co', 'Alerta de variables', $mensaje);
+        // $rs = $correo->enviar('bh-medinac@corhuila.edu.co', 'brayanmedina1080296146', 'Aqua', 'ivan.alarcon@corhuila.edu.co', 'Alerta de variables', $mensaje);
     }
 
     public function getParametrosInfo($parametro)
@@ -270,16 +270,18 @@ class Sonda
         try {
 
 
-            $sqlCommand = "SELECT *
-               FROM lago 
-               LEFT JOIN cultivo ON lago.lagoid=cultivo.lagoid
-               LEFT JOIN tipolago ON  lago.tipolagoid= tipolago.tipolagoid
-               LEFT JOIN pez ON cultivo.pezid =  pez.pezid
-               WHERE lago.usuariopadreid=:usuarioid";
+            $sqlCommand = "SELECT * FROM lago 
+                LEFT JOIN cultivo ON lago.lagoid=cultivo.lagoid
+                LEFT JOIN tipolago ON  lago.tipolagoid= tipolago.tipolagoid
+                LEFT JOIN pez ON cultivo.pezid =  pez.pezid
+             ";
+
+
+            // WHERE lago.usuariopadreid=:usuarioid
 
             $statement  = $conn->prepare($sqlCommand);
 
-            $statement->bindValue(':usuarioid', $this->usuario[0]['usuariopadreid'], PDO::PARAM_INT);
+            // $statement->bindValue(':usuarioid', $this->usuario[0]['usuariopadreid'], PDO::PARAM_INT);
 
             $statement->execute();
             $resultado = $statement->fetchAll();
