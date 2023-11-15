@@ -67,7 +67,7 @@ class Usuario
         } finally {
             Conexion::cerrar($conn);
         }
-        return $resultado;
+        return $resultado ?? "";
     }
 
     public function login($parametro)
