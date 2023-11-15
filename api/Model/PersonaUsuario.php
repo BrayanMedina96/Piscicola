@@ -108,7 +108,7 @@ class PersonaUsuario
             $objUsuario = new Usuario();
 
 
-
+            /*
             if ($this->validarExistencia($parametro["numeroDocumento"]) > 0) {
                 $result["mensaje"] = "Este numero de documento ya se encuentra registrado.";
                 $result["response"] = "ok";
@@ -117,29 +117,29 @@ class PersonaUsuario
                 $result["response"] = "ok";
                 $result["tipo"] = "user";
             } else {
+*/
+
+            $sqlCommand = ' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
+                VALUES (:nombre,:apellido,:tipodocumento,:numerodocumento,NOW(),0);';
+
+            // $sqlCommand = 'SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
+
+            $statement  = $conn->prepare($sqlCommand);
+            $statement->bindValue(':nombre', $parametro["nombre"], PDO::PARAM_STR);
+            $statement->bindValue(':apellido', $parametro["apellido"], PDO::PARAM_STR);
+            $statement->bindValue(':numerodocumento', $parametro["numeroDocumento"], PDO::PARAM_STR);
+            $statement->bindValue(':tipoDocumento', $parametro["tipoDocumento"], PDO::PARAM_INT);
+            //$statement->bindValue(':usuario', $parametro["usuario"], PDO::PARAM_STR);
+            //$statement->bindValue(':contrasenia', $parametro["contrasenia"], PDO::PARAM_STR);
+            // $statement->bindValue(':nombrecomercial', $parametro["nombreComercial"], PDO::PARAM_STR);
 
 
-                $sqlCommand = ' INSERT INTO persona (perosnanombre,personaapellido,tipodocumentoid,personanumerodocumento,personafechacreacion,usuariocrea)
-                VALUES (:nombre,:apellido,:tipodocumento,:numerodocumento,NOW(),0); )';
+            $statement->execute();
+            //$result= $statement->fetchAll()[0]["personausuario"];
 
-                // $sqlCommand = 'SELECT personausuario(:nombre,:apellido,:numerodocumento,CAST( :tipoDocumento AS SMALLINT),:usuario,CAST(:contrasenia AS TEXT),:nombrecomercial )';
-
-                $statement  = $conn->prepare($sqlCommand);
-                $statement->bindValue(':nombre', $parametro["nombre"], PDO::PARAM_STR);
-                $statement->bindValue(':apellido', $parametro["apellido"], PDO::PARAM_STR);
-                $statement->bindValue(':numerodocumento', $parametro["numeroDocumento"], PDO::PARAM_STR);
-                $statement->bindValue(':tipoDocumento', $parametro["tipoDocumento"], PDO::PARAM_INT);
-                //$statement->bindValue(':usuario', $parametro["usuario"], PDO::PARAM_STR);
-                //$statement->bindValue(':contrasenia', $parametro["contrasenia"], PDO::PARAM_STR);
-                // $statement->bindValue(':nombrecomercial', $parametro["nombreComercial"], PDO::PARAM_STR);
-
-
-                $statement->execute();
-                //$result= $statement->fetchAll()[0]["personausuario"];
-
-                $result["mensaje"] = "Se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.";
-                $result["response"] = "ok";
-            }
+            $result["mensaje"] = "Se ha creado correctamente, póngase en contacto con el administrador para darlo de alta.";
+            $result["response"] = "ok";
+            // }
         } catch (Exception $Exception) {
             $result = ["error" => $Exception->getMessage()];
         } finally {
