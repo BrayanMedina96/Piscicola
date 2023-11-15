@@ -177,7 +177,9 @@ class Usuario
             Conexion::cerrar($conn);
         }
 
-        return array('data' => base64_encode($variable), 'estado' =>  $estado, 'cambioPass' => $cambioPass["estado"], 'dataCambioPass' => $cambioPass["data"], 'existe' => 1); //$existe
+        //   return array('data' => base64_encode($variable), 'estado' =>  $estado, 'cambioPass' => $cambioPass["estado"], 'dataCambioPass' => $cambioPass["data"], 'existe' => 1); //$existe
+
+        return array('data' => base64_encode($variable), 'estado' =>  1, 'cambioPass' => 0, 'dataCambioPass' => 0, 'existe' => 1); //$existe
     }
 
     public function consultarNombre($nombre)
