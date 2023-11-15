@@ -18,7 +18,7 @@ class Lago
            lago.lagofechaactualizacion, lago.lagofechaelimar, lago.usuariocrea, lago.usuarioactualiza,
            lago.usuarioelimina, lago.usuarioid, lago.importado,lago.tipolagoid,tipolago.tipolagonombre
            FROM lago 
-           INNER JOIN tipolago ON lago.tipolagoid=tipolago.tipolagoid 
+           LEFT JOIN tipolago ON lago.tipolagoid=tipolago.tipolagoid 
           ';
 
           // WHERE lago.usuariopadreid=:usuarioid AND  lago.lagofechaelimar IS  NULL;
