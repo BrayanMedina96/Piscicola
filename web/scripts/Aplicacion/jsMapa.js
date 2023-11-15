@@ -193,12 +193,12 @@ function timeValues(t) {
         t.temperaturaambiente = t.temperaturaambiente - value;
         t.temperaturaestanque = t.temperaturaestanque - value;
         t.oxigenodisuelto = t.oxigenodisuelto - value;
-        t.ph = t.oxigenodisuelto - ph;
+        t.ph = t.ph - value;
     } else {
         t.temperaturaambiente = t.temperaturaambiente + value;
         t.temperaturaestanque = t.temperaturaestanque + value;
         t.oxigenodisuelto = t.oxigenodisuelto + value;
-        t.ph = t.oxigenodisuelto + ph;
+        t.ph = t.ph + value;
     }
 
     return t;
