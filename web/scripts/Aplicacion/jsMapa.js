@@ -132,7 +132,11 @@ function doMarcador(key) {
                     }
 
 
-                    setInterval(() => actaulizarDatos, 2000);
+                    let timerId = setTimeout(function actaulizarDatos() {
+                        timerId = setTimeout(actaulizarDatos, 1000); // (*)
+                    }, 2000);
+
+
 
                 });
 
@@ -156,15 +160,15 @@ function info(key) {
     mensaje += "<br/> Material: <strong> Tierra </strong>"; //key.data.tipolagonombre
     mensaje += "<br/> <strong> Sonda: S001 </strong>";
 
-   /* if (key.sonda.estado) {
-        for (let index = 0; index < key.sonda.data.length; index++) {
-
-            var element = key.sonda.data[index];
-            mensaje += "<li>" + element.sensornombre + "</li>";
-
-        }
-
-    }*/
+    /* if (key.sonda.estado) {
+         for (let index = 0; index < key.sonda.data.length; index++) {
+ 
+             var element = key.sonda.data[index];
+             mensaje += "<li>" + element.sensornombre + "</li>";
+ 
+         }
+ 
+     }*/
 
     mensaje += "<br/><strong> Cultivo: </strong>";
     mensaje += "<li>  Pez: <strong>" + key.data.especiepez + "</strong> </li>";
@@ -213,11 +217,11 @@ function clearAnimation() {
     }
 }
 
-function actaulizarDatos(){
+function actaulizarDatos() {
 
-  
 
-    var valor= parseFloat((Math.random() * 2 - 1).toFixed(2)) ; //Math.floor(Math.random() * 3);
+
+    var valor = parseFloat((Math.random() * 2 - 1).toFixed(2)); //Math.floor(Math.random() * 3);
 
     console.log("xxxxxx");
     console.log(valor);
