@@ -188,19 +188,21 @@ class Prediccion
     {
         
         $conn=Conexion::getInstance()->cnn();
-        $sqlCommand="SELECT prediccion.hora, prediccion.temperatura_ambiente AS temperaturaambiente , prediccion.temperatura_estanque AS temperaturaestanque ,
-        prediccion.oxigeno AS oxigenodisuelto, prediccion.ph,
-         prediccion.conductividad_electrica AS conductividadelectrica ,
-          prediccion.nh3 AS amonionh3 ,
-           prediccion.nh4 AS amonionh4 , prediccion.nitrito,
-            prediccion.alcalinidad , 
-        prediccion.fecha_inicio,
-        prediccion.cultivo_id, 
-        prediccion.fecha AS fecharegistro,
-        prediccion.lagoid
-        FROM prediccion 
+        $sqlCommand="SELECT  hora, temperatura_ambiente AS temperaturaambiente ,  
+        temperatura_estanque AS temperaturaestanque ,
+                 oxigeno AS oxigenodisuelto,  ph,
+                  conductividad_electrica AS conductividadelectrica ,
+                   nh3 AS amonionh3 ,
+                    nh4 AS amonionh4 ,  nitrito,
+                   
+                 fecha_inicio,
+                 cultivo_id, 
+                 fecha AS fecharegistro
+                 
+                FROM prediccion 
        -- WHERE fecha_inicio = (SELECT fecha FROM prediccion WHERE fecha=CAST(:fecha_inicio AS DATE) limit 1) 
-       WHERE lagoid=43";
+      -- WHERE lagoid=43
+       ";
 
         $statement  = $conn->prepare($sqlCommand);
        // $statement ->bindValue(':lagoid',  $parametro['lagoid'] ,PDO::PARAM_STR);
