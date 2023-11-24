@@ -27,7 +27,7 @@
       Aqua es un sistema de información creado para realizar seguimiento y control de la actividad piscícola.
       </div>
 
-      <div class="clash-card__unit-stats clash-card__unit-stats--barbarian clearfix">
+     <!-- <div class="clash-card__unit-stats clash-card__unit-stats--barbarian clearfix">
         <div class="one-third">
           <div class="stat">20<sup>S</sup></div>
           <div class="stat-value">Training</div>
@@ -43,7 +43,7 @@
           <div class="stat-value">Cost</div>
         </div>
 
-      </div>
+      </div>-->
 
     </div> <!-- end clash-card barbarian-->
   </div> <!-- end wrapper -->
@@ -73,6 +73,7 @@
          Configura los lagos, de esta manera podrás llevar un control por cada uno. Hará más fácil la toma de daciones.
       </div>
 
+      <!--
       <div class="clash-card__unit-stats clash-card__unit-stats--giant clearfix">
         <div class="one-third">
           <div class="stat">2<sup>M</sup></div>
@@ -90,6 +91,7 @@
         </div>
 
       </div>
+-->
 
     </div> <!-- end clash-card giant-->
   </div> <!-- end wrapper -->
@@ -105,6 +107,7 @@
            Es el elemento que utilizas para medir las variables fisicoquímicas del agua , importante que las configures de esta manera sabrás con exactitud donde se encuentran y podrás conocer las mediciones en tiempo real.
       </div>
 
+      <!--
       <div class="clash-card__unit-stats clash-card__unit-stats--goblin clearfix">
         <div class="one-third">
           <div class="stat">30<sup>S</sup></div>
@@ -122,6 +125,7 @@
         </div>
 
       </div>
+-->
 
     </div> <!-- end clash-card goblin-->
   </div> <!-- end wrapper -->
@@ -137,6 +141,7 @@
         Cultivo es un registro que se realiza durante un periodo de tiempo, de esta manera se tiene un historial de la actividad en cada lago.
       </div>
 
+      <!--
       <div class="clash-card__unit-stats clash-card__unit-stats--wizard clearfix">
         <div class="one-third">
           <div class="stat">5<sup>M</sup></div>
@@ -154,6 +159,7 @@
         </div>
 
       </div>
+-->
 
     </div> <!-- end clash-card wizard-->
   </div> <!-- end wrapper -->
