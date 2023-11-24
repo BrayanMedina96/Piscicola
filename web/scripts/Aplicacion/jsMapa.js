@@ -150,10 +150,10 @@ function doMarcador(key) {
 function info(key) {
     var mensaje = ""
     mensaje += "<br/> Lago: <strong>" + key.data.lagonombre + "</strong>";
-    mensaje += "<br/> Material: <strong>" + key.data.tipolagonombre + "</strong>";
-    mensaje += "<br/> <strong> Sonda: </strong>";
+    mensaje += "<br/> Material: <strong> Tierra </strong>"; //key.data.tipolagonombre
+    mensaje += "<br/> <strong> Sonda: S001 </strong>";
 
-    if (key.sonda.estado) {
+   /* if (key.sonda.estado) {
         for (let index = 0; index < key.sonda.data.length; index++) {
 
             var element = key.sonda.data[index];
@@ -161,7 +161,7 @@ function info(key) {
 
         }
 
-    }
+    }*/
 
     mensaje += "<br/><strong> Cultivo: </strong>";
     mensaje += "<li>  Pez: <strong>" + key.data.especiepez + "</strong> </li>";
