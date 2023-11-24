@@ -215,6 +215,8 @@ function clearAnimation() {
 
 function actaulizarDatos(){
 
+    console.log("xxxxxx");
+    
     var valor= parseFloat((Math.random() * 2 - 1).toFixed(2)) ; //Math.floor(Math.random() * 3);
 
     $("#txttemperaturaambiente").val(25 + valor);
