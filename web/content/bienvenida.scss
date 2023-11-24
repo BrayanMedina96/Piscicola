@@ -63,21 +63,27 @@ body {
     background: url('../svg/fondo1.jpg');
 
     img {
+        width: 200px;
+        position: absolute;
+        top: 35px;
+        left: 60px;
+    }
+   /* img {
         width: 400px;
         position: absolute;
         top: -65px;
         left: -70px;
-    }
+    }*/
 }
 
 .clash-card__image--archer {
     background: url('../svg/fondo2.jpg');
 
     img {
-        width: 400px;
+        width: 190px;
         position: absolute;
-        top: -34px;
-        left: -37px;
+        top: 35px;
+        left: 55px;
     }
 }
 
@@ -85,10 +91,10 @@ body {
     background: url('../svg/fondo3.jpg');
 
     img {
-        width: 340px;
+        width: 200px;
         position: absolute;
-        top: -30px;
-        left: -25px;
+        top: 30px;
+        left: 50px;
     }
 }
 
@@ -96,10 +102,10 @@ body {
     background: url('../svg/fondo1.jpg');
 
     img {
-        width: 370px;
+        width: 200px;
         position: absolute;
-        top: -21px;
-        left: -37px;
+        top: 30px;
+        left: 50px;
     }
 }
 
@@ -107,10 +113,10 @@ body {
     background: url('https://s3-us-west-2.amazonaws.com/s.cdpn.io/195612/wizard-bg.jpg');
 
     img {
-        width: 345px;
+        width: 200px;
         position: absolute;
-        top: -28px;
-        left: -10px;
+        top: 25px;
+        left: 50px;
     }
 }
 
