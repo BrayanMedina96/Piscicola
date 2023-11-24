@@ -131,12 +131,7 @@ function doMarcador(key) {
                         marker.setAnimation(google.maps.Animation.BOUNCE);
                     }
 
-
-                    let timerId = setTimeout(function actaulizarDatos() {
-                        timerId = setTimeout(actaulizarDatos, 1000); // (*)
-                    }, 2000);
-
-
+                    setInterval(actaulizarDatos, 1000);
 
                 });
 
@@ -218,8 +213,6 @@ function clearAnimation() {
 }
 
 function actaulizarDatos() {
-
-
 
     var valor = parseFloat((Math.random() * 2 - 1).toFixed(2)); //Math.floor(Math.random() * 3);
 
