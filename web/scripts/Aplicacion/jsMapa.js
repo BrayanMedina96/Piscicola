@@ -132,7 +132,7 @@ function doMarcador(key) {
                     }
 
 
-                    setTimeout(actaulizarDatos, 1000);
+                    setInterval(() => actaulizarDatos, 2000);
 
                 });
 
