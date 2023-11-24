@@ -131,6 +131,9 @@ function doMarcador(key) {
                         marker.setAnimation(google.maps.Animation.BOUNCE);
                     }
 
+
+                    setTimeout(actaulizarDatos, 1000);
+
                 });
 
 
@@ -172,10 +175,10 @@ function info(key) {
 
         var t = key.variable.data[0];
         mensaje += "<table class='table h5'>";
-        mensaje += `<tr> <td>T.Amb</td>  <td> ${t.temperaturaambiente}</td> </tr>`;
-        mensaje += `<tr> <td>T.Est</td>  <td>${t.temperaturaestanque}</td> </tr>`;
-        mensaje += `<tr> <td>O.D</td>  <td>${t.oxigenodisuelto}</td> </tr>`;
-        mensaje += `<tr> <td>pH</td>  <td>${t.ph}</td> </tr>`;
+        mensaje += `<tr> <td>T.Amb</td>  <td id="txttemperaturaambiente"> ${t.temperaturaambiente}</td> </tr>`;
+        mensaje += `<tr> <td>T.Est</td>  <td id="txttemperaturaestanque">${t.temperaturaestanque}</td> </tr>`;
+        mensaje += `<tr> <td>O.D</td>  <td id="txtoxigenodisuelto">${t.oxigenodisuelto}</td> </tr>`;
+        mensaje += `<tr> <td>pH</td>  <td id="txtph">${t.ph}</td> </tr>`;
         mensaje += "</table>";
 
     }
@@ -208,6 +211,16 @@ function clearAnimation() {
     for (let i = 0; i < markers.length; i++) {
         markers[i].setAnimation(null);
     }
+}
+
+function actaulizarDatos(){
+
+    var valor= parseFloat((Math.random() * 2 - 1).toFixed(2)) ; //Math.floor(Math.random() * 3);
+
+    $("#txttemperaturaambiente").val(25 + valor);
+    $("#txttemperaturaestanque").val(20 + valor);
+    $("#oxigenodisuelto").val(20 + valor);
+
 }
 
 
